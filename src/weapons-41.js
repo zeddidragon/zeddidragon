@@ -72,6 +72,7 @@ function populateWeapons(ch, cat) {
   weaponTable.innerHTML = ''
   const weapons = table
     .filter(t => t.character === ch && t.category === cat)
+    .flatMap(w => [w, ...(w.weapons || [])])
   const thead = $('thead')
   const theadrow = $('tr')
   for(const header of headers) {
@@ -111,6 +112,8 @@ function populateWeapons(ch, cat) {
     extra.innerHTML = '*All ammo combined'
   } else if(cat === 'deploy') {
     extra.innerHTML = '*All sentries combined'
+  } else if(cat === 'missile') {
+    extra.innerHTML = '*With 0 lock time'
   } else {
     extra.innerHTML = ''
   }
@@ -146,7 +149,10 @@ function tacticalDps(wpn) {
   const interval = wpn.interval || 1
   const bursts = wpn.ammo / (wpn.burst || 1)
   const bTime = burstTime(wpn)
-  const magTime = bursts * bTime + wpn.reload - interval
+  let magTime = bursts * bTime + wpn.reload - interval
+  if(wpn.lockType === 1) {
+    magTime += (wpn.lockTime || 0) * wpn.ammo
+  }
   return (mDmg * FPS / (magTime || interval))
 }
 
@@ -154,6 +160,9 @@ const FPS = 60
 const headers = [{
   label: '✓',
   cb: wpn => {
+    if(!wpn.id) {
+      return ''
+    }
     const el = $('input')
     const key = `owned.${wpn.id}`
     el.setAttribute('type', 'checkbox')
@@ -184,7 +193,7 @@ const headers = [{
   cb: wpn => {
     const el = $('div')
     el.classList.add('name')
-    el.textContent = wpn.name
+    el.textContent += wpn.name
     return el
   },
 }, {
@@ -211,10 +220,6 @@ const headers = [{
     if([
       'guide',
       'shield',
-      'tank',
-      'ground',
-      'heli',
-      'mech',
     ].includes(cat)) {
       return false
     }
@@ -222,6 +227,9 @@ const headers = [{
   },
   label: 'Dmg',
   cb: wpn => {
+    if(['power', 'guard'].includes(wpn.supportType)) {
+      return `${wpn.damage}x`
+    }
     if(wpn.damage < 1) {
       return +(wpn.damage).toFixed(2)
     }
@@ -279,6 +287,10 @@ const headers = [{
       'support',
       'limpet',
       'deploy',
+      'tank',
+      'ground',
+      'heli',
+      'mech',
     ].includes(cat)) {
       return true
     }
@@ -345,18 +357,22 @@ const headers = [{
 }, {
   iff: (ch, cat, wpn) => {
     if([
-      'winger',
-      'bomber',
-    ].includes(ch)) {
-      return false
-    }
-    if([
       'shotgun',
       'sniper',
       'spear',
       'heavy',
+      'tank',
+      'ground',
+      'heli',
+      'mech',
     ].includes(cat)) {
       return true
+    }
+    if([
+      'winger',
+      'bomber',
+    ].includes(ch)) {
+      return false
     }
     if(ch === 'ranger' && [
       'special',
@@ -377,10 +393,6 @@ const headers = [{
     if([
       'raid',
       'support',
-      'tank',
-      'ground',
-      'heli',
-      'mech',
       'shield',
     ].includes(cat)) {
       return false
@@ -421,6 +433,23 @@ const headers = [{
     return rof
   }
 }, {
+  iff: (ch, cat, wpn) => {
+    if([
+      'missile',
+      'homing',
+      'ground',
+      'heli',
+      'mech',
+    ].includes(cat)) {
+      return true
+    }
+    return false
+  },
+  label: 'Lock',
+  cb: wpn => {
+    return +(wpn.lockTime / FPS).toFixed(2)
+  }
+}, {
   label: 'Rel',
   cb: wpn => {
     if(wpn.reload <= 0 || !wpn.reload) {
@@ -429,7 +458,7 @@ const headers = [{
     if(wpn.credits) {
       return wpn.reload
     }
-    return (wpn.reload / FPS).toFixed(1)
+    return +(wpn.reload / FPS).toFixed(2)
   }
 }, {
   iff: (ch, cat, wpn) => {
@@ -441,10 +470,6 @@ const headers = [{
       'hammer',
       'spear',
       'shield',
-      'tank',
-      'ground',
-      'heli',
-      'mech',
     ].includes(cat)) {
       return false
     }
@@ -453,6 +478,7 @@ const headers = [{
   label: 'Acc',
   cb: wpn => {
     if(!wpn.speed) return '-'
+    if(wpn.accuracy == null) return '-'
     return [
       [0.9995, 'S++'],
       [0.9975, 'S+'],
@@ -517,10 +543,6 @@ const headers = [{
   iff: (ch, cat, wpn) => {
     if([
       'raid',
-      'tank',
-      'ground',
-      'heli',
-      'mech',
       'missile',
     ].includes(cat)) {
       return false
@@ -542,21 +564,48 @@ const headers = [{
 }, {
   iff: (ch, cat, wpn) => {
     if([
+      'guide',
+    ].includes(cat)) {
+      return true
+    }
+    return false
+  },
+  label: 'L.Spd',
+  cb: wpn => {
+    return `${wpn.guideSpeed}x`
+  },
+}, {
+  iff: (ch, cat, wpn) => {
+    if([
+      'guide',
+    ].includes(cat)) {
+      return true
+    }
+    return false
+  },
+  label: 'L.Rng',
+  cb: wpn => {
+    return `${wpn.guideRange}x`
+  },
+}, {
+  iff: (ch, cat, wpn) => {
+    if([
       'particle',
       'plasma',
       'guide',
       'raid',
       'shield',
-      'tank',
-      'ground',
-      'heli',
-      'mech',
+      'missile',
     ].includes(cat)) {
       return false
     }
     if(ch === 'winger' && [
       'sniper',
-      'missile',
+    ].includes(cat)) {
+      return false
+    }
+    if(ch === 'bomber' && [
+      'special',
     ].includes(cat)) {
       return false
     }
@@ -565,9 +614,6 @@ const headers = [{
   label: 'DPS',
   cb: wpn => {
     if(!wpn.damage) {
-      return '-'
-    }
-    if(wpn.type === 'DecoyBullet01') {
       return '-'
     }
     if(wpn.ammo < 2 && !wpn.duration) {
@@ -651,6 +697,11 @@ const headers = [{
     ].includes(cat)) {
       return false
     }
+    if(ch === 'bomber' && [
+      'special',
+    ].includes(cat)) {
+      return false
+    }
     return true
   },
   label: 'TDPS',
@@ -661,13 +712,10 @@ const headers = [{
     if(wpn.reload < 0) {
       return '-'
     }
-    if(wpn.type === 'DecoyBullet01') {
-      return '-'
-    }
     if(wpn.shotInterval) { // Turret
       return +tacticalDps({
         ...wpn,
-        shots: 1,
+        shots: wpn.ammo,
         interval: wpn.shotInterval,
         ammo: wpn.shots,
       }).toFixed(1)
@@ -681,25 +729,18 @@ const headers = [{
     ].includes(cat)) {
       return true
     }
-    if([
-      'deploy',
-    ].includes(cat)) {
+    if(cat === 'missile') {
       return true
     }
     return false
   },
   label: 'TDPS*',
   cb: wpn => {
-    if(wpn.shotInterval) { // Turret
-      return +tacticalDps({
-        ...wpn,
-        shots: wpn.ammo,
-        interval: wpn.shotInterval,
-        ammo: wpn.shots,
-      }).toFixed(1)
-    }
     if(wpn.continous) { // Flamethrower
       return +(tacticalDps(wpn) * wpn.duration).toFixed(1)
+    }
+    if(wpn.lockType === 1) {
+      return +tacticalDps({ ...wpn, lockType: 0 }).toFixed(1)
     }
     return '-'
   },
@@ -708,10 +749,11 @@ const headers = [{
     if([
       'guide',
       'shield',
-      'tank',
-      'ground',
-      'heli',
-      'mech',
+    ].includes(cat)) {
+      return false
+    }
+    if(ch === 'bomber' && [
+      'special',
     ].includes(cat)) {
       return false
     }
@@ -727,9 +769,6 @@ const headers = [{
         return '-'
       }
       return +(wpn.damage * wpn.duration).toFixed(1)
-    }
-    if(wpn.type === 'DecoyBullet01') {
-      return '-'
     }
     const dump = Math.abs(wpn.damage
       * (wpn.count || 1)
