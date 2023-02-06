@@ -7,6 +7,7 @@ fetch('src/weapons-41.json')
   .then(data => {
     table = data
     pickChar('ranger')
+    pickChar('fencer', 'spear')
   })
 
 function pickChar(ch, cat) {
@@ -72,7 +73,7 @@ function populateWeapons(ch, cat) {
   weaponTable.innerHTML = ''
   const weapons = table
     .filter(t => t.character === ch && t.category === cat)
-    .flatMap(w => [w, ...(w.weapons || [])])
+    .flatMap(w => [w, ...(w.weapons || []), ...(w.attacks || [])])
   const thead = $('thead')
   const theadrow = $('tr')
   for(const header of headers) {
@@ -243,6 +244,39 @@ const headers = [{
 }, {
   iff: (ch, cat, wpn) => {
     if([
+      'hammer',
+      'shield',
+    ].includes(cat)) {
+      return true
+    }
+    return false
+  },
+  label: 'Def',
+  cb: wpn => {
+    if(!wpn.defense) {
+      return '-'
+    }
+    return `${wpn.defense}%`
+  },
+}, {
+  iff: (ch, cat, wpn) => {
+    if([
+      'hammer',
+    ].includes(cat)) {
+      return true
+    }
+    return false
+  },
+  label: 'Chg',
+  cb: wpn => {
+    if(!wpn.charge) {
+      return '-'
+    }
+    return +(wpn.charge / FPS).toFixed(1)
+  },
+}, {
+  iff: (ch, cat, wpn) => {
+    if([
       'guide',
     ].includes(cat)) {
       return false
@@ -251,8 +285,8 @@ const headers = [{
   },
   label: 'Dmg',
   cb: wpn => {
-    if(wpn.category === 'shield') {
-      return `${wpn.damage * 100}%`
+    if(!wpn.damage) {
+      return '-'
     }
     if(['power', 'guard'].includes(wpn.supportType)) {
       return `${wpn.damage}x`
@@ -261,9 +295,6 @@ const headers = [{
       return +(wpn.damage).toFixed(2)
     }
     let dmg = +Math.abs(wpn.damage).toFixed(1)
-    if(!dmg) {
-      return '-'
-    }
     if(wpn.count > 1) {
       dmg = `${dmg} x ${wpn.count}`
     }
@@ -309,6 +340,7 @@ const headers = [{
       'missile',
       'special',
       'plasma',
+      'hammer',
       'heavy',
       'raid',
       'support',
@@ -420,6 +452,7 @@ const headers = [{
     if([
       'raid',
       'support',
+      'hammer',
       'shield',
     ].includes(cat)) {
       return false
@@ -433,6 +466,9 @@ const headers = [{
   },
   label: 'RoF',
   cb: wpn => {
+    if(!wpn.interval) {
+      return '-'
+    }
     if(wpn.category === 'particle') {
       return +(FPS / wpn.reload).toFixed(2)
     }
@@ -637,6 +673,7 @@ const headers = [{
       'raid',
       'shield',
       'missile',
+      'hammer',
     ].includes(cat)) {
       return false
     }
@@ -655,6 +692,9 @@ const headers = [{
   label: 'DPS',
   cb: wpn => {
     if(!wpn.damage) {
+      return '-'
+    }
+    if(!wpn.interval) {
       return '-'
     }
     if(wpn.ammo < 2 && !wpn.duration) {
@@ -730,6 +770,7 @@ const headers = [{
       'guide',
       'raid',
       'support',
+      'hammer',
       'shield',
       'tank',
       'ground',
@@ -748,6 +789,12 @@ const headers = [{
   label: 'TDPS',
   cb: wpn => {
     if(!wpn.damage) {
+      return '-'
+    }
+    if(!wpn.ammo) {
+      return '-'
+    }
+    if(wpn.attacks?.length) {
       return '-'
     }
     if(wpn.reload < 0) {
@@ -792,6 +839,7 @@ const headers = [{
   iff: (ch, cat, wpn) => {
     if([
       'guide',
+      'hammer',
       'shield',
     ].includes(cat)) {
       return false
@@ -805,7 +853,18 @@ const headers = [{
   },
   label: 'Total',
   cb: wpn => {
+    if(wpn.attacks?.length) {
+      const attacks = [wpn.damage, ...wpn.attacks.map(a => a.damage)]
+      const dump = Array(wpn.ammo)
+        .fill(0)
+        .map((w, i) => attacks[i % attacks.length])
+        .reduce((dmg, sum) => dmg + sum, 0)
+      return +(dump * (wpn.count || 1)).toFixed(1)
+    }
     if(!wpn.damage) {
+      return '-'
+    }
+    if(!wpn.ammo) {
       return '-'
     }
     if(wpn.category === 'support') {
