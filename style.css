@@ -145,6 +145,10 @@ th.P {
   content: '~ ';
 }
 
+.spacer {
+  flex: 1;
+}
+
 .Filler {
   border-left: none;
   border-right: none;
@@ -156,13 +160,13 @@ th.P {
   padding-right: 0.5em;
 }
 
-.ranger b, .dlc2 b, .Inferno, .lowOdds {
+.ranger b, .dlc2 b, .Inferno, .lowOdds, .ja b {
   color: #e88;
 }
-.winger b, .offline b, .Normal, .edf5 b {
+.winger b, .off b, .Normal, .edf5 b, .en b {
   color: #88e;
 }
-.bomber b, .online b, .Hard, .highOdds, .edf41 b {
+.bomber b, .on b, .Hard, .highOdds, .edf41 b {
   color: #8e8;
 }
 .fencer b, .dlc1 b {

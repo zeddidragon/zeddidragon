@@ -9,6 +9,7 @@ const stateKeys = [
   'char',
   'wpn',
   'star',
+  'lang',
 ]
 function readState() {
   const params = window.location.hash.slice(1).split('&')
@@ -17,20 +18,30 @@ function readState() {
     if(!stateKeys.includes(k)) continue
     active[k] = v
   }
+  // Migration of this mode's name
+  if(active.mode === 'offline') {
+    active.mode = 'off'
+  } else if(active.mode === 'online') {
+    active.mode = 'on'
+  }
 }
 readState()
 
 const cached = {}
 
+let isLoaded = false
 async function loadWeapons(game) {
+  isLoaded = false
   const data = await fetch(`src/weapons-${game}.json`).then(res => res.json())
   table = data.weapons
   modes = data.modes
   populateModes()
+  pickLang(active.lang || 'en')
   pickGame(active.game || '5')
   pickMode(active.mode || 'stats')
   pickChar(active.char || 'ranger', active.wpn)
   populateWeapons(active.mode, active.char, active.wpn)
+  isLoaded = true
 }
 
 function writeState() {
@@ -39,6 +50,33 @@ function writeState() {
     .map(k => `${k}=${active[k]}`)
     .join('&')
   populateWeapons(active.mode, active.char, active.wpn)
+}
+
+function pickLang(lang) {
+  const langChanged = active.lang != lang
+  const button = document
+    .getElementById('lang-button')
+  button.classList.remove(...button.classList)
+  button.classList.add('button')
+  styleButton({
+    button,
+    label: lang,
+    cls: lang,
+  })
+
+  const item = document
+    .querySelector(`#lang-dropdown .${lang}`)
+
+  active.langEl?.classList.remove('selected')
+  item.classList.add('selected')
+  Object.assign(active, {
+    lang,
+    langEl: item,
+  })
+
+  if(langChanged && isLoaded) {
+    populateWeapons(active.mode, active.char, active.wpn)
+  }
 }
 
 function pickGame(game) {
@@ -91,7 +129,7 @@ function pickGame(game) {
     delete active.starEl
   }
 
-  if(gameChanged) {
+  if(gameChanged && isLoaded) {
     loadWeapons(game)
   }
 }
@@ -126,7 +164,7 @@ function pickMode(mode) {
   const m = modes.find(m => m.name.toLowerCase() === mode)
   styleButton({
     button,
-    label: m ? m.name : 'Stats',
+    label: m ? `Drops ${m.name}` : 'Stats',
     cls: mode,
     cutPoint: 4,
   })
@@ -142,6 +180,13 @@ function pickMode(mode) {
   })
 }
 
+const buttonPrefixes = [
+  'Drops ',
+  'CC ',
+  'Enhanced ',
+  'Request ',
+  'Mid-Rg ',
+]
 function styleButton({
   button,
   label,
@@ -149,6 +194,13 @@ function styleButton({
   cutPoint,
 }) {
   button.innerHTML = ''
+  for(const pfx of buttonPrefixes) {
+    if(label.startsWith(pfx)) {
+      button.textContent = pfx
+      label = label.slice(pfx.length)
+      break
+    }
+  }
   boldify(button, label, cutPoint)
   button.classList.add(cls)
   return button
@@ -187,12 +239,11 @@ function pickChar(ch, cat) {
   for(const cat of categories) {
     const label = catLabels[ch][cat] || cat
     const li = $('a')
-    li.classList.add(cat)
-    if(label.startsWith('CC ')) {
-      boldify(li, label, 4)
-    } else {
-      boldify(li, label, 2)
-    }
+    styleButton({
+      button: li,
+      label,
+      cls: cat,
+    })
     li.addEventListener('click', () => {
       pickCategory(ch, cat)
       writeState()
@@ -220,8 +271,9 @@ function pickCategory(ch, cat) {
     button,
     label: catLabels[ch][cat] || '',
     cls: cat,
-    cutPoint,
   })
+
+  button.classList.add(cat)
 
   active.catEl?.classList.remove('selected')
   item.classList.add('selected')
@@ -244,11 +296,15 @@ function populateModes() {
     writeState()
   })
   for(const mode of modes) {
-    const mLabel = mode.name
+    const mLabel = `Drops ${mode.name}`
     const id = mode.name.toLowerCase()
     const item = $('a')
-    item.classList.add(id)
-    boldify(item, mLabel, 4)
+    styleButton({
+      button: item,
+      label: mLabel,
+      cls: id,
+      cutPoint: 4,
+    })
     modeMenu.appendChild(item)
     item.addEventListener('click', () => {
       pickMode(id)
@@ -281,7 +337,9 @@ function populateWeaponDrops(mode, ch, cat) {
     .filter(t => t.character === ch && t.category === cat)
   const thead = $('thead')
   const theadrow = $('tr')
-  const dropHeaders = headers.slice(0, 4)
+  const dropHeaders = headers
+    .slice(0, 5)
+    .filter(h => !h.iff || h.iff(ch, cat))
   for(const header of dropHeaders) {
     const cell = $('th')
     cell.textContent = header.label
@@ -407,6 +465,7 @@ function populateWeaponStats(ch, cat) {
   const wHeaders = headers.filter(h => !h.iff || h.iff(ch, cat))
   for(const header of wHeaders) {
     const cell = $('th')
+    cell.setAttribute('title', header.tooltip || header.label)
     cell.textContent = header.label
     let cols = 1
     if(gameHasStars && header.starProp) {
@@ -545,7 +604,9 @@ function populateWeaponStats(ch, cat) {
 }
 
 function starValue({ base, zero, exp, lvMin, lvMax, type, algo }, star) {
-  const zeroValue = [21, 25, 29].includes(algo) ? base + base * zero : base * zero
+  const zeroValue = [21, 25, 29, 41].includes(algo)
+    ? base + base * zero
+    : base * zero
   const rounding = [4].includes(algo) ? Math.round : Math.ceil
   const growthBase = (base - zeroValue) / Math.pow(5, exp)
   star = Math.min(Math.max(lvMin, star), lvMax)
@@ -621,15 +682,23 @@ function tacticalDps(wpn) {
   return (mDmg * FPS / (magTime || interval))
 }
 
+const gameScopes = {
+  4: '',
+}
+
 const FPS = 60
 const headers = [{
   label: '✓',
+  tooltip: 'Weapon Acquired',
   cb: wpn => {
     if(!wpn.id) {
       return ''
     }
+    const { game } = active
+    const scope = gameScopes[game] || `.${game}`
     const el = $('input')
-    const key = `owned.${wpn.id}`
+    const key = `owned${scope}.${wpn.id}`
+    el.setAttribute('id', key)
     el.setAttribute('type', 'checkbox')
     if(localStorage[key]) {
       el.setAttribute('checked', '1')
@@ -646,17 +715,54 @@ const headers = [{
     return el
   },
 }, {
+  iff: () => [5, 6].includes(+active.game),
+  label: '★',
+  tooltip: 'Max Rank',
+  cb: wpn => {
+    if(!wpn.id) {
+      return ''
+    }
+    const { game } = active
+    const scope = gameScopes[game] || `.${game}`
+    const el = $('input')
+    const key = `starred${scope}.${wpn.id}`
+    const ownedKey = `owned${scope}.${wpn.id}`
+    el.setAttribute('type', 'checkbox')
+    if(localStorage[key]) {
+      el.setAttribute('checked', '1')
+    }
+    el.addEventListener('change', () => {
+      const owned = document.getElementById(ownedKey)
+      const v = 1 - (localStorage[key] || 0)
+      localStorage[key] = v
+      if(v) {
+        localStorage[ownedKey] = v
+        owned.setAttribute('checked', '1')
+        el.setAttribute('checked', '1')
+      } else {
+        el.removeAttribute('checked')
+      }
+    })
+    return el
+  },
+}, {
   label: 'Lv',
+  tooltip: 'Level',
   cb: wpn => {
     const { level } = wpn
     if(level == null) {
       return '-'
     }
     const el = $('div')
-    const difficulty = modes[0]
+    const difficulty = modes[1]
       .difficulties
       .slice(1)
-      .find(d => d.drops[1] >= level)
+      .find(d => {
+        const limits = d.weaponLimits
+        if(!Array.isArray(limits)) return
+        const upper = limits[limits.length - 1]
+        return upper > 0 && upper >= level
+      })
     if(!difficulty) {
       return level
     }
@@ -669,11 +775,13 @@ const headers = [{
   cb: wpn => {
     const el = $('div')
     el.classList.add('name')
-    el.textContent += wpn.name
+    const name = wpn.names ? wpn.names[active.lang || 'en'] : wpn.name
+    el.textContent += name
     return el
   },
 }, {
   label: 'Weight',
+  tooltip: 'Relative Drop Chance',
   iff: (ch, cat, wpn) => {
     return active.mode && active.mode !== 'stats'
   },
@@ -714,6 +822,7 @@ const headers = [{
     return false
   },
   label: 'HP',
+  tooltip: 'Durability',
   cb: wpn => {
     if(!wpn.hp) {
       return '-'
@@ -731,6 +840,7 @@ const headers = [{
     return false
   },
   label: 'Fuel',
+  tooltip: 'Fuel Capacity',
   cb: wpn => {
     if(!wpn.fuel) {
       return '-'
@@ -748,6 +858,7 @@ const headers = [{
     return false
   },
   label: 'Cns',
+  tooltip: 'Fuel Consumption',
   cb: wpn => {
     if(wpn.fuelUsage) {
       return wpn.fuelUsage
@@ -780,6 +891,7 @@ const headers = [{
     return true
   },
   label: 'Cap',
+  tooltip: 'Ammo Capacity',
   starProp: 'ammo',
   cb: wpn => {
     if(wpn.shieldDurability) {
@@ -802,6 +914,7 @@ const headers = [{
     return false
   },
   label: 'Def',
+  tooltip: 'Defense',
   cb: wpn => {
     if(wpn.shieldDamageReduction) {
       return `${Math.round((1 - wpn.shieldDamageReduction) * 100)}%`
@@ -821,6 +934,7 @@ const headers = [{
     return false
   },
   label: 'Chg',
+  tooltip: 'Charge Time',
   cb: wpn => {
     if(!wpn.charge) {
       return '-'
@@ -857,6 +971,7 @@ const headers = [{
   },
   headerClass: 'P',
   label: 'P',
+  tooltip: 'Piercing',
   cb: wpn => {
     if(wpn.piercing) {
       return '[PT]'
@@ -880,6 +995,7 @@ const headers = [{
     return true
   },
   label: 'Dmg',
+  tooltip: 'Damage',
   headerClass: 'Dmg',
   starProp: 'damage',
   starProp2: 'count',
@@ -930,6 +1046,7 @@ const headers = [{
     return false
   },
   label: 'Dmg*',
+  tooltip: 'Damage*',
   cb: wpn => {
     if(!wpn.continous) {
       return '-'
@@ -988,6 +1105,7 @@ const headers = [{
     return false
   },
   label: 'Dur',
+  tooltip: 'Duration',
   cb: wpn => {
     const duration = wpn.fuse || wpn.duration
     if(!duration) return '-'
@@ -1024,6 +1142,7 @@ const headers = [{
     return true
   },
   label: 'RoF',
+  tooltip: 'Rate of Fire',
   starProp: 'interval',
   cb: wpn => {
     if(!wpn.interval) {
@@ -1072,6 +1191,7 @@ const headers = [{
     return false
   },
   label: 'Lock',
+  tooltip: 'Lock Time',
   starProp: 'lockTime',
   cb: wpn => {
     if(!wpn.lockTime) {
@@ -1094,6 +1214,7 @@ const headers = [{
     return true
   },
   label: 'Rel',
+  tooltip: 'Reload Time',
   starProp: 'reload',
   cb: wpn => {
     if(wpn.reload <= 0 || !wpn.reload) {
@@ -1106,6 +1227,7 @@ const headers = [{
   },
 }, {
   iff: (ch, cat, wpn) => {
+    return false
     if([
       'spear',
     ].includes(cat)) {
@@ -1114,6 +1236,7 @@ const headers = [{
     return false
   },
   label: 'Swing',
+  tooltip: 'Swing Speed',
   cb: wpn => {
     if(!wpn.isSwing) {
       return '-'
@@ -1144,6 +1267,7 @@ const headers = [{
     return true
   },
   label: 'Acc',
+  tooltip: 'Accuracy',
   starProp: 'accuracy',
   cb: wpn => {
     if(!wpn.speed) return '-'
@@ -1182,6 +1306,7 @@ const headers = [{
     return false
   },
   label: 'Enr',
+  tooltip: 'Energy',
   starProp: 'energy',
   cb: wpn => {
     if(!wpn.energy) {
@@ -1199,6 +1324,7 @@ const headers = [{
     return false
   },
   label: 'Chg',
+  tooltip: 'Charge Speed',
   cb: wpn => {
     const {
       baseEnergy: nrg = wpn.energy,
@@ -1216,6 +1342,7 @@ const headers = [{
     return false
   },
   label: 'Em.C',
+  tooltip: 'Emergency Charge Speed',
   starProp: 'energy',
   cb: wpn => {
     const {
@@ -1234,6 +1361,7 @@ const headers = [{
     return false
   },
   label: 'Cns',
+  tooltip: 'Flight Consumption',
   cb: wpn => {
     const {
       baseEnergy: nrg = wpn.energy,
@@ -1251,6 +1379,7 @@ const headers = [{
     return false
   },
   label: 'B.Cns',
+  tooltip: 'Boost Consumption',
   cb: wpn => {
     const {
       baseEnergy: nrg = wpn.energy,
@@ -1282,6 +1411,7 @@ const headers = [{
     return true
   },
   label: 'Rng',
+  tooltip: 'Range',
   starProp: 'speed',
   cb: wpn => {
     if(wpn.shieldAngle) {
@@ -1305,6 +1435,7 @@ const headers = [{
     return false
   },
   label: 'Rng',
+  tooltip: 'Lock-Range',
   starProp: 'lockRange',
   cb: wpn => {
     if(wpn.category === 'missile') {
@@ -1322,6 +1453,7 @@ const headers = [{
     return false
   },
   label: 'H.NPC',
+  tooltip: 'Healing Ally Boost',
   cb: wpn => {
     if(wpn.allyRecovery) {
       return `${Math.round(wpn.allyRecovery * 100)}%`
@@ -1338,6 +1470,7 @@ const headers = [{
     return false
   },
   label: 'Probe',
+  tooltip: 'Pickup Radius',
   cb: wpn => {
     if(wpn.itemRange) {
       return `${Math.round(wpn.itemRange * 100 - 100)}%`
@@ -1354,6 +1487,7 @@ const headers = [{
     return false
   },
   label: 'KD.Im',
+  tooltip: 'Knockdown Immunity',
   cb: wpn => {
     if(wpn.isKnockImmune) {
       return '✓'
@@ -1384,6 +1518,7 @@ const headers = [{
     return true
   },
   label: 'Spd',
+  tooltip: 'Move Speed',
   starProp: 'speed',
   cb: wpn => {
     if(wpn.walkSpeed) {
@@ -1407,6 +1542,7 @@ const headers = [{
     return false
   },
   label: 'Fly',
+  tooltip: 'Flight Speed',
   cb: wpn => {
     if(wpn.flightSpeedVertical) {
       return `${Math.round(wpn.flightSpeedVertical * 100)}%`
@@ -1423,6 +1559,7 @@ const headers = [{
     return false
   },
   label: 'B.Fwd',
+  tooltip: 'Boost Forward',
   cb: wpn => {
     if(wpn.boostForward && wpn.boostForward !== 1) {
       return `${Math.round(wpn.boostForward * 100)}%`
@@ -1439,6 +1576,7 @@ const headers = [{
     return false
   },
   label: 'B.Bwd',
+  tooltip: 'Boost Backward',
   cb: wpn => {
     if(wpn.boostRear && wpn.boostRear !== 1) {
       return `${Math.round(wpn.boostRear * 100)}%`
@@ -1455,6 +1593,7 @@ const headers = [{
     return false
   },
   label: 'B.Side',
+  tooltip: 'Boost Sideways',
   cb: wpn => {
     if(wpn.boostSide && wpn.boostSide !== 1) {
       return `${Math.round(wpn.boostSide * 100)}%`
@@ -1471,6 +1610,7 @@ const headers = [{
     return false
   },
   label: 'Acc',
+  tooltip: 'Air Acceleration',
   cb: wpn => {
     if(wpn.airControl) {
       return `${Math.round(wpn.airControl * 100)}%`
@@ -1487,6 +1627,7 @@ const headers = [{
     return false
   },
   label: 'Stun',
+  tooltip: 'Hit Slowdown',
   cb: wpn => {
     if(wpn.hitSlowdown) {
       return `${Math.round(wpn.hitSlowdown * 100)}%`
@@ -1503,6 +1644,7 @@ const headers = [{
     return false
   },
   label: 'Sprint',
+  tooltip: 'Sprint Speed',
   cb: wpn => {
     if(wpn.sprintSpeed) {
       return `${Math.round(wpn.sprintSpeed * 100)}%`
@@ -1519,6 +1661,7 @@ const headers = [{
     return false
   },
   label: 'Swirl',
+  tooltip: 'Sprint Turnspeed',
   cb: wpn => {
     if(wpn.sprintSwirl) {
       return `${Math.round(wpn.sprintSwirl * 100)}%`
@@ -1535,6 +1678,7 @@ const headers = [{
     return false
   },
   label: 'Acc',
+  tooltip: 'Sprint Acceleration',
   cb: wpn => {
     if(wpn.sprintAcceleration) {
       return `${Math.round(wpn.sprintAcceleration * 100)}%`
@@ -1551,6 +1695,7 @@ const headers = [{
     return false
   },
   label: 'Stun',
+  tooltip: 'Sprint Hit Slowdown',
   cb: wpn => {
     if(wpn.sprintHitSlowdown) {
       return `${Math.round(wpn.sprintHitSlowdown * 100)}%`
@@ -1567,6 +1712,7 @@ const headers = [{
     return false
   },
   label: 'Break',
+  tooltip: 'Obstacle Destruction During Sprint',
   cb: wpn => {
     if(wpn.sprintDestruction) {
       return '✓'
@@ -1584,6 +1730,7 @@ const headers = [{
     return false
   },
   label: 'L.Spd',
+  tooltip: 'Lock Speed',
   cb: wpn => {
     if(!wpn.lockTime) {
       return '-'
@@ -1601,6 +1748,7 @@ const headers = [{
     return false
   },
   label: 'L.Rng',
+  tooltip: 'Lock Range',
   cb: wpn => {
     if(!wpn.lockRange) {
       return '-'
@@ -1617,6 +1765,7 @@ const headers = [{
     return false
   },
   label: 'Multi',
+  tooltip: 'Multi Lock',
   cb: wpn => {
     if(wpn.isMultiLock) {
       return '✓'
@@ -1634,6 +1783,7 @@ const headers = [{
     return false
   },
   label: 'Dash',
+  tooltip: 'Dash Count',
   cb: wpn => {
     if(wpn.dashCount) {
       return wpn.dashCount
@@ -1650,6 +1800,7 @@ const headers = [{
     return false
   },
   label: 'Boost',
+  tooltip: 'Boost Count',
   cb: wpn => {
     if(wpn.boostCount) {
       return wpn.boostCount
@@ -1666,6 +1817,7 @@ const headers = [{
     return false
   },
   label: 'D.CD',
+  tooltip: 'Dash Cooldown',
   cb: wpn => {
     if(wpn.dashInterval) {
       return `${Math.round(wpn.dashInterval * 200)}%`
@@ -1682,6 +1834,7 @@ const headers = [{
     return false
   },
   label: 'B.Spd',
+  tooltip: 'Boost Speed',
   cb: wpn => {
     if(wpn.boostSpeed) {
       return `${Math.round(wpn.boostSpeed * 100)}%`
@@ -1698,6 +1851,7 @@ const headers = [{
     return false
   },
   label: 'Cns',
+  tooltip: 'Shield Consumption',
   cb: wpn => {
     if(wpn.shieldConsumption) {
       return `${Math.round(wpn.shieldConsumption * 100)}%`
@@ -1714,6 +1868,7 @@ const headers = [{
     return false
   },
   label: 'Rf.Cns',
+  tooltip: 'Shield Reflect Consumption',
   cb: wpn => {
     if(wpn.shieldDeflectConsumption) {
       return `${Math.round(wpn.shieldDeflectConsumption * 100)}%`
@@ -1730,6 +1885,7 @@ const headers = [{
     return false
   },
   label: 'KB',
+  tooltip: 'Shield Knockback',
   cb: wpn => {
     if(wpn.shieldKnockback) {
       return `${Math.round(wpn.shieldKnockback * 100)}%`
@@ -1746,6 +1902,7 @@ const headers = [{
     return false
   },
   label: 'Eq.Walk',
+  tooltip: 'Equip Weight Move Speed Reduction',
   cb: wpn => {
     if(wpn.equipWeightMoveReduction != null) {
       return `${Math.round((1 - wpn.equipWeightMoveReduction) * 100)}%`
@@ -1762,6 +1919,7 @@ const headers = [{
     return false
   },
   label: 'Eq.Turn',
+  tooltip: 'Equip Weight Turn Speed Reduction',
   cb: wpn => {
     if(wpn.equipWeightTurnReduction != null) {
       return `${Math.round((1 - wpn.equipWeightTurnReduction) * 100)}%`
@@ -1794,6 +1952,7 @@ const headers = [{
       'artillery',
       'planes',
       'raid',
+      'limpet',
       'shield',
       'missile',
       'hammer',
@@ -1819,6 +1978,7 @@ const headers = [{
     return true
   },
   label: 'DPS',
+  tooltip: 'Damage Per Second',
   cb: wpn => {
     if(!wpn.damage) {
       return '-'
@@ -1867,6 +2027,7 @@ const headers = [{
     return false
   },
   label: 'DPS*',
+  tooltip: 'Damage Per Second*',
   cb: wpn => {
     if(wpn.category === 'support') {
       if(['guard', 'power'].includes(wpn.supportType)) {
@@ -1904,6 +2065,7 @@ const headers = [{
       'support',
       'hammer',
       'shield',
+      'limpet',
       'tank',
       'ground',
       'heli',
@@ -1925,6 +2087,7 @@ const headers = [{
     return true
   },
   label: 'TDPS',
+  tooltip: 'Total Damage Per Second (including reload)',
   cb: wpn => {
     if(!wpn.damage) {
       return '-'
@@ -1944,7 +2107,7 @@ const headers = [{
         shots: wpn.ammo,
         interval: wpn.shotInterval,
         ammo: wpn.shots,
-      })
+      }).toFixed(1)
     }
     const tdps = tacticalDps(wpn)
     return tdps.toFixed(1)
@@ -1966,6 +2129,7 @@ const headers = [{
     return false
   },
   label: 'TDPS*',
+  tooltip: 'Total Damage Per Second (including reload)*',
   cb: wpn => {
     if(wpn.continous) { // Flamethrower
       return +(tacticalDps(wpn) * wpn.duration).toFixed(1)
@@ -2001,6 +2165,7 @@ const headers = [{
     return true
   },
   label: 'Total',
+  tooltip: 'Total Damage',
   cb: wpn => {
     if(wpn.attacks?.length) {
       const attacks = wpn.attacks.map(a => a.damage * wpn.damage)
@@ -2044,6 +2209,7 @@ const headers = [{
     return false
   },
   label: 'Total*',
+  tooltip: 'Total Damage*',
   cb: wpn => {
     if(wpn.category === 'support') {
       if(['guard', 'power'].includes(wpn.supportType)) {
@@ -2122,6 +2288,26 @@ for(let i = 0; i < characters.length; i++) {
   charMenu.appendChild(item)
   item.addEventListener('click', () => {
     pickChar(c)
+    writeState()
+  })
+}
+
+const langs = [
+  'en',
+  'ja',
+]
+
+const langMenu = document.getElementById('lang-dropdown')
+for(const lang of langs) {
+  const item = $('a')
+  styleButton({
+    button: item,
+    label: lang,
+    cls: lang,
+  })
+  langMenu.appendChild(item)
+  item.addEventListener('click', () => {
+    pickLang(lang)
     writeState()
   })
 }
