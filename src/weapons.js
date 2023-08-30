@@ -787,6 +787,15 @@ const headers = [{
     return el
   },
 }, {
+  iff: (ch, cat, wpn) => {
+    return false
+  },
+  label: 'ID',
+  tooltip: 'ID',
+  cb: wpn => {
+    return wpn.id
+  },
+}, {
   label: 'Lv',
   tooltip: 'Level',
   cb: wpn => {
@@ -1381,14 +1390,14 @@ const headers = [{
       [0.0005, 'S++'],
       [0.0025, 'S+'],
       [0.01, 'A+'],
-      [0.015, 'A'],
+      [0.014999, 'A'],
       [0.02, 'A-'],
       [0.03, 'B+'],
       [0.05, 'B'],
       [0.10, 'B-'],
       [0.15, 'C+'],
       [0.20, 'C'],
-      [0.25, 'C-'],
+      [0.24998, 'C-'],
       [0.3, 'D'],
       [0.4, 'E'],
       [0.5, 'F'],
@@ -2123,7 +2132,7 @@ const headers = [{
       })
     }
     if(wpn.burst > 100) {
-      return wpn.damage * FPS / wpn.burstRate
+      return (wpn.damage * FPS / (wpn.burstRate || 1)).toFixed(1)
     }
     if(wpn.category === 'support') {
       if(!['life', 'plasma'].includes(wpn.supportType)) {
