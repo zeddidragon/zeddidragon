@@ -4,6 +4,7 @@ let table
 let modes
 let characters
 let charLabels
+let charHeaders
 let langs
 
 const stateKeys = [
@@ -40,6 +41,7 @@ async function loadWeapons(game) {
   modes = data.modes
   characters = data.classes
   charLabels = data.charLabels
+  charHeaders = data.headers
   langs = data.langs
   populateLangs()
   populateCharacters()
@@ -103,11 +105,13 @@ function pickGame(game) {
     .getElementById('game-button')
   button.classList.remove(...button.classList)
   button.classList.add('button')
+
   styleButton({
     button,
     label: gameLabels[games.indexOf(game)],
     cls: `edf${game}`,
     cutPoint: 4,
+    prefix: gamePrefixes[game] || 0,
   })
 
   const item = document
@@ -213,14 +217,20 @@ function styleButton({
   label,
   cls,
   cutPoint,
+  prefix,
 }) {
   button.innerHTML = ''
-  for(const pfx of buttonPrefixes) {
-    if(label.startsWith(pfx)) {
-      button.textContent = pfx
-      label = label.slice(pfx.length)
-      break
+  if(!prefix) {
+    for(const pfx of buttonPrefixes) {
+      if(label.startsWith(pfx)) {
+        prefix = pfx.length
+        break
+      }
     }
+  }
+  if(prefix) {
+    button.textContent = label.slice(0, prefix)
+    label = label.slice(prefix)
   }
   boldify(button, label, cutPoint)
   button.classList.add(cls)
@@ -258,27 +268,27 @@ function pickChar(ch, cat) {
   const existing = new Set(table
     .filter(t => t.character === ch)
     .map(t => t.category))
-  const categories = Object.keys(catLabels[ch])
-    .filter(cat => existing.has(cat))
-  if(!categories.includes(cat)) {
+  const categories = charHeaders[ch]
+  if(!categories.find(c => c.category === cat)) {
     cat = null
   }
+  const lang = active.lang || 'en'
   for(const cat of categories) {
-    const label = catLabels[ch][cat] || cat
+    const label = cat.names[lang]
     const li = $('a')
     styleButton({
       button: li,
       label,
-      cls: cat,
+      cls: cat.category,
     })
     li.addEventListener('click', () => {
-      pickCategory(ch, cat)
+      pickCategory(ch, cat.category)
       writeState()
     })
     catTabs.appendChild(li)
   }
 
-  pickCategory(ch, cat || categories[0])
+  pickCategory(ch, cat || categories[0].category)
 }
 
 function pickCategory(ch, cat) {
@@ -286,26 +296,27 @@ function pickCategory(ch, cat) {
     .querySelector('#category-button')
   let item = document
     .querySelector(`#category-dropdown .${cat}`)
+  cat = charHeaders[ch].find(c => c.category === cat)
   if(!item) {
     item = document
       .querySelector(`#category-dropdown a`)
-    cat = item.classList[0]
+    cat = charHeaders[ch][0]
   }
   button.classList.remove(...button.classList)
   button.classList.add('button')
-  const cutPoint = ['spear', 'hammer'].includes(cat) ? 4 : 2
+  const cutPoint = ['spear', 'hammer'].includes(cat.category) ? 4 : 2
   styleButton({
     button,
-    label: catLabels[ch][cat] || '',
-    cls: cat,
+    label: cat.names[active.lang || 'en'] || '',
+    cls: cat.category,
   })
 
-  button.classList.add(cat)
+  button.classList.add(cat.category)
 
   active.catEl?.classList.remove('selected')
   item.classList.add('selected')
   Object.assign(active, {
-    wpn: cat,
+    wpn: cat.category,
     catEl: item,
   })
 }
@@ -398,8 +409,9 @@ function populateWeaponDrops(mode, ch, cat) {
   const extra = document.getElementById('extra')
   extra.textContent = ''
 
-  const weaponTable = document.getElementById('weapons-table')
-  weaponTable.innerHTML = ''
+  const weaponTables = document.getElementById('weapon-tables')
+  const weaponTable = $('table')
+  weaponTables.innerHTML = ''
   const weapons = table
     .filter(t => t.character === ch && t.category === cat)
   const thead = $('thead')
@@ -485,10 +497,12 @@ function populateWeaponDrops(mode, ch, cat) {
     tbody.appendChild(row)
   }
   weaponTable.appendChild(tbody)
+  weaponTables.appendChild(weaponTable)
 }
 
 const scaledProps = [
   'ammo',
+  'hp',
   'damage',
   'count',
   'radius',
@@ -518,8 +532,8 @@ function composeAttack(weapon, attack) {
 function populateWeaponStats(ch, cat) {
   const gameHasStars = [5, 6].includes(+active.game)
   const extra = document.getElementById('extra')
-  const weaponTable = document.getElementById('weapons-table')
-  weaponTable.innerHTML = ''
+  const weaponTables = document.getElementById('weapon-tables')
+  weaponTables.innerHTML = ''
   const weapons = table
     .filter(t => t.character === ch && t.category === cat)
     .map(w => {
@@ -541,146 +555,177 @@ function populateWeaponStats(ch, cat) {
       }
       return [w]
     })
-  const thead = $('thead')
-  const theadrow = $('tr')
-  const wHeaders = headers.filter(h => !h.iff || h.iff(ch, cat))
-  for(const header of wHeaders) {
-    const cell = $('th')
-    cell.setAttribute('title', header.tooltip || header.label)
-    cell.textContent = header.label
-    let cols = 1
-    if(gameHasStars && header.starProp) {
-      cols++
-    }
-    if(header.label === 'Dmg') {
-      cols += 3
-    }
-    if(header.label === 'RoF') {
-      cols += 1
-    }
-    if(cols > 1) {
-      cell.setAttribute('colspan', cols)
-    }
-    if(header.headerClass) {
-      cell.classList.add(header.headerClass)
-    }
-    theadrow.appendChild(cell)
-  }
-  thead.appendChild(theadrow)
-  weaponTable.appendChild(thead)
-
-  const tbody = $('tbody')
-  for(const weapon of weapons) {
-    const row = $('tr')
+  const category = charHeaders[ch].find(h => h.category === cat)
+  const tables = category.tables || [category]
+  for(const table of tables) {
+    const thead = $('thead')
+    const theadrow = $('tr')
+    const weaponTable = $('table')
+    const lang = active.lang || 'en'
+    const wHeaders = table.headers
+      .map(hd => {
+        const header = headers.find(h => h.id === hd)
+        if(!header) {
+          throw new Error(`Header not found: ${hd}`)
+        }
+        return header
+      })
     for(const header of wHeaders) {
-      const cell = $('td')
-      let contents = header.cb(weapon)
-      cell.classList.add(header.label)
-      row.appendChild(cell)
-
+      const cell = $('th')
+      cell.setAttribute('title', header.tooltip || header.label)
+      cell.textContent = header.label
+      let cols = 1
+      if(gameHasStars && header.starProp) {
+        cols++
+      }
       if(header.label === 'Dmg') {
-        const [dmg, count, count2] = contents.toString().split('x').map(v => v.trim())
-        const [full, min] = dmg.split('~')
-
-        if(min) {
-          const cell = $('td')
-          cell.textContent = min
-          cell.classList.add('Falloff')
-          row.appendChild(cell)
-        } else {
-          const cell = $('td')
-          cell.classList.add('Filler')
-          row.appendChild(cell)
-        }
-
-        if(count2) {
-          const cell = $('td')
-          cell.textContent = count2
-          cell.classList.add('Count')
-          row.appendChild(cell)
-        }
-
-        if(count) {
-          const cell = $('td')
-          cell.textContent = count
-          cell.classList.add('Count')
-          if(count2) {
-            cell.classList.add('DmgEnd')
-          }
-          row.appendChild(cell)
-        } else {
-          const cell = $('td')
-          cell.textContent = ''
-          cell.classList.add('Filler')
-          row.appendChild(cell)
-        }
-
-        if(!count2) {
-          const cell = $('td')
-          cell.textContent = ''
-          cell.classList.add('Filler', 'DmgEnd')
-          row.appendChild(cell)
-        }
-
-        cell.textContent = full
-
-      } else if(header.label === 'RoF') {
-        const [rof, burst] = contents.toString().split('x').map(v => v.trim())
-        cell.textContent = rof
-        if(burst) {
-          const cell = $('td')
-          cell.textContent = burst
-          cell.classList.add('Count', 'DmgEnd')
-          row.appendChild(cell)
-        } else {
-          const cell = $('td')
-          cell.textContent = ''
-          cell.classList.add('Filler', 'DmgEnd')
-          row.appendChild(cell)
-        }
-      } else if(contents instanceof HTMLElement) {
-        cell.appendChild(contents)
-      } else {
-        cell.textContent = contents
+        cols += 3
       }
-
-      const prop = header.starProp
-      const prop2 = header.starProp2
-      if(gameHasStars && prop) {
-        let colspan = 1
-        cell.classList.add('hasStar')
-        const starCell = $('td')
-        for(let i = 0; i < 2; i++) {
-          const p = [prop, prop2][i]
-          const star = weapon[`${p}Star`]
-          const max = weapon[`${p}StarMax`]
-          if(star == null && i === 0) {
-            colspan = 2
-          } else if(star == null) {
-          } else if(star < max) {
-            starCell.textContent += `☆${star}`
-          } else {
-            starCell.textContent += `★${star}`
-          }
-        }
-
-        starCell.classList.add('isStar')
-        row.appendChild(starCell)
+      if(header.label === 'RoF') {
+        cols += 1
       }
+      if(cols > 1) {
+        cell.setAttribute('colspan', cols)
+      }
+      if(header.headerClass) {
+        cell.classList.add(header.headerClass)
+      }
+      theadrow.appendChild(cell)
     }
-    tbody.appendChild(row)
-  }
-  weaponTable.appendChild(tbody)
-  if(ch === 'ranger' && cat === 'special') {
-    extra.innerHTML = '*Assuming flame hits every frame of duration.'
-  } else if(cat === 'support') {
-    extra.innerHTML = '*All ammo combined'
-  } else if(cat === 'deploy') {
-    extra.innerHTML = '*All sentries combined'
-  } else if(ch !== 'winger' && cat === 'missile') {
-    extra.innerHTML = '*With 0 lock time'
-  } else {
-    extra.innerHTML = ''
+    thead.appendChild(theadrow)
+    weaponTable.appendChild(thead)
+
+    const tbody = $('tbody')
+    for(const weapon of weapons) {
+      if(table.subCategory && weapon.subCategory !== table.subCategory) {
+        continue
+      }
+      const row = $('tr')
+      for(const header of wHeaders) {
+        const cell = $('td')
+        let contents = header.cb(weapon)
+        cell.classList.add(header.label)
+        row.appendChild(cell)
+
+        if(header.label === 'Dmg') {
+          const [dmg, count, count2] = contents.toString().split('x').map(v => v.trim())
+          const [full, min] = dmg.split('~')
+
+          if(min) {
+            const cell = $('td')
+            cell.textContent = min
+            cell.classList.add('Falloff')
+            row.appendChild(cell)
+          } else {
+            const cell = $('td')
+            cell.classList.add('Filler')
+            row.appendChild(cell)
+          }
+
+          if(count2) {
+            const cell = $('td')
+            cell.textContent = count2
+            cell.classList.add('Count')
+            row.appendChild(cell)
+          }
+
+          if(count) {
+            const cell = $('td')
+            cell.textContent = count
+            cell.classList.add('Count')
+            if(count2) {
+              cell.classList.add('DmgEnd')
+            }
+            row.appendChild(cell)
+          } else {
+            const cell = $('td')
+            cell.textContent = ''
+            cell.classList.add('Filler')
+            row.appendChild(cell)
+          }
+
+          if(!count2) {
+            const cell = $('td')
+            cell.textContent = ''
+            cell.classList.add('Filler', 'DmgEnd')
+            row.appendChild(cell)
+          }
+
+          cell.textContent = full
+
+        } else if(header.label === 'RoF') {
+          const [rof, burst] = contents.toString().split('x').map(v => v.trim())
+          cell.textContent = rof
+          if(burst) {
+            const cell = $('td')
+            cell.textContent = burst
+            cell.classList.add('Count', 'DmgEnd')
+            row.appendChild(cell)
+          } else {
+            const cell = $('td')
+            cell.textContent = ''
+            cell.classList.add('Filler', 'DmgEnd')
+            row.appendChild(cell)
+          }
+        } else if(contents instanceof HTMLElement) {
+          cell.appendChild(contents)
+        } else {
+          cell.textContent = contents
+        }
+
+        const prop = header.starProp
+        const prop2 = header.starProp2
+        if(gameHasStars && prop) {
+          let colspan = 1
+          cell.classList.add('hasStar')
+          const starCell = $('td')
+          for(let i = 0; i < 2; i++) {
+            const p = [prop, prop2][i]
+            const star = weapon[`${p}Star`]
+            const max = weapon[`${p}StarMax`]
+            if(star == null && i === 0) {
+              colspan = 2
+            } else if(star == null) {
+            } else if(star < max) {
+              starCell.textContent += `☆${star}`
+            } else {
+              starCell.textContent += `★${star}`
+            }
+          }
+
+          starCell.classList.add('isStar')
+          row.appendChild(starCell)
+        }
+      }
+      tbody.appendChild(row)
+    }
+    /*
+    if(ch === 'ranger' && cat === 'special') {
+      extra.innerHTML = '*Assuming flame hits every frame of duration.'
+    } else if(cat === 'support') {
+      extra.innerHTML = '*All ammo combined'
+    } else if(cat === 'deploy') {
+      extra.innerHTML = '*All sentries combined'
+    } else if(ch !== 'winger' && cat === 'missile') {
+      extra.innerHTML = '*With 0 lock time'
+    } else {
+      extra.innerHTML = ''
+    }
+    */
+    if(tables.length > 1) {
+      const name = table.names[lang]
+      const h = $('h3')
+      h.textContent = name
+      weaponTables.appendChild(h)
+    }
+
+    weaponTable.appendChild(tbody)
+    weaponTables.appendChild(weaponTable)
+    if(table.appendix) {
+      const extra = $('p')
+      extra.textContent = table.appendix
+      weaponTables.appendChild(extra)
+    }
   }
 }
 
@@ -800,6 +845,7 @@ const gameScopes = {
 
 const FPS = 60
 const headers = [{
+  id: 'checkbox',
   label: '✓',
   tooltip: 'Weapon Acquired',
   cb: wpn => {
@@ -827,7 +873,7 @@ const headers = [{
     return el
   },
 }, {
-  iff: () => [5, 6].includes(+active.game),
+  id: 'stars',
   label: '★',
   tooltip: 'Max Rank',
   cb: wpn => {
@@ -858,15 +904,14 @@ const headers = [{
     return el
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    return false
-  },
+  id: 'id',
   label: 'ID',
   tooltip: 'ID',
   cb: wpn => {
     return wpn.id
   },
 }, {
+  id: 'level',
   label: 'Lv',
   tooltip: 'Level',
   cb: wpn => {
@@ -888,10 +933,11 @@ const headers = [{
       return level
     }
     el.classList.add(difficulty.name)
-    el.textContent = level
+    el.textContent = Math.max(0, level)
     return el
   },
 }, {
+  id: 'name',
   label: 'Name',
   cb: wpn => {
     const el = $('div')
@@ -901,11 +947,9 @@ const headers = [{
     return el
   },
 }, {
+  id: 'dropWeight',
   label: 'Weight',
   tooltip: 'Relative Drop Chance',
-  iff: (ch, cat, wpn) => {
-    return active.mode && active.mode !== 'stats'
-  },
   cb: wpn => {
     const odds = wpn.odds || 100
     if(!+odds) {
@@ -929,19 +973,23 @@ const headers = [{
     return label
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'bike',
-      'tank',
-      'ground',
-      'heli',
-      'mech',
-      'super',
-    ].includes(cat)) {
-      return true
+  id: 'unlock',
+  label: '🔒',
+  tooltip: 'Obtainment method',
+  cb: wpn => {
+    if(!wpn.unlock) {
+      return '€'
     }
-    return false
+    if(wpn.unlock === 'box') {
+      return 'Box ☢'
+    }
+    const el = $('div')
+    el.classList.add('highOdds')
+    el.textContent = 'DLC ☢'
+    return el
   },
+}, {
+  id: 'hp',
   label: 'HP',
   tooltip: 'Durability',
   cb: wpn => {
@@ -951,15 +999,7 @@ const headers = [{
     return wpn.hp
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'bike',
-      'heli',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'fuel',
   label: 'Fuel',
   tooltip: 'Fuel Capacity',
   cb: wpn => {
@@ -969,15 +1009,7 @@ const headers = [{
     return wpn.fuel
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'bike',
-      'heli',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'fuelUse',
   label: 'Cns',
   tooltip: 'Fuel Consumption',
   cb: wpn => {
@@ -987,43 +1019,14 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'artillery',
-      'planes',
-      'raid',
-      'particle',
-      'equipment',
-      'core',
-      'booster',
-      'muzzle',
-      'exo',
-    ].includes(cat)) {
-      return false
-    }
-    if(ch === 'winger' && [
-      'missile',
-      'special',
-    ].includes(cat)) {
-      return false
-    }
-    if(ch === 'bomber' && [
-      'missile',
-    ].includes(cat)) {
-      return false
-    }
-    if(active.game === '41' && ch === 'winger' && [
-      'plasma',
-      'sniper',
-    ].includes(cat)) {
-      return false
-    }
-    return true
-  },
+  id: 'ammo',
   label: 'Cap',
   tooltip: 'Ammo Capacity',
   starProp: 'ammo',
   cb: wpn => {
+    if(wpn.total) {
+      return wpn.total
+    }
     if(wpn.shieldDurability) {
       return `${Math.round(wpn.shieldDurability * 100)}%`
     }
@@ -1033,16 +1036,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'hammer',
-      'shield',
-      'protector',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'defense',
   label: 'Def',
   tooltip: 'Defense',
   cb: wpn => {
@@ -1055,14 +1049,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'hammer',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'chargeTime',
   label: 'Chg',
   tooltip: 'Charge Time',
   cb: wpn => {
@@ -1072,39 +1059,7 @@ const headers = [{
     return +(wpn.charge / FPS).toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'assault',
-      'shotgun',
-      'sniper',
-      'spear',
-      'heavy',
-      'tank',
-      'ground',
-      'heli',
-      'mech',
-    ].includes(cat)) {
-      return true
-    }
-    if(active.game === '5' && [
-      'short',
-      'laser',
-    ].includes(cat)) {
-      return true
-    }
-    if([
-      'winger',
-      'bomber',
-    ].includes(ch)) {
-      return false
-    }
-    if(ch === 'ranger' && [
-      'special',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'piercing',
   headerClass: 'P',
   label: 'P',
   tooltip: 'Piercing',
@@ -1115,21 +1070,7 @@ const headers = [{
     return ''
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'guide',
-      'shield',
-      'equipment',
-      'core',
-      'booster',
-      'protector',
-      'muzzle',
-      'exo',
-    ].includes(cat)) {
-      return false
-    }
-    return true
-  },
+  id: 'damage',
   label: 'Dmg',
   tooltip: 'Damage',
   headerClass: 'Dmg',
@@ -1142,7 +1083,7 @@ const headers = [{
     if(['power', 'guard'].includes(wpn.supportType)) {
       return `${(+wpn.damage).toFixed(2)}`
     }
-    if(wpn.damage < 1) {
+    if(wpn.damage < 1 && wpn.damage > -1) {
       return +Math.abs(wpn.damage).toFixed(2)
     }
     let dmg = +Math.abs(wpn.damage).toFixed(1)
@@ -1173,14 +1114,7 @@ const headers = [{
     return dmg
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(ch === 'ranger' && [
-      'special',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'damage2',
   label: 'Dmg*',
   tooltip: 'Damage*',
   cb: wpn => {
@@ -1191,19 +1125,7 @@ const headers = [{
     return +Math.abs(dmg * wpn.duration).toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(ch === 'bomber' && [
-      'raid',
-      'planes',
-      'artillery',
-      'gunship',
-      'missile',
-      'satellite',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'shots',
   label: 'Shots',
   tooltip: 'Shots',
   cb: wpn => {
@@ -1213,34 +1135,7 @@ const headers = [{
     return wpn.shots || 1
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(cat === 'special' && [
-      'winger',
-      'bomber',
-    ].includes(ch)) {
-      return false
-    }
-    if([
-      'rocket',
-      'grenade',
-      'missile',
-      'special',
-      'plasma',
-      'hammer',
-      'heavy',
-      'raid',
-      'support',
-      'limpet',
-      'deploy',
-      'tank',
-      'ground',
-      'heli',
-      'mech',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'radius',
   label: 'Area',
   starProp: 'radius',
   cb: wpn => {
@@ -1248,25 +1143,14 @@ const headers = [{
     return (+wpn.radius).toFixed(2)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(ch === 'ranger' && [
-      'special',
-    ].includes(cat)) {
-      return true
-    }
-    if([
-      'support',
-      'grenade',
-    ].includes(cat)) {
-      return true
-    }
-    if(ch === 'winger' && [
-      'special',
-    ].includes(cat)) {
-      return true
-    }
-    return false
+  id: 'subRadius',
+  label: 'Area*',
+  cb: wpn => {
+    if(!wpn.subRadius) return '-'
+    return (+wpn.subRadius).toFixed(2)
   },
+}, {
+  id: 'duration',
   label: 'Dur',
   tooltip: 'Duration',
   cb: wpn => {
@@ -1275,40 +1159,14 @@ const headers = [{
     return +(duration / FPS).toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'artillery',
-      'planes',
-      'raid',
-      'satellite',
-      'support',
-      'hammer',
-      'shield',
-      'equipment',
-      'core',
-      'booster',
-      'protector',
-      'muzzle',
-      'exo',
-    ].includes(cat)) {
-      return false
-    }
-    if(ch === 'winger' && [
-      'special',
-    ].includes(cat)) {
-      return false
-    }
-    if(ch === 'bomber' && [
-      'missile',
-    ].includes(cat)) {
-      return false
-    }
-    return true
-  },
+  id: 'interval',
   label: 'RoF',
   tooltip: 'Rate of Fire',
   starProp: 'interval',
   cb: wpn => {
+    if(wpn.rof) {
+      return wpn.rof
+    }
     if(!wpn.interval) {
       return '-'
     }
@@ -1339,14 +1197,7 @@ const headers = [{
     return rof
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(ch === 'fencer' && [
-      'light',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'windup',
   label: 'Delay',
   tooltip: 'Windup Time',
   starProp: 'windup',
@@ -1357,27 +1208,7 @@ const headers = [{
     return +(wpn.windup / FPS).toFixed(2)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(!gameHasLockons(active.game)) {
-      return false
-    }
-    if(ch === 'bomber' && [
-      'missile',
-    ].includes(cat)) {
-      return false
-    }
-    if([
-      'missile',
-      'homing',
-      'bike',
-      'ground',
-      'heli',
-      'mech',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'lockTime',
   label: 'Lock',
   tooltip: 'Lock Time',
   starProp: 'lockTime',
@@ -1388,18 +1219,7 @@ const headers = [{
     return +(wpn.lockTime / FPS).toFixed(2)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(ch === 'bomber' && [
-      'strike',
-      'artillery',
-      'planes',
-      'missile',
-      'satellite',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'credits',
   headerClass: 'CR',
   label: 'CR',
   tooltip: 'Credits',
@@ -1410,24 +1230,15 @@ const headers = [{
     return ''
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'equipment',
-      'booster',
-      'protector',
-      'muzzle',
-      'core',
-      'exo',
-    ].includes(cat)) {
-      return false
-    }
-    return true
-  },
+  id: 'reload',
   headerClass: 'Rel',
   label: 'Rel',
   tooltip: 'Reload Time',
   starProp: 'reload',
   cb: wpn => {
+    if(wpn.reloadSeconds) {
+      return wpn.reloadSeconds
+    }
     if(wpn.reload <= 0 || !wpn.reload) {
       return '-'
     }
@@ -1437,15 +1248,7 @@ const headers = [{
     return +(wpn.reload / FPS).toFixed(2)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    return false
-    if([
-      'spear',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'swing',
   label: 'Swing',
   tooltip: 'Swing Speed',
   cb: wpn => {
@@ -1455,28 +1258,7 @@ const headers = [{
     return `${wpn.swing}x`
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'missile',
-      'special',
-      'artillery',
-      'planes',
-      'raid',
-      'deploy',
-      'hammer',
-      'spear',
-      'shield',
-      'equipment',
-      'core',
-      'booster',
-      'protector',
-      'muzzle',
-      'exo',
-    ].includes(cat)) {
-      return false
-    }
-    return true
-  },
+  id: 'accuracy',
   label: 'Acc',
   tooltip: 'Accuracy',
   starProp: 'accuracy',
@@ -1507,15 +1289,7 @@ const headers = [{
     ].find(([a]) => a >= wpn.accuracy)[1]
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(cat === 'shield') {
-      return true
-    }
-    if(ch === 'winger') {
-      return true
-    }
-    return false
-  },
+  id: 'energy',
   label: 'Enr',
   tooltip: 'Energy',
   starProp: 'energy',
@@ -1526,16 +1300,9 @@ const headers = [{
     return +wpn.energy.toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'core',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'chargeRate',
   label: 'Chg',
-  tooltip: 'Charge Speed',
+  tooltip: 'Charge Rate',
   cb: wpn => {
     const {
       baseEnergy: nrg = wpn.energy,
@@ -1544,16 +1311,9 @@ const headers = [{
     return (nrg * spd * FPS * 0.001).toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'core',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'chargeEmergencyRate',
   label: 'Em.C',
-  tooltip: 'Emergency Charge Speed',
+  tooltip: 'Emergency Charge Rate',
   starProp: 'energy',
   cb: wpn => {
     const {
@@ -1563,14 +1323,7 @@ const headers = [{
     return (nrg * spd * FPS * 0.002).toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'core',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'energyUse',
   label: 'Cns',
   tooltip: 'Flight Consumption',
   cb: wpn => {
@@ -1581,14 +1334,7 @@ const headers = [{
     return (nrg * usg * FPS * 0.0025).toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'core',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'boostUse',
   label: 'B.Cns',
   tooltip: 'Boost Consumption',
   cb: wpn => {
@@ -1599,24 +1345,7 @@ const headers = [{
     return (nrg * usg * 0.03).toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(!['5', '6'].includes(active.game)) {
-      return false
-    }
-    if(ch === 'ranger' && [
-      'assault',
-      'shotgun',
-      'sniper',
-    ].includes(cat)) {
-      return true
-    }
-    if(ch === 'bomber' && [
-      'special',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'piercingRange',
   label: 'PtRng',
   tooltip: 'Piercing Range',
   starProp: 'speed',
@@ -1628,33 +1357,7 @@ const headers = [{
     return (wpn.speed * life).toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(ch === 'bomber' && [
-      'missile',
-    ].includes(cat)) {
-      return true
-    }
-    if([
-      'artillery',
-      'planes',
-      'support',
-      'equipment',
-      'core',
-      'booster',
-      'muzzle',
-      'exo',
-      'rocket',
-      'missile',
-    ].includes(cat)) {
-      return false
-    }
-    if(ch === 'winger' && [
-      'special',
-    ].includes(cat)) {
-      return false
-    }
-    return true
-  },
+  id: 'range',
   label: 'Rng',
   tooltip: 'Range',
   starProp: 'speed',
@@ -1677,17 +1380,7 @@ const headers = [{
     return (wpn.speed * wpn.life).toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(!gameHasLockons(active.game)) {
-      return false
-    }
-    if(ch !== 'bomber' && [
-      'missile',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'lockRange',
   label: 'Rng',
   tooltip: 'Lock-Range',
   starProp: 'lockRange',
@@ -1698,14 +1391,27 @@ const headers = [{
     return (wpn.speed * wpn.life).toFixed(0)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'equipment',
-    ].includes(cat)) {
-      return true
+  id: 'boost',
+  label: 'Boost',
+  tooltip: 'Boost',
+  cb: wpn => {
+    if(wpn.damage) {
+      return `${Math.round(wpn.damage * 100) - 100}%`
     }
-    return false
+    return '-'
   },
+}, {
+  id: 'revive',
+  label: 'Revive',
+  tooltip: 'Revive Health %',
+  cb: wpn => {
+    if(wpn.revive) {
+      return `${wpn.revive}%`
+    }
+    return '-'
+  },
+}, {
+  id: 'healAllyBoost',
   label: 'H.NPC',
   tooltip: 'Healing Ally Boost',
   cb: wpn => {
@@ -1715,14 +1421,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'equipment',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'probeRadius',
   label: 'Probe',
   tooltip: 'Pickup Radius',
   cb: wpn => {
@@ -1732,14 +1431,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'equipment',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'knockdownImmunity',
   label: 'KD.Im',
   tooltip: 'Knockdown Immunity',
   cb: wpn => {
@@ -1749,28 +1441,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'hammer',
-      'spear',
-      'artillery',
-      'planes',
-      'raid',
-      'missile',
-      'shield',
-      'booster',
-      'protector',
-      'muzzle',
-    ].includes(cat)) {
-      return false
-    }
-    if(ch === 'winger' && [
-      'special',
-    ].includes(cat)) {
-      return false
-    }
-    return true
-  },
+  id: 'speed',
   label: 'Spd',
   tooltip: 'Move Speed',
   starProp: 'speed',
@@ -1787,14 +1458,7 @@ const headers = [{
     return spd.toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'core',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'flightBoost',
   label: 'Fly',
   tooltip: 'Flight Speed',
   cb: wpn => {
@@ -1804,14 +1468,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'core',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'dashForwardBoost',
   label: 'B.Fwd',
   tooltip: 'Boost Forward',
   cb: wpn => {
@@ -1821,14 +1478,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'core',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'dashBackwardBoost',
   label: 'B.Bwd',
   tooltip: 'Boost Backward',
   cb: wpn => {
@@ -1838,14 +1488,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'core',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'dashSideBoost',
   label: 'B.Side',
   tooltip: 'Boost Sideways',
   cb: wpn => {
@@ -1855,14 +1498,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'core',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'airControl',
   label: 'Acc',
   tooltip: 'Air Acceleration',
   cb: wpn => {
@@ -1872,14 +1508,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'core',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'reloadBoost',
   label: 'Rel',
   tooltip: 'Reload Speed Boost',
   cb: wpn => {
@@ -1889,14 +1518,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'equipment',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'hitSlowdown',
   label: 'Stun',
   tooltip: 'Hit Slowdown',
   cb: wpn => {
@@ -1906,14 +1528,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'equipment',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'sprintSpeedBoost',
   label: 'Sprint',
   tooltip: 'Sprint Speed',
   cb: wpn => {
@@ -1923,14 +1538,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'equipment',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'sprintTurnBoost',
   label: 'Swirl',
   tooltip: 'Sprint Turnspeed',
   cb: wpn => {
@@ -1940,14 +1548,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'equipment',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'sprintAccelerationBoost',
   label: 'Acc',
   tooltip: 'Sprint Acceleration',
   cb: wpn => {
@@ -1957,14 +1558,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'equipment',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'sprintHitSlowdown',
   label: 'Stun',
   tooltip: 'Sprint Hit Slowdown',
   cb: wpn => {
@@ -1974,14 +1568,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'equipment',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'sprintBreakObstacles',
   label: 'Break',
   tooltip: 'Obstacle Destruction During Sprint',
   cb: wpn => {
@@ -1991,15 +1578,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'guide',
-      'equipment',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'lockSpeedBoost',
   label: 'L.Spd',
   tooltip: 'Lock Speed',
   cb: wpn => {
@@ -2009,15 +1588,7 @@ const headers = [{
     return `${wpn.lockTime}x`
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'guide',
-      'equipment',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'lockRangeBoost',
   label: 'L.Rng',
   tooltip: 'Lock-Range',
   cb: wpn => {
@@ -2027,14 +1598,7 @@ const headers = [{
     return `${wpn.lockRange}x`
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'equipment',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'lockMulti',
   label: 'Multi',
   tooltip: 'Multi Lock',
   cb: wpn => {
@@ -2044,15 +1608,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'booster',
-      'exo',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'dashCount',
   label: 'Dash',
   tooltip: 'Dash Count',
   cb: wpn => {
@@ -2062,14 +1618,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'booster',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'boostCount',
   label: 'Boost',
   tooltip: 'Boost Count',
   cb: wpn => {
@@ -2079,14 +1628,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'booster',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'dashCooldown',
   label: 'D.CD',
   tooltip: 'Dash Cooldown',
   cb: wpn => {
@@ -2096,14 +1638,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'booster',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'boostSpeed',
   label: 'B.Spd',
   tooltip: 'Boost Speed',
   cb: wpn => {
@@ -2113,14 +1648,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'protector',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'shieldUse',
   label: 'Cns',
   tooltip: 'Shield Consumption',
   cb: wpn => {
@@ -2130,14 +1658,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'protector',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'shieldReflectUse',
   label: 'Rf.Cns',
   tooltip: 'Shield Reflect Consumption',
   cb: wpn => {
@@ -2147,14 +1668,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'protector',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'shieldKnockback',
   label: 'KB',
   tooltip: 'Shield Knockback',
   cb: wpn => {
@@ -2164,14 +1678,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'exo',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'equipWalkReduction',
   label: 'Eq.Walk',
   tooltip: 'Equip Weight Move Speed Reduction',
   cb: wpn => {
@@ -2181,14 +1688,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'exo',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'equipTurnReduction',
   label: 'Eq.Turn',
   tooltip: 'Equip Weight Turn Speed Reduction',
   cb: wpn => {
@@ -2198,15 +1698,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'muzzle',
-      'exo',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'recoil',
   label: 'Stability',
   cb: wpn => {
     if(wpn.equipRecoil != null) {
@@ -2215,41 +1707,7 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'particle',
-      'plasma',
-      'guide',
-      'gunship',
-      'artillery',
-      'satellite',
-      'planes',
-      'raid',
-      'limpet',
-      'shield',
-      'missile',
-      'hammer',
-      'equipment',
-      'core',
-      'booster',
-      'protector',
-      'muzzle',
-      'exo',
-    ].includes(cat)) {
-      return false
-    }
-    if(ch === 'winger' && [
-      'sniper',
-    ].includes(cat)) {
-      return false
-    }
-    if(ch === 'bomber' && [
-      'special',
-    ].includes(cat)) {
-      return false
-    }
-    return true
-  },
+  id: 'dps',
   label: 'DPS',
   tooltip: 'Damage Per Second',
   cb: wpn => {
@@ -2259,12 +1717,15 @@ const headers = [{
     if(wpn.shotInterval) { // Turret
       return quickDps({
         ...wpn,
-        shots: 1,
+        shots: wpn.ammo,
         interval: wpn.shotInterval,
       })
     }
     if(wpn.ammo < 2 && !wpn.duration) {
       return '-'
+    }
+    if(wpn.rof) {
+      return (wpn.damage * wpn.rof).toFixed()
     }
     if(wpn.burst > 100) {
       return (wpn.damage * FPS / (wpn.burstRate || 1)).toFixed(1)
@@ -2285,20 +1746,7 @@ const headers = [{
     return quickDps(wpn)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'support',
-      'deploy',
-    ].includes(cat)) {
-      return true
-    }
-    if(ch === 'ranger' && [
-      'special',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'dps2',
   label: 'DPS*',
   tooltip: 'Damage Per Second*',
   cb: wpn => {
@@ -2328,41 +1776,13 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'bike',
-      'guide',
-      'satellite',
-      'artillery',
-      'planes',
-      'raid',
-      'support',
-      'hammer',
-      'shield',
-      'limpet',
-      'tank',
-      'ground',
-      'heli',
-      'mech',
-      'equipment',
-      'core',
-      'booster',
-      'protector',
-      'muzzle',
-      'exo',
-    ].includes(cat)) {
-      return false
-    }
-    if(ch === 'bomber' && [
-      'special',
-    ].includes(cat)) {
-      return false
-    }
-    return true
-  },
+  id: 'tdps',
   label: 'TDPS',
   tooltip: 'Total Damage Per Second (including reload)',
   cb: wpn => {
+    if(wpn.credits) {
+      return '-'
+    }
     if(!wpn.damage) {
       return '-'
     }
@@ -2374,6 +1794,10 @@ const headers = [{
     }
     if(wpn.reload < 0) {
       return '-'
+    }
+    if(wpn.rof) {
+      const duration = wpn.ammo / wpn.rof + wpn.reloadSeconds
+      return ((wpn.damage * wpn.ammo) / duration).toFixed(1)
     }
     if(wpn.shotInterval) { // Turret
       return +tacticalDps({
@@ -2387,21 +1811,7 @@ const headers = [{
     return tdps.toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if(ch === 'ranger' && [
-      'special',
-      'booster',
-    ].includes(cat)) {
-      return true
-    }
-    if(cat === 'missile' && ![
-      'winger',
-      'bomber',
-    ].includes(ch) && gameHasLockons(active.game)) {
-      return true
-    }
-    return false
-  },
+  id: 'tdps2',
   label: 'TDPS*',
   tooltip: 'Total Damage Per Second (including reload)*',
   cb: wpn => {
@@ -2417,30 +1827,13 @@ const headers = [{
     return '-'
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'guide',
-      'hammer',
-      'shield',
-      'equipment',
-      'core',
-      'booster',
-      'protector',
-      'muzzle',
-      'exo',
-    ].includes(cat)) {
-      return false
-    }
-    if(ch === 'bomber' && [
-      'special',
-    ].includes(cat)) {
-      return false
-    }
-    return true
-  },
+  id: 'total',
   label: 'Total',
   tooltip: 'Total Damage',
   cb: wpn => {
+    if(wpn.total) {
+      return wpn.total
+    }
     if(wpn.attacks?.length) {
       const attacks = wpn.attacks.map(a => a.damage * wpn.damage)
       const dump = Array(wpn.ammo)
@@ -2472,19 +1865,7 @@ const headers = [{
     return +dump.toFixed(1)
   },
 }, {
-  iff: (ch, cat, wpn) => {
-    if([
-      'support',
-    ].includes(cat)) {
-      return true
-    }
-    if(ch === 'ranger' && [
-      'special',
-    ].includes(cat)) {
-      return true
-    }
-    return false
-  },
+  id: 'total2',
   label: 'Total*',
   tooltip: 'Total Damage*',
   cb: wpn => {
@@ -2514,6 +1895,7 @@ const games = [
   '3p',
   '41',
   '5',
+  'ia',
 ]
 
 const gameLabels = [
@@ -2521,7 +1903,12 @@ const gameLabels = [
   'EDF3P',
   'EDF4.1',
   'EDF5',
+  'EDF:IA',
 ]
+
+const gamePrefixes = {
+  'ia': 4,
+}
 
 const gameMenu = document.getElementById('game-dropdown')
 for(let i = 0; i < games.length; i++) {
@@ -2533,6 +1920,7 @@ for(let i = 0; i < games.length; i++) {
     label: gLabel,
     cls: `edf${g}`,
     cutPoint: 4,
+    prefix: gamePrefixes[g] || 0,
   })
   gameMenu.appendChild(item)
   item.addEventListener('click', () => {
