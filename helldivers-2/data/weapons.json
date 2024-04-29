@@ -20,7 +20,8 @@
     "code": "AR-23",
     "durable": 5,
     "stun": 10,
-    "push": 10
+    "push": 4,
+    "fullname": "AR-23 Liberator"
   },
   {
     "category": "AR",
@@ -44,7 +45,8 @@
     "code": "AR-23P",
     "durable": 15,
     "stun": 10,
-    "push": 10
+    "push": 10,
+    "fullname": "AR-23P Liberator Penetrator"
   },
   {
     "category": "AR",
@@ -66,9 +68,10 @@
     "reloadearly": 2,
     "catIdx": 1,
     "code": "AR-23C",
-    "durable": 10,
+    "durable": 15,
     "stun": 35,
-    "push": 100
+    "push": 100,
+    "fullname": "AR-23C Liberator Concussive"
   },
   {
     "category": "AR",
@@ -92,14 +95,15 @@
     "code": "BR-14",
     "durable": 8,
     "stun": 15,
-    "push": 12
+    "push": 12,
+    "fullname": "BR-14 Adjudicator"
   },
   {
     "category": "DMR",
     "name": "Diligence",
     "source": "hd-mobilize",
     "sourcepage": 2,
-    "damage": 112,
+    "damage": 125,
     "ap": 2,
     "rpm": 350,
     "recoil": 35,
@@ -114,9 +118,10 @@
     "reloadearly": 1.9,
     "catIdx": 2,
     "code": "R-63",
-    "durable": 11,
+    "durable": 13,
     "stun": 15,
-    "push": 14
+    "push": 14,
+    "fullname": "R-63 Diligence"
   },
   {
     "category": "DMR",
@@ -138,9 +143,10 @@
     "reloadearly": 1.9,
     "catIdx": 2,
     "code": "R-63CS",
-    "durable": 12,
+    "durable": 14,
     "stun": 15,
-    "push": 14
+    "push": 14,
+    "fullname": "R-63CS Diligence Counter Sniper"
   },
   {
     "category": "SMG",
@@ -167,7 +173,8 @@
     "code": "SMG-37",
     "durable": 7,
     "stun": 10,
-    "push": 5
+    "push": 5,
+    "fullname": "SMG-37 Defender"
   },
   {
     "category": "SMG",
@@ -193,7 +200,8 @@
     "code": "MP-98",
     "durable": 5,
     "stun": 10,
-    "push": 4
+    "push": 4,
+    "fullname": "MP-98 Knight"
   },
   {
     "category": "SG",
@@ -206,7 +214,6 @@
     "rpm": 80,
     "recoil": 120,
     "cap": 16,
-    "capplus": 1,
     "rounds": 60,
     "roundstart": 32,
     "roundsbox": 30,
@@ -221,7 +228,8 @@
     "code": "SG-8",
     "durable": 12,
     "stun": 35,
-    "push": 30
+    "push": 30,
+    "fullname": "SG-8 Punisher"
   },
   {
     "category": "SG",
@@ -233,7 +241,6 @@
     "rpm": 80,
     "recoil": 120,
     "cap": 16,
-    "capplus": 1,
     "rounds": 60,
     "roundstart": 32,
     "roundsbox": 30,
@@ -248,7 +255,8 @@
     "code": "SG-8S",
     "durable": 75,
     "stun": 20,
-    "push": 35
+    "push": 35,
+    "fullname": "SG-8S Slugger"
   },
   {
     "category": "SG",
@@ -273,7 +281,8 @@
     "code": "SG-225",
     "durable": 6,
     "stun": 10,
-    "push": 10
+    "push": 10,
+    "fullname": "SG-225 Breaker"
   },
   {
     "category": "SG",
@@ -298,7 +307,8 @@
     "code": "SG-225SP",
     "durable": 4,
     "stun": 3,
-    "push": 1
+    "push": 1,
+    "fullname": "SG-225SP Breaker Spray & Pray"
   },
   {
     "category": "SG",
@@ -326,15 +336,16 @@
     ],
     "durable": 10,
     "stun": 10,
-    "push": 10
+    "push": 10,
+    "fullname": "SG-225IE Breaker Incendiary"
   },
   {
     "category": "EX",
     "name": "Exploding Crossbow",
     "source": "demo-det",
     "sourcepage": 3,
-    "damage": 150,
-    "xdamage": 270,
+    "damage": 270,
+    "xdamage": 150,
     "ap": 3,
     "xap": 2,
     "rpm": 50,
@@ -349,12 +360,13 @@
     "catIdx": 5,
     "code": "CB-9",
     "durable": 50,
-    "xdurable": 200,
+    "xdurable": 150,
     "reload": 3.3,
-    "stun": 20,
+    "stun": 30,
     "push": 10,
     "xstun": 25,
-    "xpush": 10
+    "xpush": 10,
+    "fullname": "CB-9 Exploding Crossbow"
   },
   {
     "category": "EX",
@@ -381,7 +393,8 @@
     "code": "JAR-5",
     "durable": 90,
     "stun": 35,
-    "push": 15
+    "push": 15,
+    "fullname": "JAR-5 Dominator"
   },
   {
     "category": "EX",
@@ -411,11 +424,59 @@
     "code": "R-36",
     "durable": 115,
     "xdurable": 150,
+    "xap2": 0,
     "stun": 35,
     "push": 20,
-    "xstun": 20,
-    "xpush": 15,
-    "xap2": 0
+    "xstun": 30,
+    "xpush": 20,
+    "fullname": "R-36 Eruptor"
+  },
+  {
+    "category": "NRG",
+    "name": "Punisher Plasma",
+    "source": "cut-edge",
+    "sourcepage": 2,
+    "damage": 100,
+    "xdamage": 150,
+    "ap": 2,
+    "xap": 3,
+    "rpm": 80,
+    "recoil": 110,
+    "cap": 8,
+    "mags": 8,
+    "magstart": 6,
+    "box": 4,
+    "supply": 8,
+    "idx": 1,
+    "reload": 2.5,
+    "catIdx": 6,
+    "code": "SG-8P",
+    "durable": 50,
+    "xdurable": 150,
+    "xap2": 0,
+    "stun": 20,
+    "push": 10,
+    "xstun": 25,
+    "xpush": 40,
+    "fullname": "SG-8P Punisher Plasma"
+  },
+  {
+    "category": "NRG",
+    "name": "Blitzer",
+    "source": "cut-edge",
+    "sourcepage": 3,
+    "pellets": 5,
+    "damage": 50,
+    "ap": 3,
+    "rpm": 45,
+    "recoil": 60,
+    "idx": 2,
+    "catIdx": 6,
+    "code": "ARC-12",
+    "durable": 35,
+    "stun": 30,
+    "push": 25,
+    "fullname": "ARC-12 Blitzer"
   },
   {
     "category": "NRG",
@@ -433,14 +494,16 @@
     "tags": [
       "laser"
     ],
-    "idx": 1,
+    "idx": 3,
     "reloadearly": 3,
     "catIdx": 6,
     "code": "LAS-5",
     "damage": 350,
     "durable": 70,
+    "dps": 350,
     "stun": 0,
-    "push": 0
+    "push": 0,
+    "fullname": "LAS-5 Scythe"
   },
   {
     "category": "NRG",
@@ -457,13 +520,14 @@
     "magstart": 3,
     "box": 3,
     "supply": 3,
-    "idx": 2,
+    "idx": 4,
     "reloadearly": 3,
     "catIdx": 6,
     "code": "LAS-16",
     "durable": 5,
     "stun": 10,
-    "push": 10
+    "push": 10,
+    "fullname": "LAS-16 Sickle"
   },
   {
     "category": "NRG",
@@ -482,62 +546,18 @@
     "magstart": 3,
     "box": 3,
     "supply": 6,
-    "idx": 3,
+    "idx": 5,
     "reloadearly": 2.3,
     "catIdx": 6,
     "code": "PLAS-1",
     "durable": 50,
     "xdurable": 100,
+    "xap2": 0,
     "stun": 20,
     "push": 10,
     "xstun": 10,
     "xpush": 7,
-    "xap2": 0
-  },
-  {
-    "category": "NRG",
-    "name": "Punisher Plasma",
-    "source": "cut-edge",
-    "sourcepage": 2,
-    "damage": 100,
-    "xdamage": 150,
-    "ap": 2,
-    "xap": 3,
-    "rpm": 80,
-    "recoil": 110,
-    "cap": 8,
-    "mags": 8,
-    "magstart": 6,
-    "box": 4,
-    "supply": 8,
-    "idx": 4,
-    "reload": 2.5,
-    "catIdx": 6,
-    "code": "SG-8P",
-    "durable": 50,
-    "xdurable": 150,
-    "stun": 20,
-    "push": 10,
-    "xstun": 10,
-    "xpush": 7,
-    "xap2": 0
-  },
-  {
-    "category": "NRG",
-    "name": "Blitzer",
-    "source": "cut-edge",
-    "sourcepage": 3,
-    "pellets": 5,
-    "damage": 50,
-    "ap": 3,
-    "rpm": 45,
-    "recoil": 60,
-    "idx": 5,
-    "catIdx": 6,
-    "code": "ARC-12",
-    "durable": 35,
-    "stun": 30,
-    "push": 25
+    "fullname": "PLAS-1 Scorcher"
   },
   {
     "category": "HG",
@@ -558,9 +578,10 @@
     "reloadearly": 1.4,
     "catIdx": 7,
     "code": "P-2",
-    "durable": 5,
+    "durable": 15,
     "stun": 10,
-    "push": 4
+    "push": 4,
+    "fullname": "P-2 Peacemaker"
   },
   {
     "category": "HG",
@@ -584,7 +605,8 @@
     "code": "P-19",
     "durable": 5,
     "stun": 10,
-    "push": 4
+    "push": 4,
+    "fullname": "P-19 Redeemer"
   },
   {
     "category": "HG",
@@ -599,7 +621,6 @@
     "recoil": 43,
     "reload": 2,
     "cap": 1,
-    "capplus": 1,
     "rounds": 8,
     "roundstart": 4,
     "roundsbox": 1,
@@ -609,10 +630,12 @@
     "code": "GP-31",
     "durable": 350,
     "xdurable": 250,
+    "xap2": 0,
     "stun": 50,
     "push": 40,
-    "xstun": 40,
-    "xpush": 10
+    "xstun": 50,
+    "xpush": 40,
+    "fullname": "GP-31 Grenade Pistol"
   },
   {
     "category": "HG",
@@ -635,9 +658,11 @@
     "catIdx": 7,
     "code": "LAS-7",
     "damage": 200,
-    "durable": 15,
+    "durable": 20,
+    "dps": 200,
     "stun": 0,
-    "push": 0
+    "push": 0,
+    "fullname": "LAS-7 Dagger"
   },
   {
     "category": "HG",
@@ -657,18 +682,21 @@
       "rounds"
     ],
     "idx": 5,
-    "reload": 6.1,
-    "reloadone": 2.8,
+    "reload": 2.8,
+    "reloadone": 2.2,
     "catIdx": 7,
     "code": "P-4",
-    "durable": 15,
+    "durable": 35,
     "stun": 20,
-    "push": 10
+    "push": 10,
+    "reloadx": 4.8,
+    "reloadxnum": 5,
+    "fullname": "P-4 Senator"
   },
   {
     "category": "SUP",
     "name": "Stalwart",
-    "damage": 55,
+    "damage": 60,
     "ap": 2,
     "rpm": 1150,
     "reload": 5.8,
@@ -683,9 +711,10 @@
     "catIdx": 8,
     "code": "M-105",
     "source": "support",
-    "durable": 5,
+    "durable": 6,
     "stun": 10,
-    "push": 10
+    "push": 10,
+    "fullname": "M-105 Stalwart"
   },
   {
     "category": "SUP",
@@ -707,7 +736,8 @@
     "source": "support",
     "durable": 8,
     "stun": 15,
-    "push": 12
+    "push": 12,
+    "fullname": "MG-43 Machine Gun"
   },
   {
     "category": "SUP",
@@ -729,7 +759,8 @@
     "source": "support",
     "durable": 35,
     "stun": 15,
-    "push": 20
+    "push": 20,
+    "fullname": "MG-206 Heavy Machine Gun"
   },
   {
     "category": "SUP",
@@ -744,7 +775,8 @@
     "source": "support",
     "durable": 50,
     "stun": 35,
-    "push": 10
+    "push": 10,
+    "fullname": "ARC-3 Arc Thrower"
   },
   {
     "category": "SUP",
@@ -764,7 +796,8 @@
       "fire"
     ],
     "stun": 5,
-    "push": 5
+    "push": 5,
+    "fullname": "FLAM-40 Flamethrower"
   },
   {
     "category": "SUP",
@@ -786,7 +819,8 @@
     "source": "support",
     "durable": 135,
     "stun": 20,
-    "push": 25
+    "push": 25,
+    "fullname": "APW-1 Anti-Materiel Rifle"
   },
   {
     "category": "SUP",
@@ -809,13 +843,14 @@
     "source": "support",
     "durable": 0,
     "xdurable": 350,
-    "stun": 40,
-    "push": 10,
-    "xstun": 25,
-    "xpush": 40,
     "ap2": 1,
     "ap3": 0,
-    "xap2": 0
+    "xap2": 0,
+    "stun": 40,
+    "push": 10,
+    "xstun": 50,
+    "xpush": 40,
+    "fullname": "GL-21 Grenade Launcher"
   },
   {
     "category": "SUP",
@@ -839,11 +874,12 @@
     "source": "support",
     "durable": 260,
     "xdurable": 150,
+    "xap2": 0,
     "stun": 30,
     "push": 20,
-    "xstun": 10,
-    "xpush": 7,
-    "xap2": 0
+    "xstun": 30,
+    "xpush": 20,
+    "fullname": "AC-8 Autocannon"
   },
   {
     "category": "SUP",
@@ -863,8 +899,9 @@
     "code": "RS-422",
     "source": "support",
     "durable": 60,
-    "stun": 50,
-    "push": 15
+    "stun": 35,
+    "push": 15,
+    "fullname": "RS-422 Railgun (Safe)"
   },
   {
     "category": "SUP",
@@ -883,10 +920,11 @@
     "code": "RS-422",
     "source": "support",
     "durable": 120,
+    "ap2": 7,
+    "ap3": 6,
     "stun": 50,
     "push": 15,
-    "ap2": 7,
-    "ap3": 6
+    "fullname": "RS-422 Railgun"
   },
   {
     "category": "SUP",
@@ -906,11 +944,12 @@
     "catIdx": 8,
     "code": "LAS-98",
     "source": "support",
-    "damage": 300,
-    "durable": 300,
-    "dps": 300,
+    "damage": 350,
+    "durable": 200,
+    "dps": 350,
     "stun": 0,
-    "push": 0
+    "push": 0,
+    "fullname": "LAS-98 Laser Cannon"
   },
   {
     "category": "SUP",
@@ -927,11 +966,12 @@
     "xdamage": 150,
     "xdurable": 150,
     "xap": 3,
+    "xap2": 0,
     "stun": 50,
     "push": 40,
     "xstun": 50,
     "xpush": 40,
-    "xap2": 0
+    "fullname": "LAS-99 Quasar Cannon"
   },
   {
     "category": "SUP",
@@ -947,11 +987,12 @@
     "xdamage": 150,
     "xdurable": 150,
     "xap": 3,
+    "xap2": 0,
     "stun": 50,
     "push": 25,
     "xstun": 50,
     "xpush": 40,
-    "xap2": 0
+    "fullname": "EAT-17 Expendable Anti-Tank"
   },
   {
     "category": "SUP",
@@ -972,11 +1013,12 @@
     "xdamage": 150,
     "xdurable": 150,
     "xap": 3,
+    "xap2": 0,
     "stun": 50,
     "push": 25,
-    "xstun": 60,
+    "xstun": 50,
     "xpush": 40,
-    "xap2": 0
+    "fullname": "GR-8 Recoilless Rifle"
   },
   {
     "category": "SUP",
@@ -997,13 +1039,14 @@
     "source": "support",
     "durable": 1000,
     "xdurable": 200,
+    "ap2": 7,
+    "ap3": 6,
+    "xap2": 0,
     "stun": 50,
     "push": 25,
     "xstun": 30,
     "xpush": 40,
-    "ap2": 7,
-    "ap3": 6,
-    "xap2": 0
+    "fullname": "FAF-14 Spear"
   },
   {
     "category": "SUP",
@@ -1025,12 +1068,13 @@
     "catIdx": 9,
     "code": "RL-77",
     "source": "support",
-    "stun": 50,
-    "push": 25,
-    "xstun": 30,
-    "xpush": 40,
     "ap2": 5,
     "ap3": 3,
-    "xap2": 0
+    "xap2": 0,
+    "stun": 50,
+    "push": 25,
+    "xstun": 50,
+    "xpush": 40,
+    "fullname": "RL-77 Airburst Rocket Launcher"
   }
 ]
