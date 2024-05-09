@@ -196,6 +196,7 @@ const sourceOrder = [
   'steel-vets',
   'cut-edge',
   'demo-det',
+  'polar-pat',
   'support',
 ]
 const sourceLabels = {
@@ -205,6 +206,7 @@ const sourceLabels = {
   'steel-vets': 'Vets',
   'cut-edge': 'Cut',
   'demo-det': 'Demo',
+  'polar-pat': 'Polar',
   'support': '',
 }
 const sourceNames = {
@@ -214,6 +216,7 @@ const sourceNames = {
   'steel-vets': 'Steeled Veterans',
   'cut-edge': 'Cutting Edge',
   'demo-det': 'Democratic Detonation',
+  'polar-pat': 'Polar Patriots',
   'support': 'Support Weapon',
 }
 const categoryNames = {
@@ -250,6 +253,7 @@ const cols = [
   'damage',
   'durable',
   'ap',
+  'effect',
   'demo',
   'stun',
   'push',
@@ -278,11 +282,46 @@ const nerdCols = [
   'stun',
   'push',
   'unknown4',
-  'unknown5',
-  'float1',
-  'unknown6',
-  'float2',
+  'effect1',
+  'param1',
+  'effect2',
+  'param2',
 ]
+
+const effectCache = {}
+
+function getEffect(wpn, p) {
+  const effectId = wpn[p.prop]
+  const param = wpn[p.vProp]
+  const key = `${effectId}|${param}`
+  if(effectCache[key]) {
+    return effectCache[key]
+  }
+  switch(effectId) {
+    case 6:
+      effectCache[key] = {
+        name: () => '🔥',
+        value: () => param,
+        description: () => `${param}% chance of setting target on fire`,
+      }
+      break
+    case 34:
+      effectCache[key] = {
+        name: () => '☆',
+        value: () => param,
+        description: () => `Stuns target for ${param} second(s)`,
+      }
+      break
+    default:
+      effectCache[key] = {
+        name: () => `???`,
+        value: () => param,
+        description: () => `Unknown effect #${effectId} (${param}`,
+      }
+      break
+  }
+  return effectCache[key]
+}
 
 const locals = {
   weapons: null,
@@ -339,6 +378,31 @@ const locals = {
     return {
       cap: 2,
     }[col]
+  },
+  effectParams: [{
+    prop: 'effect1',
+    vProp: 'param1',
+  }, {
+    prop: 'effect2',
+    vProp: 'param2',
+  }, {
+    prop: 'xeffect1',
+    vProp: 'xparam1',
+  }, {
+    prop: 'xeffect2',
+    vProp: 'xparam2',
+  }],
+  effectDescription: (wpn, p) => {
+    const effect = getEffect(wpn, p)
+    return effect.description()
+  },
+  effectName: (wpn, p) => {
+    const effect = getEffect(wpn, p)
+    return effect.name()
+  },
+  effectValue: (wpn, p) => {
+    const effect = getEffect(wpn, p)
+    return effect.value()
   },
   hasTag: (wpn, tag) => {
     return wpn.tags?.includes(tag)
