@@ -31,8 +31,9 @@ function tdps(wpn) {
   if(wpn.rpm) {
     magTime = ((wpn.cap || 1) - 1) * 60 / wpn.rpm
   }
-  if(wpn.charge) {
-    magTime = wpn.charge * (wpn.cap || 1)
+  const charge = wpn.chargeearly || wpn.charge
+  if(charge) {
+    magTime = charge * (wpn.cap || 1)
   }
   return magDmg(wpn) / (magTime + wpn.reload)
 }
@@ -441,6 +442,12 @@ const locals = {
   effectValue: (wpn, p) => {
     const effect = getEffect(wpn, p)
     return effect.value()
+  },
+  overcharge: (wpn, prop) => {
+    if(!prop) {
+      return Math.round((wpn.chargefactor - 1) * 100)
+    }
+    return Math.floor(wpn[prop] * wpn.chargefactor)
   },
   hasTag: (wpn, tag) => {
     return wpn.tags?.includes(tag)
