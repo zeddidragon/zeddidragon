@@ -4,7 +4,7 @@ function pug_classes_array(r,a){for(var s,e="",u="",c=Array.isArray(a),g=0;g<r.l
 function pug_classes_object(r){var a="",n="";for(var o in r)o&&r[o]&&pug_has_own_property.call(r,o)&&(a=a+n+o,n=" ");return a}
 function pug_escape(e){var a=""+e,t=pug_match_html.exec(a);if(!t)return e;var r,c,n,s="";for(r=t.index,c=0;r<a.length;r++){switch(a.charCodeAt(r)){case 34:n="&quot;";break;case 38:n="&amp;";break;case 60:n="&lt;";break;case 62:n="&gt;";break;default:continue}c!==r&&(s+=a.substring(c,r)),c=r+1,s+=n}return c!==r?s+a.substring(c,r):s}
 var pug_has_own_property=Object.prototype.hasOwnProperty;
-var pug_match_html=/["&<>]/;function template(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (damages, explosions, id, nerdScope, nerdScopes, projectiles) {pug_mixins["projectiles"] = pug_interp = function(objects){
+var pug_match_html=/["&<>]/;function template(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (damages, explosions, id, nerdScope, nerdScopes, projectiles, sorted) {pug_mixins["projectiles"] = pug_interp = function(objects){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 pug_html = pug_html + "\u003Ctr class=\"projectile-header\"\u003E\u003Cth class=\"damage id\"\u003EID\u003C\u002Fth\u003E\u003Cth class=\"projectile name\"\u003EName\u003C\u002Fth\u003E\u003Cth class=\"projectile damageid\" title=\"ID of damage row\"\u003EDmg\u003C\u002Fth\u003E\u003Cth class=\"projectile caliber\" title=\"Caliber\"\u003ECal\u003C\u002Fth\u003E\u003Cth class=\"projectile pellets\" title=\"Pellets\"\u003E\u003C\u002Fth\u003E\u003Cth class=\"projectile velocity\" title=\"Muzzle Velocity\"\u003Ev\u003C\u002Fth\u003E\u003Cth class=\"projectile mass\" title=\"Mass\"\u003Em\u003C\u002Fth\u003E\u003Cth class=\"projectile drag\" title=\"Drag Coefficient\"\u003E\u003Cspan\u003Ec\u003C\u002Fspan\u003E\u003Csub\u003Ed\u003C\u002Fsub\u003E\u003C\u002Fth\u003E\u003Cth class=\"projectile gravity\" title=\"Gravity Multiplier\"\u003Eg\u003C\u002Fth\u003E\u003Cth class=\"projectile penslow\" title=\"Penetration Slowdown\"\u003EPenSl\u003C\u002Fth\u003E\u003C\u002Ftr\u003E";
 // iterate objects
@@ -28,7 +28,7 @@ pug_html = pug_html + "\u003Ctr class=\"projectile-row\"\u003E\u003Ctd class=\"p
 };
 pug_mixins["explosions"] = pug_interp = function(objects){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-pug_html = pug_html + "\u003Ctr class=\"explosion-header\"\u003E\u003Cth class=\"explosion id\"\u003EID\u003C\u002Fth\u003E\u003Cth class=\"explosion name\"\u003EName\u003C\u002Fth\u003E\u003Cth class=\"explosion damageid\" title=\"ID of damage row\"\u003EDmg\u003C\u002Fth\u003E\u003Cth class=\"explosion r1\" title=\"Inner Radius\"\u003ER1\u003C\u002Fth\u003E\u003Cth class=\"explosion r2\" title=\"Outer Radius\"\u003ER2\u003C\u002Fth\u003E\u003Cth class=\"explosion r3\" title=\"Non-Damage Radius\"\u003ER3\u003C\u002Fth\u003E\u003C\u002Ftr\u003E";
+pug_html = pug_html + "\u003Ctr class=\"explosion-header\"\u003E\u003Cth class=\"explosion id\"\u003EID\u003C\u002Fth\u003E\u003Cth class=\"explosion name\"\u003EName\u003C\u002Fth\u003E\u003Cth class=\"explosion damageid\" title=\"ID of damage row\"\u003EDmg\u003C\u002Fth\u003E\u003Cth class=\"explosion radius\" colspan=\"3\" title=\"Radius Inner\u002FOuter\u002FNon-Damage\"\u003ERadius\u003C\u002Fth\u003E\u003C\u002Ftr\u003E";
 // iterate objects
 ;(function(){
   var $$obj = objects;
@@ -179,14 +179,14 @@ pug_html = pug_html + "\u003Cli\u003E\u003Ca" + (pug_attr("onclick", `switchScop
 
 pug_html = pug_html + "\u003C\u002Ful\u003E\u003C\u002Fnav\u003E\u003Ctable\u003E";
 if (nerdScope === 'damages') {
-pug_mixins["damages"](damages);
+pug_mixins["damages"](sorted(damages));
 }
 else
 if (nerdScope === 'projectiles') {
-pug_mixins["projectiles"](projectiles);
+pug_mixins["projectiles"](sorted(projectiles));
 }
 else
 if (nerdScope === 'explosions') {
-pug_mixins["explosions"](explosions);
+pug_mixins["explosions"](sorted(explosions));
 }
-pug_html = pug_html + "\u003C\u002Ftable\u003E";}.call(this,"damages" in locals_for_with?locals_for_with.damages:typeof damages!=="undefined"?damages:undefined,"explosions" in locals_for_with?locals_for_with.explosions:typeof explosions!=="undefined"?explosions:undefined,"id" in locals_for_with?locals_for_with.id:typeof id!=="undefined"?id:undefined,"nerdScope" in locals_for_with?locals_for_with.nerdScope:typeof nerdScope!=="undefined"?nerdScope:undefined,"nerdScopes" in locals_for_with?locals_for_with.nerdScopes:typeof nerdScopes!=="undefined"?nerdScopes:undefined,"projectiles" in locals_for_with?locals_for_with.projectiles:typeof projectiles!=="undefined"?projectiles:undefined));;return pug_html;}
+pug_html = pug_html + "\u003C\u002Ftable\u003E";}.call(this,"damages" in locals_for_with?locals_for_with.damages:typeof damages!=="undefined"?damages:undefined,"explosions" in locals_for_with?locals_for_with.explosions:typeof explosions!=="undefined"?explosions:undefined,"id" in locals_for_with?locals_for_with.id:typeof id!=="undefined"?id:undefined,"nerdScope" in locals_for_with?locals_for_with.nerdScope:typeof nerdScope!=="undefined"?nerdScope:undefined,"nerdScopes" in locals_for_with?locals_for_with.nerdScopes:typeof nerdScopes!=="undefined"?nerdScopes:undefined,"projectiles" in locals_for_with?locals_for_with.projectiles:typeof projectiles!=="undefined"?projectiles:undefined,"sorted" in locals_for_with?locals_for_with.sorted:typeof sorted!=="undefined"?sorted:undefined));;return pug_html;}
