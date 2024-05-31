@@ -10,12 +10,13 @@ nav ul {
   flex-wrap: wrap;
 }
 
-.nav-selected {
-  border-bottom: thin solid;
+.side-menu {
+  display: flex;
+  flex-direction: column;
 }
 
-#lang-select {
-  display: none;
+.nav-selected, .scope.selected {
+  border-bottom: thin solid;
 }
 
 .select {
@@ -26,7 +27,7 @@ nav ul {
   flex: 1;
 }
 
-nav a {
+nav a, .scope {
   padding-left: 0.5em;
   padding-right: 1.5em;
   color: #80c3f5;
@@ -39,7 +40,7 @@ header {
 }
 
 table, th, td {
-  border: 1px solid #4e5d6f;
+  border: none;
   border-collapse: collapse;
 }
 
@@ -69,17 +70,34 @@ tbody tr:nth-child(odd) {
   flex: 1;
 }
 
-th {
+th:not(.th-groups, .label) {
   cursor: pointer;
   border-left: none;
   border-right: none;
 }
 
-td.damage.ap {
-  border-left: none;
+td.damage.ap,
+td.explosion.radius,
+td.damage.effect,
+td.damage.effect-param,
+td.damage.dmgtype,
+td.damage.dmg,
+td.damage.massive,
+td.weapon.type,
+td.weapon.pellets,
+td.weapon.dmg,
+{
+  border-left: thin solid #4e566f7f;
   border-right: none;
   padding-left: 0;
   padding-right: 0.2em;
+}
+
+td.damage.ap.ap-list-1, td.explosion.radius.r1, td.effect.effect1 {
+  padding-left: 0.2em;
+}
+td.explosion.label {
+  color: #a98a98;
 }
 
 td.code {
@@ -90,6 +108,10 @@ td.name {
   border-left: none;
   text-align: left;
   overflow: hidden;
+}
+
+td.effect-param {
+  font-size: 0.7em;
 }
 
 td a {
@@ -138,6 +160,9 @@ td.name {
 .category.SUP, .ap-7, .source.support {
   color: #e8a;
 }
+.category.Misc {
+  color: #a98a98;
+}
 .source-page {
   font-size: 0.7em;
   padding-left: 0.5em;
@@ -159,11 +184,11 @@ td.name {
 .source-page:before {
   content: "#";
 }
-.stun-x, .push-x, .demo-x {
+.stun-x, .push-x, .demo-x, .xstun, .xpush, .xdemo {
   color: #ea8;
   padding-left: 0.1em;
 }
-td.id:before, td.damageid:before {
+td.id:before, td.damageid:before, td.projectileid:before {
   color: #a98a98;
   content: "0x";
   font-size: 0.7em;
@@ -172,10 +197,13 @@ td.id:before, td.damageid:before {
   color: #a98a98;
   content: "+";
 }
-.damage-x {
+.damage-x, .xdmg, .name.name-explosion, .radius {
   color: #ea8;
 }
-.demo-x:before, .stun-x:before, .push-x:before {
+.name.name-projectile {
+  color: #fafafa;
+}
+.demo-x:before, .stun-x:before, .push-x:before, .dmg-massive:before {
   color: #a98a98;
   content: "/";
 }
@@ -227,7 +255,7 @@ td.effect-param:after {
   opacity: 0.5;
 }
 
-.pellets:after {
+.pellets:not(.blank):after {
   color: #a98a98;
   content: "×";
 }
@@ -262,14 +290,19 @@ td.effect-param:after {
   content: "]x";
 }
 
-ul.sources, ul.categories {
+.filter-row {
+  display: flex;
+}
+
+ul.sources, ul.categories, ul.colfilters, ul.scopes {
   display: flex;
   flex-direction: row;
   width: 100%;
   list-style-type: none;
+  margin: 0.2em;
 }
 
-.sources .source, .categories .category {
+.sources .source, .categories .category, .colfilter, .scope {
   width: 4em;
   cursor: pointer;
 }
