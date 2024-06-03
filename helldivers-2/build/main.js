@@ -142,6 +142,10 @@ if (wpn.explosion) {
 pug_mixins["explosionsStubRow"](wpn.explosion);
 }
 else
+if (wpn.arc) {
+pug_mixins["arcsStubRow"](wpn.arc);
+}
+else
 if (wpn.beam) {
 pug_mixins["beamsStubRow"](wpn.beam);
 }
@@ -224,7 +228,22 @@ var block = (this && this.block), attributes = (this && this.attributes) || {};
 if (showIds) {
 pug_html = pug_html + "\u003Ctd class=\"beam id\"\u003E" + (pug_escape(null == (pug_interp = id(beam)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 }
-pug_html = pug_html + "\u003Ctd" + (" class=\"beam label\""+pug_attr("title", t('table.th.beam', 'range', 'Beam range (m)'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.td.beam.label', 'range', 'Beam')) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"beam radius stub range\"\u003E" + (pug_escape(null == (pug_interp = beam.range) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"beam filler\" colspan=\"5\"\u003E\u003C\u002Ftd\u003E\u003Ctd class=\"beam stub name\"\u003E" + (pug_escape(null == (pug_interp = beam.name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+pug_html = pug_html + "\u003Ctd" + (" class=\"beam label\""+pug_attr("title", t('table.th.beam', 'range', 'Beam range (m)'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.td.beam.label', 'range', 'Beam')) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"beam range stub\"\u003E" + (pug_escape(null == (pug_interp = beam.range) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"beam filler\" colspan=\"5\"\u003E\u003C\u002Ftd\u003E\u003Ctd class=\"beam stub name\"\u003E" + (pug_escape(null == (pug_interp = beam.name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+};
+pug_mixins["arcsHeader"] = pug_interp = function(opts = {}){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+pug_html = pug_html + "\u003Cth" + (" class=\"arc idx\""+pug_attr("title", t('table.th.arc', 'idx', 'Internal order'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.arc.label', 'idx')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"arc id\""+pug_attr("title", t('table.th.arc', 'id', 'ID of arc data (hex)'), true, false)) + "\u003E\u003Csup\u003E" + (pug_escape(null == (pug_interp = t('table.th.arc.label.sup', 'id', 'ID')) ? "" : pug_interp)) + "\u003C\u002Fsup\u003E\u003Csub\u003E" + (pug_escape(null == (pug_interp = t('table.th.arc.label.sub', 'id', 'b')) ? "" : pug_interp)) + "\u003C\u002Fsub\u003E\u003C\u002Fth\u003E\u003Cth" + (" class=\"arc name\""+pug_attr("title", t('table.th.arc', 'name', 'Translated name of arc'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.arc.label', 'name', 'arc')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"arc damageid\""+pug_attr("title", t('table.th.arc', 'damageid', 'ID of damage data used (hex)'), true, false)) + "\u003E\u003Csup\u003E" + (pug_escape(null == (pug_interp = t('table.th.arc.label.sup', 'ID')) ? "" : pug_interp)) + "\u003C\u002Fsup\u003E\u003Csub\u003E" + (pug_escape(null == (pug_interp = t('table.th.arc.label.sub', 'dmg')) ? "" : pug_interp)) + "\u003C\u002Fsub\u003E\u003C\u002Fth\u003E\u003Cth" + (" class=\"arc range\""+pug_attr("title", t('table.th.arc', 'range', 'Max range (m)'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.arc.label', 'range', 'Range')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
+};
+pug_mixins["arcsRow"] = pug_interp = function(arc, opts = {}){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+pug_html = pug_html + "\u003Ctd class=\"arc idx\"\u003E" + (pug_escape(null == (pug_interp = arc.idx) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"arc id\"\u003E" + (pug_escape(null == (pug_interp = id(arc)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"arc name\"\u003E" + (pug_escape(null == (pug_interp = arc.name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"arc damageid\"\u003E" + (pug_escape(null == (pug_interp = id(arc, 'damageid')) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"arc range\"\u003E" + (pug_escape(null == (pug_interp = arc.range) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+};
+pug_mixins["arcsStubRow"] = pug_interp = function(arc, opts = {}){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+if (showIds) {
+pug_html = pug_html + "\u003Ctd class=\"arc id\"\u003E" + (pug_escape(null == (pug_interp = id(arc)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+}
+pug_html = pug_html + "\u003Ctd" + (" class=\"arc label\""+pug_attr("title", t('table.th.arc', 'range', 'Arc range (m)'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.td.arc.label', 'range', 'Arc')) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"arc range stub\"\u003E" + (pug_escape(null == (pug_interp = arc.range) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"arc filler\" colspan=\"5\"\u003E\u003C\u002Ftd\u003E\u003Ctd class=\"arc stub name\"\u003E" + (pug_escape(null == (pug_interp = arc.name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 };
 pug_mixins["damagesHeader"] = pug_interp = function(opts = {}){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
