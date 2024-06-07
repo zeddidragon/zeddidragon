@@ -4,11 +4,11 @@ function pug_classes_array(r,a){for(var s,e="",u="",c=Array.isArray(a),g=0;g<r.l
 function pug_classes_object(r){var a="",n="";for(var o in r)o&&r[o]&&pug_has_own_property.call(r,o)&&(a=a+n+o,n=" ");return a}
 function pug_escape(e){var a=""+e,t=pug_match_html.exec(a);if(!t)return e;var r,c,n,s="";for(r=t.index,c=0;r<a.length;r++){switch(a.charCodeAt(r)){case 34:n="&quot;";break;case 38:n="&amp;";break;case 60:n="&lt;";break;case 62:n="&gt;";break;default:continue}c!==r&&(s+=a.substring(c,r)),c=r+1,s+=n}return c!==r?s+a.substring(c,r):s}
 var pug_has_own_property=Object.prototype.hasOwnProperty;
-var pug_match_html=/["&<>]/;function template(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (catClass, cats, colspans, count, full, hasTag, headerClass, headers, hideHeaders, hideName, id, langs, nerdMode, objects, roundStart, scope, scopeClass, scopes, showIds, sourceClass, sources, subObj, subScope, t, wikiLink) {pug_mixins["weaponsHeader"] = pug_interp = function(){
+var pug_match_html=/["&<>]/;function template(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (catClass, cats, colspans, count, full, headerClass, headers, hideHeaders, hideName, id, langs, objects, roundStart, scope, scopeClass, scopes, showIds, sourceClass, sources, subObj, subScope, t, wikiLink) {pug_mixins["weaponsHeader"] = pug_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 pug_html = pug_html + "\u003Cth" + (" class=\"weapon idx\""+pug_attr("title", t('table.th.wpn', 'idx', 'Internal order'), true, false)) + "\u003E#\u003C\u002Fth\u003E";
 if (!hideHeaders.weapon) {
-pug_html = pug_html + "\u003Cth" + (" class=\"weapons source\""+pug_attr("title", t('table.th.wpn', 'source'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'source')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon category\""+pug_attr("title", t('table.th.wpn', 'category'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'type')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon code\""+pug_attr("title", t('table.th.wpn', 'code'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'code')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
+pug_html = pug_html + "\u003Cth" + (" class=\"weapons source\""+pug_attr("title", t('table.th.wpn', 'source'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'source')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon category\""+pug_attr("title", t('table.th.wpn', 'category'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'category')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon code\""+pug_attr("title", t('table.th.wpn', 'code'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'code')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
 }
 pug_html = pug_html + "\u003Cth" + (" class=\"weapon name\""+pug_attr("title", t('table.th.wpn', 'name'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'weapon')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon damage\""+pug_attr("title", t('table.th.dmg', 'dmgs3'), true, false)+" colspan=\"3\"") + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'Damage')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"damage ap\""+pug_attr("title", t('table.th.dmg', 'ap'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'ap')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon rpm\""+pug_attr("title", t('table.th.wpn', 'rpm'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'rpm')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
 if (!hideHeaders.weapon) {
@@ -26,6 +26,26 @@ pug_html = pug_html + "\u003Cth" + (" class=\"weapon dps\""+pug_attr("title", t(
 if (!hideHeaders.dps2) {
 pug_html = pug_html + "\u003Cth" + (" class=\"weapon dps2\""+pug_attr("title", t('table.th.wpn', 'dtdps'), true, false)) + "\u003E\u003Csup\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label.sup', 'dtdps')) ? "" : pug_interp)) + "\u003C\u002Fsup\u003E\u003Csub\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label.sub', 'dtdps')) ? "" : pug_interp)) + "\u003C\u002Fsub\u003E\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon tdps2\""+pug_attr("title", t('table.th.wpn', 'dtdps'), true, false)) + "\u003E\u003Csup\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label.sup', 'dtdps')) ? "" : pug_interp)) + "\u003C\u002Fsup\u003E\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon magdump2\""+pug_attr("title", t('table.th.wpn', 'ddmag'), true, false)) + "\u003E\u003Csup\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label.sup', 'ddmag')) ? "" : pug_interp)) + "\u003C\u002Fsup\u003E\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon totaldump2\""+pug_attr("title", t('table.th.wpn', 'dtotal'), true, false)) + "\u003E\u003Csup\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label.sup', 'dtotal')) ? "" : pug_interp)) + "\u003C\u002Fsup\u003E\u003C\u002Fth\u003E";
 }
+};
+pug_mixins["weaponDamageRow"] = pug_interp = function(wpn){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+const dmg = wpn.damage || {}
+pug_html = pug_html + "\u003Ctd" + (pug_attr("class", pug_classes(["weapon","type",{ xdmg: !!wpn.explosion }], [false,false,true]), false, false)) + "\u003E";
+if (dmg.type) {
+pug_html = pug_html + "\u003Cspan" + (" class=\"dmgtype\""+pug_attr("title", t('dmg.types.full', dmg.type), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('dmg.types', dmg.type)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+}
+pug_html = pug_html + "\u003C\u002Ftd\u003E";
+const n = count(wpn)
+pug_html = pug_html + "\u003Ctd" + (pug_attr("class", pug_classes(["weapon","pellets",{ muted: n == 1, blank: !n }], [false,false,true]), false, false)) + "\u003E" + (pug_escape(null == (pug_interp = n) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd" + (pug_attr("class", pug_classes(["weapon","dmg",{ xdmg: !!wpn.explosion }], [false,false,true]), false, false)) + "\u003E";
+if (dmg.dmg) {
+pug_html = pug_html + "\u003Cspan class=\"dmg-base\"\u003E" + (pug_escape(null == (pug_interp = dmg.dmg) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+}
+if (dmg.dmg2 < dmg.dmg) {
+pug_html = pug_html + "\u003Cspan class=\"dmg-massive\"\u003E" + (pug_escape(null == (pug_interp = dmg.dmg2) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+}
+pug_html = pug_html + "\u003C\u002Ftd\u003E";
+let ap = dmg.ap1
+pug_html = pug_html + "\u003Ctd" + (pug_attr("class", pug_classes(["damage","ap",`ap-${ap}`], [false,false,true]), false, false)) + "\u003E" + (pug_escape(null == (pug_interp = ap) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 };
 pug_mixins["weaponsRow"] = pug_interp = function(wpn, opts){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -50,24 +70,9 @@ if (wpn.explosion) {
 pug_html = pug_html + "\u003Cspan class=\"weapon name\"\u003E" + (pug_escape(null == (pug_interp = t('table.td.dmg.label',  'explosion', 'Explosion')) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 pug_html = pug_html + "\u003C\u002Ftd\u003E";
-const dmg = wpn.damage || {}
-pug_html = pug_html + "\u003Ctd" + (pug_attr("class", pug_classes(["weapon","type",{ xdmg: !!wpn.explosion }], [false,false,true]), false, false)) + "\u003E";
-if (dmg.type) {
-pug_html = pug_html + "\u003Cspan" + (" class=\"dmgtype\""+pug_attr("title", t('dmg.types.full', dmg.type), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('dmg.types', dmg.type)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
-}
-pug_html = pug_html + "\u003C\u002Ftd\u003E";
-const n = count(wpn)
-pug_html = pug_html + "\u003Ctd" + (pug_attr("class", pug_classes(["weapon","pellets",{ muted: n == 1, blank: !n }], [false,false,true]), false, false)) + "\u003E" + (pug_escape(null == (pug_interp = n) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd" + (pug_attr("class", pug_classes(["weapon","dmg",{ xdmg: !!wpn.explosion }], [false,false,true]), false, false)) + "\u003E";
-if (dmg.dmg) {
-pug_html = pug_html + "\u003Cspan class=\"dmg-base\"\u003E" + (pug_escape(null == (pug_interp = dmg.dmg) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
-}
-if (dmg.dmg2 < dmg.dmg) {
-pug_html = pug_html + "\u003Cspan class=\"dmg-massive\"\u003E" + (pug_escape(null == (pug_interp = dmg.dmg2) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
-}
-pug_html = pug_html + "\u003C\u002Ftd\u003E";
-let ap = dmg.ap1
-pug_html = pug_html + "\u003Ctd" + (pug_attr("class", pug_classes(["damage","ap",`ap-${ap}`], [false,false,true]), false, false)) + "\u003E" + (pug_escape(null == (pug_interp = ap) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"weapon rpm\"\u003E";
-if (hasTag(wpn, 'laser')) {
+pug_mixins["weaponDamageRow"](wpn);
+pug_html = pug_html + "\u003Ctd class=\"weapon rpm\"\u003E";
+if (wpn.beam) {
 pug_html = pug_html + "\u003Cspan class=\"rpm-laser\"\u003EBeam\u003C\u002Fspan\u003E";
 }
 if (wpn.charge) {
@@ -159,6 +164,43 @@ pug_html = pug_html + "\u003Ctd class=\"dps\"\u003E" + (pug_escape(null == (pug_
 if (!hideHeaders.dps2) {
 pug_html = pug_html + "\u003Ctd class=\"dps2\"\u003E" + (pug_escape(null == (pug_interp = wpn.dps2) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"tdps2\"\u003E" + (pug_escape(null == (pug_interp = wpn.tdps2) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"magdump2\"\u003E" + (pug_escape(null == (pug_interp = wpn.magdump2) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"totaldump2\"\u003E" + (pug_escape(null == (pug_interp = wpn.totaldump2) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 }
+};
+pug_mixins["stratagemsHeader"] = pug_interp = function(opts = {}){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+pug_html = pug_html + "\u003Cth" + (" class=\"stratagem stratcode\""+pug_attr("title", t('table.th.strat', 'stratcode'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.strat.label', 'stratcode')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"stratagem category\""+pug_attr("title", t('table.th.strat', 'category'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.strat.label', 'category')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"stratagem name\""+pug_attr("title", t('table.th.strat', 'name'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.strat.label', 'name')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"stratagem calltime\""+pug_attr("title", t('table.th.strat', 'calltime'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.strat.label', 'calltime')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"stratagem cooldown\""+pug_attr("title", t('table.th.strat', 'cooldown'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.strat.label', 'cooldown')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"stratagem uses\""+pug_attr("title", t('table.th.strat', 'uses'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.strat.label', 'uses')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"stratagem health\""+pug_attr("title", t('table.th.strat', 'health'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.strat.label', 'health')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"stratagem armor\""+pug_attr("title", t('table.th.strat', 'armor'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.strat.label', 'armor')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"stratagem rpm\""+pug_attr("title", t('table.th.strat', 'rpm'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.strat.label', 'rpm')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"stratagem cap\""+pug_attr("title", t('table.th.strat', 'cap'), true, false)+" colspan=\"2\"") + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.strat.label', 'cap')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"stratagem damage\""+pug_attr("title", t('table.th.dmg', 'dmgs3'), true, false)+" colspan=\"3\"") + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.dmg.label', 'dmgs3')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"damage ap\""+pug_attr("title", t('table.th.dmg', 'ap'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.dmg.label', 'ap')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
+pug_mixins["damagesHeader"]({ apCount: 1, effectsCount: 1 });
+pug_mixins["explosionsHeader"]({});
+};
+pug_mixins["stratagemsRow"] = pug_interp = function(obj, opts = {}){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+pug_html = pug_html + "\u003Ctd class=\"stratagem stratcode\"\u003E\u003Cdiv class=\"arrows\"\u003E" + (pug_escape(null == (pug_interp = obj.arrows) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E\u003C\u002Ftd\u003E\u003Ctd" + (pug_attr("class", pug_classes(["stratagem","category",obj.category], [false,false,true]), false, false)+pug_attr("title", t('strat.category.full', obj.category), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('strat.category.label', obj.category)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd" + (pug_attr("class", pug_classes(["stratagem","name",`name-${obj.category || obj.type}`], [false,false,true]), false, false)) + "\u003E\u003Ca" + (pug_attr("href", wikiLink(obj), true, false)+" target=\"_blank\"") + "\u003E" + (pug_escape(null == (pug_interp = obj.name) ? "" : pug_interp)) + "\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem calltime\"\u003E" + (pug_escape(null == (pug_interp = obj.calltime) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem cooldown\"\u003E" + (pug_escape(null == (pug_interp = obj.cooldown) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem uses\"\u003E" + (pug_escape(null == (pug_interp = obj.uses) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem health\"\u003E" + (pug_escape(null == (pug_interp = obj.health) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd" + (pug_attr("class", pug_classes(["stratagem","armor",`ap-${obj.armor}`], [false,false,true]), false, false)) + "\u003E" + (pug_escape(null == (pug_interp = obj.armor) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem rpm\"\u003E";
+if (obj.beam) {
+pug_html = pug_html + "\u003Cspan class=\"rpm-laser\"\u003EBeam\u003C\u002Fspan\u003E";
+}
+else {
+pug_html = pug_html + "\u003Cspan class=\"rpm-main\"\u003E" + (pug_escape(null == (pug_interp = obj.rpm) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+}
+pug_html = pug_html + "\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem cap\"\u003E";
+if (obj.salvos) {
+pug_html = pug_html + "\u003Cspan class=\"salvos\"\u003E" + (pug_escape(null == (pug_interp = obj.salvos) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+}
+pug_html = pug_html + "\u003Cspan class=\"strat-cap\"\u003E" + (pug_escape(null == (pug_interp = obj.cap || obj.limit) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem capextra\"\u003E";
+if (obj.limit) {
+pug_html = pug_html + "\u003Cspan class=\"cap-limit\"\u003Es\u003C\u002Fspan\u003E";
+}
+pug_html = pug_html + "\u003C\u002Ftd\u003E";
+if (obj.shield) {
+pug_mixins["shieldRow"](obj);
+}
+else {
+pug_mixins["weaponDamageRow"](obj);
+pug_mixins["damagesRow"](obj.damage || {}, { apCount: 1, effectsCount: 1 });
+pug_mixins["explosionsRow"](obj.explosion || {});
+}
+};
+pug_mixins["shieldRow"] = pug_interp = function(obj){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+pug_html = pug_html + "\u003Ctd" + (" class=\"stratagem label\""+pug_attr("title", t('table.th.strat', 'shield', 'Shield Health, Regen, Delay, Delay After Breaking, Radius'), true, false)+" colspan=\"2\"") + "\u003E" + (pug_escape(null == (pug_interp = t('table.td.aoe.label', 'shield', 'Shield')) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem shield stub\"\u003E" + (pug_escape(null == (pug_interp = obj.shield) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem shield stub shieldregen\" colspan=\"2\"\u003E" + (pug_escape(null == (pug_interp = obj.shieldregen) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem shielddelay time stub\"\u003E" + (pug_escape(null == (pug_interp = obj.shielddelay) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem shieldbreakdelay time stub\"\u003E" + (pug_escape(null == (pug_interp = obj.shieldbreakdelay) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem shieldradius length\" colspan=\"2\"\u003E" + (pug_escape(null == (pug_interp = obj.shieldradius) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"stratagem shield padding\" colspan=\"3\"\u003E\u003C\u002Ftd\u003E";
 };
 pug_mixins["projectilesHeader"] = pug_interp = function(opts = {}){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -308,22 +350,41 @@ pug_html = pug_html + "\u003Cli" + (" class=\"lang\""+pug_attr("onclick", `switc
   }
 }).call(this);
 
-pug_html = pug_html + "\u003C\u002Ful\u003E\u003C\u002Fli\u003E\u003C\u002Ful\u003E\u003C\u002Fnav\u003E\u003Cheader class=\"menu\"\u003E\u003Cdiv class=\"filters\"\u003E";
+pug_html = pug_html + "\u003C\u002Ful\u003E\u003C\u002Fli\u003E\u003C\u002Ful\u003E\u003C\u002Fnav\u003E\u003Cheader class=\"menu\"\u003E\u003Cdiv class=\"filters\"\u003E\u003Cdiv class=\"filter-row\"\u003E\u003Cul class=\"scopes\"\u003E";
+// iterate scopes
+;(function(){
+  var $$obj = scopes;
+  if ('number' == typeof $$obj.length) {
+      for (var pug_index1 = 0, $$l = $$obj.length; pug_index1 < $$l; pug_index1++) {
+        var scope = $$obj[pug_index1];
+pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["scope",scopeClass(scope)], [false,true]), false, false)+pug_attr("title", t('nav.scopes.full', scope), true, false)+pug_attr("onclick", `switchScope('${scope}')`, true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('nav.scopes.label', scope)) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
+      }
+  } else {
+    var $$l = 0;
+    for (var pug_index1 in $$obj) {
+      $$l++;
+      var scope = $$obj[pug_index1];
+pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["scope",scopeClass(scope)], [false,true]), false, false)+pug_attr("title", t('nav.scopes.full', scope), true, false)+pug_attr("onclick", `switchScope('${scope}')`, true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('nav.scopes.label', scope)) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
+    }
+  }
+}).call(this);
+
+pug_html = pug_html + "\u003C\u002Ful\u003E\u003C\u002Fdiv\u003E";
 if (scope === 'weapons') {
 pug_html = pug_html + "\u003Cdiv class=\"filter-row\"\u003E\u003Cul class=\"sources\"\u003E";
 // iterate sources
 ;(function(){
   var $$obj = sources;
   if ('number' == typeof $$obj.length) {
-      for (var pug_index1 = 0, $$l = $$obj.length; pug_index1 < $$l; pug_index1++) {
-        var source = $$obj[pug_index1];
+      for (var pug_index2 = 0, $$l = $$obj.length; pug_index2 < $$l; pug_index2++) {
+        var source = $$obj[pug_index2];
 pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["source",sourceClass(source)], [false,true]), false, false)+pug_attr("title", t('wpn.source.full', source), true, false)+pug_attr("onclick", `toggleSource('${source}')`, true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('wpn.source.label', source)) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
       }
   } else {
     var $$l = 0;
-    for (var pug_index1 in $$obj) {
+    for (var pug_index2 in $$obj) {
       $$l++;
-      var source = $$obj[pug_index1];
+      var source = $$obj[pug_index2];
 pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["source",sourceClass(source)], [false,true]), false, false)+pug_attr("title", t('wpn.source.full', source), true, false)+pug_attr("onclick", `toggleSource('${source}')`, true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('wpn.source.label', source)) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
     }
   }
@@ -334,15 +395,15 @@ pug_html = pug_html + "\u003C\u002Ful\u003E\u003C\u002Fdiv\u003E\u003Cdiv class=
 ;(function(){
   var $$obj = cats;
   if ('number' == typeof $$obj.length) {
-      for (var pug_index2 = 0, $$l = $$obj.length; pug_index2 < $$l; pug_index2++) {
-        var cat = $$obj[pug_index2];
+      for (var pug_index3 = 0, $$l = $$obj.length; pug_index3 < $$l; pug_index3++) {
+        var cat = $$obj[pug_index3];
 pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["category",catClass(cat)], [false,true]), false, false)+pug_attr("title", t('wpn.category.full', cat), true, false)+pug_attr("onclick", `toggleCategory('${cat}')`, true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('wpn.category.label', cat)) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
       }
   } else {
     var $$l = 0;
-    for (var pug_index2 in $$obj) {
+    for (var pug_index3 in $$obj) {
       $$l++;
-      var cat = $$obj[pug_index2];
+      var cat = $$obj[pug_index3];
 pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["category",catClass(cat)], [false,true]), false, false)+pug_attr("title", t('wpn.category.full', cat), true, false)+pug_attr("onclick", `toggleCategory('${cat}')`, true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('wpn.category.label', cat)) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
     }
   }
@@ -353,55 +414,23 @@ pug_html = pug_html + "\u003C\u002Ful\u003E\u003Cdiv class=\"divider\"\u003E|\u0
 ;(function(){
   var $$obj = headers;
   if ('number' == typeof $$obj.length) {
-      for (var pug_index3 = 0, $$l = $$obj.length; pug_index3 < $$l; pug_index3++) {
-        var h = $$obj[pug_index3];
+      for (var pug_index4 = 0, $$l = $$obj.length; pug_index4 < $$l; pug_index4++) {
+        var h = $$obj[pug_index4];
 pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["colfilter",headerClass(h)], [false,true]), false, false)+pug_attr("title", t('wpn.header.full', h), true, false)+pug_attr("onclick", `toggleHeader('${h}')`, true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('wpn.header.label', h)) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
       }
   } else {
     var $$l = 0;
-    for (var pug_index3 in $$obj) {
+    for (var pug_index4 in $$obj) {
       $$l++;
-      var h = $$obj[pug_index3];
+      var h = $$obj[pug_index4];
 pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["colfilter",headerClass(h)], [false,true]), false, false)+pug_attr("title", t('wpn.header.full', h), true, false)+pug_attr("onclick", `toggleHeader('${h}')`, true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('wpn.header.label', h)) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
     }
   }
 }).call(this);
 
 pug_html = pug_html + "\u003C\u002Ful\u003E\u003C\u002Fdiv\u003E";
-if (nerdMode) {
-pug_html = pug_html + "\u003Cul\u003E\u003Cli\u003E" + (pug_escape(null == (pug_interp = t('explanations', 'nerdModeSpoilers', 'Here there be spoilers.')) ? "" : pug_interp)) + "\u003C\u002Fli\u003E\u003C\u002Ful\u003E";
 }
-}
-else {
-pug_html = pug_html + "\u003Cul class=\"scopes\"\u003E";
-// iterate scopes
-;(function(){
-  var $$obj = scopes;
-  if ('number' == typeof $$obj.length) {
-      for (var pug_index4 = 0, $$l = $$obj.length; pug_index4 < $$l; pug_index4++) {
-        var scope = $$obj[pug_index4];
-pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["scope",scopeClass(scope)], [false,true]), false, false)+pug_attr("title", t('nav.scopes.full', scope), true, false)+pug_attr("onclick", `switchScope('${scope}')`, true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('nav.scopes.label', scope)) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
-      }
-  } else {
-    var $$l = 0;
-    for (var pug_index4 in $$obj) {
-      $$l++;
-      var scope = $$obj[pug_index4];
-pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["scope",scopeClass(scope)], [false,true]), false, false)+pug_attr("title", t('nav.scopes.full', scope), true, false)+pug_attr("onclick", `switchScope('${scope}')`, true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('nav.scopes.label', scope)) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
-    }
-  }
-}).call(this);
-
-pug_html = pug_html + "\u003C\u002Ful\u003E";
-}
-pug_html = pug_html + "\u003C\u002Fdiv\u003E\u003Cdiv class=\"spacer\"\u003E\u003C\u002Fdiv\u003E\u003Cdiv class=\"side-menu\"\u003E\u003Clabel\u003E\u003Cinput" + (" id=\"nerd-mode\" type=\"checkbox\""+pug_attr("checked", nerdMode, true, false)+" onclick=\"toggleNerdMode()\"") + "\u002F\u003E";
-if (nerdMode) {
-pug_html = pug_html + (pug_escape(null == (pug_interp = t('nav.main', 'nerdModeActive', '🤓')) ? "" : pug_interp));
-}
-else {
-pug_html = pug_html + (pug_escape(null == (pug_interp = t('nav.main', 'nerdMode', 'Nerd Mode')) ? "" : pug_interp));
-}
-pug_html = pug_html + "\u003C\u002Flabel\u003E\u003C\u002Fdiv\u003E\u003C\u002Fheader\u003E\u003Ctable\u003E\u003Ctr\u003E";
+pug_html = pug_html + "\u003C\u002Fdiv\u003E\u003C\u002Fheader\u003E\u003Ctable\u003E\u003Ctr\u003E";
 pug_mixins[`${scope}Header`](full);
 if (subScope) {
 pug_mixins[`${subScope}Header`](hideName);
@@ -450,4 +479,4 @@ pug_html = pug_html + "\u003C\u002Ftr\u003E";
 pug_html = pug_html + "\u003C\u002Ftable\u003E";
 if (scope === 'weapons') {
 pug_html = pug_html + "\u003Cul\u003E\u003Cli\u003E" + (pug_escape(null == (pug_interp = t('explanations', 'reload', 'Reload is measured from when reticle disappears to when it comes back. Not all weapons had a reticle. Timing may be off by up to 0.1s.')) ? "" : pug_interp)) + "\u003C\u002Fli\u003E\u003Cli\u003E" + (pug_escape(null == (pug_interp = t('explanations', 'startingMagsDisclaimer', 'Starting mags for support weapons are currently unmeasured, but become max after the ship module upgrade.')) ? "" : pug_interp)) + "\u003C\u002Fli\u003E\u003Cli\u003E" + (pug_escape(null == (pug_interp = t('explanations', 'laserFire', "Laser weapons can't actually set things on fire. The data may be there to make the corpses burn.")) ? "" : pug_interp)) + "\u003C\u002Fli\u003E\u003C\u002Ful\u003E";
-}}.call(this,"catClass" in locals_for_with?locals_for_with.catClass:typeof catClass!=="undefined"?catClass:undefined,"cats" in locals_for_with?locals_for_with.cats:typeof cats!=="undefined"?cats:undefined,"colspans" in locals_for_with?locals_for_with.colspans:typeof colspans!=="undefined"?colspans:undefined,"count" in locals_for_with?locals_for_with.count:typeof count!=="undefined"?count:undefined,"full" in locals_for_with?locals_for_with.full:typeof full!=="undefined"?full:undefined,"hasTag" in locals_for_with?locals_for_with.hasTag:typeof hasTag!=="undefined"?hasTag:undefined,"headerClass" in locals_for_with?locals_for_with.headerClass:typeof headerClass!=="undefined"?headerClass:undefined,"headers" in locals_for_with?locals_for_with.headers:typeof headers!=="undefined"?headers:undefined,"hideHeaders" in locals_for_with?locals_for_with.hideHeaders:typeof hideHeaders!=="undefined"?hideHeaders:undefined,"hideName" in locals_for_with?locals_for_with.hideName:typeof hideName!=="undefined"?hideName:undefined,"id" in locals_for_with?locals_for_with.id:typeof id!=="undefined"?id:undefined,"langs" in locals_for_with?locals_for_with.langs:typeof langs!=="undefined"?langs:undefined,"nerdMode" in locals_for_with?locals_for_with.nerdMode:typeof nerdMode!=="undefined"?nerdMode:undefined,"objects" in locals_for_with?locals_for_with.objects:typeof objects!=="undefined"?objects:undefined,"roundStart" in locals_for_with?locals_for_with.roundStart:typeof roundStart!=="undefined"?roundStart:undefined,"scope" in locals_for_with?locals_for_with.scope:typeof scope!=="undefined"?scope:undefined,"scopeClass" in locals_for_with?locals_for_with.scopeClass:typeof scopeClass!=="undefined"?scopeClass:undefined,"scopes" in locals_for_with?locals_for_with.scopes:typeof scopes!=="undefined"?scopes:undefined,"showIds" in locals_for_with?locals_for_with.showIds:typeof showIds!=="undefined"?showIds:undefined,"sourceClass" in locals_for_with?locals_for_with.sourceClass:typeof sourceClass!=="undefined"?sourceClass:undefined,"sources" in locals_for_with?locals_for_with.sources:typeof sources!=="undefined"?sources:undefined,"subObj" in locals_for_with?locals_for_with.subObj:typeof subObj!=="undefined"?subObj:undefined,"subScope" in locals_for_with?locals_for_with.subScope:typeof subScope!=="undefined"?subScope:undefined,"t" in locals_for_with?locals_for_with.t:typeof t!=="undefined"?t:undefined,"wikiLink" in locals_for_with?locals_for_with.wikiLink:typeof wikiLink!=="undefined"?wikiLink:undefined));;return pug_html;}
+}}.call(this,"catClass" in locals_for_with?locals_for_with.catClass:typeof catClass!=="undefined"?catClass:undefined,"cats" in locals_for_with?locals_for_with.cats:typeof cats!=="undefined"?cats:undefined,"colspans" in locals_for_with?locals_for_with.colspans:typeof colspans!=="undefined"?colspans:undefined,"count" in locals_for_with?locals_for_with.count:typeof count!=="undefined"?count:undefined,"full" in locals_for_with?locals_for_with.full:typeof full!=="undefined"?full:undefined,"headerClass" in locals_for_with?locals_for_with.headerClass:typeof headerClass!=="undefined"?headerClass:undefined,"headers" in locals_for_with?locals_for_with.headers:typeof headers!=="undefined"?headers:undefined,"hideHeaders" in locals_for_with?locals_for_with.hideHeaders:typeof hideHeaders!=="undefined"?hideHeaders:undefined,"hideName" in locals_for_with?locals_for_with.hideName:typeof hideName!=="undefined"?hideName:undefined,"id" in locals_for_with?locals_for_with.id:typeof id!=="undefined"?id:undefined,"langs" in locals_for_with?locals_for_with.langs:typeof langs!=="undefined"?langs:undefined,"objects" in locals_for_with?locals_for_with.objects:typeof objects!=="undefined"?objects:undefined,"roundStart" in locals_for_with?locals_for_with.roundStart:typeof roundStart!=="undefined"?roundStart:undefined,"scope" in locals_for_with?locals_for_with.scope:typeof scope!=="undefined"?scope:undefined,"scopeClass" in locals_for_with?locals_for_with.scopeClass:typeof scopeClass!=="undefined"?scopeClass:undefined,"scopes" in locals_for_with?locals_for_with.scopes:typeof scopes!=="undefined"?scopes:undefined,"showIds" in locals_for_with?locals_for_with.showIds:typeof showIds!=="undefined"?showIds:undefined,"sourceClass" in locals_for_with?locals_for_with.sourceClass:typeof sourceClass!=="undefined"?sourceClass:undefined,"sources" in locals_for_with?locals_for_with.sources:typeof sources!=="undefined"?sources:undefined,"subObj" in locals_for_with?locals_for_with.subObj:typeof subObj!=="undefined"?subObj:undefined,"subScope" in locals_for_with?locals_for_with.subScope:typeof subScope!=="undefined"?subScope:undefined,"t" in locals_for_with?locals_for_with.t:typeof t!=="undefined"?t:undefined,"wikiLink" in locals_for_with?locals_for_with.wikiLink:typeof wikiLink!=="undefined"?wikiLink:undefined));;return pug_html;}
