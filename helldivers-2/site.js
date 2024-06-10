@@ -1,5 +1,5 @@
 function val(obj, prop) {
-  return obj[prop] || 0
+  return obj?.[prop] || 0
 }
 
 function sorting(col, mainScope) {
@@ -18,9 +18,17 @@ function sorting(col, mainScope) {
     return a.idx - b.idx
   }
 
+  if(locals.scope === 'weapons' && mainScope === 'projectile' && col === 'name') {
+    return function sortByProjectileName(a, b) {
+      const diff = (a.projectile?.[col] || '').localeCompare(b.projectile?.[col] || '') * dir
+      if(diff) return diff
+      return idxSort(a, b)
+    }
+  }
   if(locals.scope === 'weapons' && mainScope === 'projectile') {
     return function sortByProjectileCol(a, b) {
-      const diff = (a.projectile?.[col] || '').localeCompare(b.projectile?.[col] || '') * dir
+      const diff =  compare(a.projectile, b.projectile, col)
+      // const diff = (a.projectile?.[col] || '').localeCompare(b.projectile?.[col] || '') * dir
       if(diff) return diff
       return idxSort(a, b)
     }
@@ -153,6 +161,7 @@ function sorted(arr) {
   return arr.sort(sorting(locals.sorting, locals.mainSorting))
 }
 
+let collapseDamage = false
 window.locals = {
   get nerdMode() {
     return locals.scope !== 'weapons'
@@ -165,6 +174,12 @@ window.locals = {
       case 'arcs':
         return 'damages'
     }
+  },
+  get collapseDamage() {
+    return locals.scope === 'weapons' && collapseDamage
+  },
+  set collapseDamage(v) {
+    collapseDamage = v
   },
   sorting: 'idx',
   lang: 'en',
@@ -256,7 +271,7 @@ window.locals = {
         return true
       })
       arr = arr.flatMap(wpn => {
-        if(wpn.subobjects) {
+        if(wpn.subobjects && !locals.collapseDamage) {
           return [wpn, ...wpn.subobjects]
         }
         return [wpn]
@@ -404,38 +419,43 @@ async function loadData() {
     beam: beams,
     arc: arcs,
   }
+  const byRef = {
+    damage: register(locals.damages, 'enum'),
+    projectile: register(locals.projectiles, 'enum'),
+    explosion: register(locals.explosions, 'enum'),
+    beam: register(locals.beams, 'enum'),
+    arc: register(locals.arcs, 'enum'),
+  }
   locals.weapons = data.weapons.map((wpn, idx) => {
     const [, code, name] = /^(\w+-\d+\w*) (.*)$/.exec(wpn.fullname) || []
-    const arc = arcs[wpn.arcid]
-    const beam = beams[wpn.beamid]
-    const projectile = projectiles[wpn.projectileid]
-    const explosion = explosions[wpn.explosionid]
-    const dmgId = projectile?.damageid
-      || arc?.damageid
-      || beam?.damageid
-      || explosion?.damageid
-      || wpn.damageid
-    const damage = damages[dmgId]
-    const count = wpn.count || projectile?.pellets || 1
-    let shotdmg = count * (damage?.dmg || 0)
-    let shotdmg2 = count * (damage?.dmg2 || 0)
-    let subobjects = wpn.subattacks?.map(({ id, type, count, name }) => {
-      const obj = registers[type][id]
+    let shotdmg = 0
+    let shotdmg2 = 0
+    let subobjects = wpn.attack?.map(({ medium: type, ref, count }) => {
+      const obj = byRef[type][ref]
       const damage = obj.damage
-      const n = (count || obj.pellets || 1)
+      const n = (count || 1) * (obj.pellets || 1)
       shotdmg += n * (damage?.dmg || 0)
       shotdmg2 += n * (damage?.dmg2 || 0)
-      name = obj.name
       return {
         type,
         damage,
         [type]: obj,
-        count,
-        name,
+        count: count,
+        name: obj.name,
         fullname: wpn.fullname,
         weapon: wpn,
       }
     })
+
+    const {
+      damage,
+      projectile,
+      explosion,
+      beam,
+      arc,
+      count,
+    } = subobjects?.shift() || {}
+
     if(wpn.chargefactor && wpn.chargeearly) {
       subobjects ||= []
       subobjects.push({
@@ -513,7 +533,7 @@ async function loadData() {
       ...(damage || {}),
       idx,
       ...wpn,
-      name: t('wpnname', wpn.fullname, name),
+      name: t('wpnname', wpn.fullname),
       sourceidx: (data.sources.indexOf(wpn.source) + 1) || Infinity,
       shotdmg,
       shotdmg2,
@@ -526,6 +546,7 @@ async function loadData() {
       magdump2,
       totaldump2,
       code,
+      count,
       projectile,
       arc,
       beam,
@@ -534,15 +555,7 @@ async function loadData() {
       subobjects,
     }
   })
-
-  const byRef = {
-    weapon: register(locals.weapons, 'fullname'),
-    damage: register(locals.damages, 'enum'),
-    projectile: register(locals.projectiles, 'enum'),
-    explosion: register(locals.explosions, 'enum'),
-    beam: register(locals.beams, 'enum'),
-    arc: register(locals.arcs, 'enum'),
-  }
+  byRef.weapon = register(locals.weapons, 'fullname')
   window.byRef = byRef
 
   const arrowMap = {
@@ -557,27 +570,31 @@ async function loadData() {
     d: 3,
     l: 4,
   }
-  locals.stratagems = data.stratagems.map((strat, i) => {
+  const strats = [
+    ...data.weapons.filter(wpn => wpn.stratcode),
+    ...data.stratagems,
+  ]
+  locals.stratagems = strats.map((strat, i) => {
     let shotdmg = 0
     let shotdmg2 = 0
     let maxRadius = [0, 0, 0]
-    let subobjects = strat.attack?.map(({ medium, ref, count }) => {
-      const obj = byRef[medium][ref]
+    let subobjects = strat.attack?.map(({ medium: type, ref, count }) => {
+      const obj = byRef[type][ref]
       const damage = obj.damage
       const n = (count || obj.pellets || 1)
       shotdmg += n * (damage?.dmg || 0)
       shotdmg2 += n * (damage?.dmg2 || 0)
       name = obj.name
-      if(medium === 'explosion') {
+      if(type === 'explosion') {
         for(let i = 0; i < 3; i++) {
           maxRadius[i] = Math.max(maxRadius[i], obj[`r${i + 1}`])
         }
       }
       return {
-        ...(medium === 'weapon' ? obj : {}),
-        type: medium,
+        ...(type === 'weapon' ? obj : {}),
+        type,
         damage,
-        [medium]: obj,
+        [type]: obj,
         count,
         name,
         fullname: strat.fullname,
@@ -714,7 +731,7 @@ function readState() {
   try {
     let hash = window.location.hash
     if(!hash) {
-      hash = '#hc[]=Misc&hc[]=Mounted&hh[]=dps&hh[]=dps2'
+      hash = '#hc[]=Ability&hc[]=Status&hc[]=Mounted&hh[]=dps&hh[]=dps2'
     }
     states = hash.slice(1).split('&').map(kv => kv.split('='))
   } catch(err) {
@@ -782,12 +799,12 @@ window.toggleHeader = function toggleHeader(h) {
   })
 }
 
-window.toggleNerdMode = function toggleNerdMode() {
-  if(locals.scope === 'weapons') {
-    switchScope('projectiles')
-  } else {
-    switchScope('weapons')
-  }
+window.toggleCollapseDamage = function toggleNerdMode(ev) {
+  ev.preventDefault()
+  ev.stopPropagation()
+  locals.collapseDamage = !locals.collapseDamage
+  writeState()
+  render()
 }
 
 window.switchScope = function switchScope(scope) {
