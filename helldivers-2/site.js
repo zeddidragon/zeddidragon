@@ -2,6 +2,13 @@ function val(obj, prop) {
   return obj?.[prop] || 0
 }
 
+function iff(condition, value) {
+  if(condition == null) {
+    return null
+  }
+  return value
+}
+
 function sorting(col, mainScope) {
   let dir = -1
   if(col === 'category') {
@@ -237,9 +244,9 @@ window.locals = {
   headers: [
     'weapon',
     'damage',
-    'projectile',
     'dps',
     'dps2',
+    'projectile',
   ],
   hideHeaders: {},
   weaponCols: new Set('damage'),
@@ -439,13 +446,22 @@ async function loadData() {
     const [, code, name] = /^(\w+-\d+\w*) (.*)$/.exec(wpn.fullname) || []
     let shotdmg = 0
     let shotdmg2 = 0
+    let shotdmgx = 0
+    let prev = wpn
     let subobjects = wpn.attack?.map(({ type, name: ref, count }) => {
       const obj = byRef[type][ref]
+      const parent = prev
+      prev = obj
       const damage = obj.damage
       const n = (count || 1) * (obj.pellets || 1)
-      shotdmg += n * (damage?.dmg || 0)
-      shotdmg2 += n * (damage?.dmg2 || 0)
+      if(type === 'explosion') {
+        shotdmgx += n * (damage?.dmg || 0)
+      } else {
+        shotdmg += n * (damage?.dmg || 0)
+        shotdmg2 += n * (damage?.dmg2 || 0)
+      }
       return {
+        parent,
         type,
         damage,
         [type]: obj,
@@ -464,11 +480,21 @@ async function loadData() {
       arc,
       count,
     } = subobjects?.shift() || {}
+    if(wpn.supply && !wpn.box) {
+      wpn.box = Math.max(Math.floor(wpn.supply * 0.5), 1)
+    }
+    if(wpn.roundsupply && !wpn.roundsbox) {
+      wpn.roundsbox = Math.max(Math.floor(wpn.roundsupply * 0.5), 1)
+    }
+    if(wpn.clipsupply && !wpn.clipsbox) {
+      wpn.clipsbox = Math.max(Math.floor(wpn.clipsupply * 0.5), 1)
+    }
 
     if(wpn.chargefactor && wpn.chargeearly) {
       subobjects ||= []
       subobjects.push({
         ...wpn,
+        parent: wpn,
         name: t('wpnname.overcharge', wpn.fullname, `${name} (Overcharged)`),
         charge: wpn.charge,
         chargeearly: void 0,
@@ -489,14 +515,18 @@ async function loadData() {
 
     let dps
     let dps2
+    let dpsx = 0
     let tdps
     let tdps2
+    let tdpsx = 0
     let magdump
     let magdump2
+    let magdumpx = 0
     let totaldump
     let totaldump2
+    let totaldumpx = 0
     let magtime
-    if(hasTag(wpn, 'laser') && damage) {
+    if(beam && damage) {
       dps = damage.dmg
       dps2 = damage.dmg2
       magdump = dps * wpn.limit
@@ -507,34 +537,53 @@ async function loadData() {
     if(wpn.charge && wpn.cap > 1) {
       rpm = 60 / wpn.charge
     }
-    if(wpn.cap > 1 && rpm) {
+    if(wpn.cap !== 1 && rpm) {
       dps = Math.floor(rpm * shotdmg / 60)
       dps2 = Math.floor(rpm * shotdmg2 / 60)
+      dpsx = Math.floor(rpm * shotdmgx / 60)
       magtime = wpn.cap * 60 / rpm
     }
-    if(wpn.cap > 1 && shotdmg) {
-      magdump = shotdmg * wpn.cap
-      magdump2 = shotdmg2 * wpn.cap
+    if(shotdmg) {
+      const cap = wpn.cap || 1
+      magdump = shotdmg * cap
+      magdump2 = shotdmg2 * cap
+      magdumpx = shotdmgx * cap
     }
     if(wpn.limit && wpn.rpm) { // Sickle
-      magdump = shotdmg * Math.floor(wpn.rpm * wpn.limit / 60)
-      magdump2 = shotdmg2 * Math.floor(wpn.rpm * wpn.limit / 60)
+      magdump = shotdmg * Math.floor(rpm * wpn.limit / 60)
+      magdump2 = shotdmg2 * Math.floor(rpm * wpn.limit / 60)
+      magdumpx = shotdmgx * Math.floor(rpm * wpn.limit / 60)
     }
     if(magdump && wpn.mags) {
       totaldump = magdump * (wpn.mags + 1)
       totaldump2 = magdump2 * (wpn.mags + 1)
+      totaldumpx = magdumpx * (wpn.mags + 1)
     }
     if(wpn.rounds) {
-      totaldump = shotdmg * (wpn.rounds + (wpn.cap || 0))
-      totaldump2 = shotdmg2 * (wpn.rounds + (wpn.cap || 0))
+      const rounds = (wpn.rounds || 0) + (wpn.cap || 0)
+      totaldump = shotdmg * rounds
+      totaldump2 = shotdmg2 * rounds
+      totaldumpx = shotdmgx * rounds
     }
     if(wpn.clips) {
       totaldump = shotdmg * (wpn.clips * wpn.clipsize + wpn.cap)
       totaldump2 = shotdmg2 * (wpn.clips * wpn.clipsize + wpn.cap)
+      totaldumpx = shotdmgx * (wpn.clips * wpn.clipsize + wpn.cap)
     }
     if(magdump && magtime && wpn.reload) {
       tdps = Math.floor(magdump / (magtime + wpn.reload))
       tdps2 = Math.floor(magdump2 / (magtime + wpn.reload))
+      tdpsx = Math.floor(magdumpx / (magtime + wpn.reload))
+    }
+    if(!shotdmg && damage) {
+      shotdmg = damage.dmg
+      shotdmg2 = damage.dmg2
+      shotdmgx = damage.dmgx
+    }
+    if(wpn.category === 'Status' && damage) {
+      dps = shotdmg
+      dps2 = shotdmg2
+      dpsx = shotdmgx || 0
     }
 
     return {
@@ -545,15 +594,20 @@ async function loadData() {
       name: t('wpnname', wpn.fullname),
       sourceidx: (data.sources.indexOf(wpn.source) + 1) || Infinity,
       shotdmg,
+      dps: iff(dps, (dps + dpsx)),
+      tdps: iff(tdps, (tdps + tdpsx)),
+      magdump: iff(magdump, (magdump + magdumpx)),
+      totaldump: iff(totaldump, (totaldump + totaldumpx)),
       shotdmg2,
-      dps,
-      tdps,
-      magdump,
-      totaldump,
-      dps2,
-      tdps2,
-      magdump2,
-      totaldump2,
+      dps2: iff(dps2, (dps2 + dpsx)),
+      tdps2: iff(tdps2, (tdps2 + tdpsx)),
+      magdump2: iff(magdump2, (magdump2 + magdumpx)),
+      totaldump2: iff(totaldump2, (totaldump2 + totaldumpx)),
+      shotdmgx,
+      dpsx,
+      tdpsx,
+      magdumpx,
+      totaldumpx,
       code,
       count,
       projectile,
@@ -587,8 +641,11 @@ async function loadData() {
     let shotdmg = 0
     let shotdmg2 = 0
     let maxRadius = [0, 0, 0]
+    let prev = void 0
     let subobjects = strat.attack?.map(({ type, name: ref, count }) => {
       const obj = byRef[type][ref]
+      const parent = prev
+      prev = obj
       const damage = obj.damage
       const n = (count || obj.pellets || 1)
       shotdmg += n * (damage?.dmg || 0)
@@ -601,6 +658,7 @@ async function loadData() {
       }
       return {
         ...(type === 'weapon' ? obj : {}),
+        parent,
         type,
         damage,
         [type]: obj,
@@ -641,7 +699,7 @@ async function loadData() {
   })
 
   locals.cats = Array.from(new Set(locals.weapons.map(wpn => wpn.category)))
-  locals.sources = data.sources.slice(0, -1)
+  locals.sources = data.sources
   readState()
   render()
 }
@@ -708,69 +766,108 @@ function toggleAction({
   render()
 }
 
+const defaultSettings = {
+  hh: [
+    'projectile',
+    'dps',
+    'dps2',
+  ],
+  hc: [
+    'Ability',
+    'Status',
+    'Mounted',
+  ],
+  hs: [],
+  scope: 'weapons',
+  lang: 'en',
+  collapseDamage: true,
+}
+
+function writeSubState(prop, obj, states) {
+  for(const [h, hide] of Object.entries(obj)) {
+    if(!hide) continue
+    if(defaultSettings[prop].includes(h)) continue
+    states.push(`${prop}[]=${h}`)
+  }
+  for(const [h, hide] of Object.entries(obj)) {
+    if(hide) continue
+    if(!defaultSettings[prop].includes(h)) continue
+    states.push(`!${prop}[]=${h}`)
+  }
+}
+
+function writePropState(prop, states) {
+  const v = locals[prop]
+  if(v !== defaultSettings[prop]) {
+    states.push(`${prop}=${v}`)
+  }
+}
+
 function writeState() {
-  const states = []
-  for(const [h, hide] of Object.entries(locals.hideHeaders)) {
-    if(!hide) continue
-    states.push(`hh[]=${h}`)
-  }
-  for(const [c, hide] of Object.entries(locals.hideCategories)) {
-    if(!hide) continue
-    states.push(`hc[]=${c}`)
-  }
-  for(const [s, hide] of Object.entries(locals.hideSources)) {
-    if(!hide) continue
-    states.push(`hs[]=${s}`)
-  }
-  if(locals.scope !== 'weapons') {
-    states.push(`scope=${locals.scope}`)
-  }
-  if(locals.lang !== 'en') {
-    states.push(`lang=${locals.lang}`)
-  }
+  const hashStates = []
+  const localStorageStates = []
+  writePropState('scope', hashStates)
+  writePropState('lang', hashStates)
+  writePropState('collapseDamage', localStorageStates)
+  writeSubState('hh', locals.hideHeaders, localStorageStates)
+  writeSubState('hs', locals.hideSources, localStorageStates)
+  writeSubState('hc', locals.hideCategories, localStorageStates)
+  // localStorage.hdSiteStates = localStorageStates.join('\n')
   try {
-    window.location.hash = '#' + states.sort().join('&')
+    window.location.hash = hashStates.join('&')
   } catch(err) {
     console.warn(err)
   }
 }
 
+function readPropState(prop, obj) {
+  console.log({ prop, obj })
+  return obj[prop] == null ? defaultSettings[prop] : obj[prop]
+}
+
+function readSubState(prop, obj) {
+  const cfg = {}
+  for(const unset of (defaultSettings[prop] || [])) {
+    cfg[unset] = true
+  }
+  for(const unset of (obj[`!${prop}[]`] || [])) {
+    cfg[unset] = true
+  }
+  for(const set of (obj[`${prop}[]`] || [])) {
+    cfg[set] = false
+  }
+  console.log({ prop, cfg })
+  return cfg
+}
+
 function readState() {
-  let states
+  let hashStates
   try {
     let hash = window.location.hash
-    if(!hash) {
-      hash = '#hc[]=Ability&hc[]=Status&hc[]=Mounted&hh[]=dps&hh[]=dps2'
-    }
-    states = hash.slice(1).split('&').map(kv => kv.split('='))
+    hashStates = hash.slice(1).split('&').map(kv => kv.split('='))
   } catch(err) {
     console.warn(err)
     return
   }
-  for(const [k, v] of states) {
-    switch(k) {
-      case 'hh[]': {
-        locals.hideHeaders[v] = true
-        break
-      }
-      case 'hc[]': {
-        locals.hideCategories[v] = true
-        break
-      }
-      case 'hs[]': {
-        locals.hideSources[v] = true
-        break
-      }
-      case 'scope': {
-        locals.scope = v.toLowerCase()
-        break
-      }
-      case 'lang': {
-        locals.lang = v.toLowerCase()
-        break
-      }
-    }
+  const set = {}
+  const localStorageStates = (localStorage.hdSiteStates || '')
+    .split('\n')
+    .map(kv => kv.split('='))
+  for(const [k, v] of (hashStates || [])) {
+    set[k] = v
   }
+  for(const [k, v] of (localStorageStates || [])) {
+    if(!set[k]) {
+      set[k] = []
+    }
+    set[k].push(v)
+  }
+  locals.scope = readPropState('scope', set)
+  locals.lang = readPropState('lang', set)
+  locals.collapseDamage = readPropState('collapseDamage', set)
+  locals.hideHeaders = readSubState('hh', set, locals.hideHeaders)
+  locals.hideSources = readSubState('hs', set, locals.hideSources)
+  locals.hideCategories = readSubState('hc', set, locals.hideCategories)
   // Sanity check important values
   if(locals.scope !== 'weapons' && !locals.scopes.includes(locals.scope)) {
     locals.scope = 'weapons'
@@ -819,6 +916,12 @@ window.toggleCollapseDamage = function toggleNerdMode(ev) {
 window.switchScope = function switchScope(scope) {
   locals.scope = scope
   writeState()
+  render()
+}
+
+window.resetState = function resetState(scope) {
+  localStorage.hdSiteStates = ''
+  readState()
   render()
 }
 
