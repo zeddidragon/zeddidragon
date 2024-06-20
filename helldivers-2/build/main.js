@@ -4,13 +4,20 @@ function pug_classes_array(r,a){for(var s,e="",u="",c=Array.isArray(a),g=0;g<r.l
 function pug_classes_object(r){var a="",n="";for(var o in r)o&&r[o]&&pug_has_own_property.call(r,o)&&(a=a+n+o,n=" ");return a}
 function pug_escape(e){var a=""+e,t=pug_match_html.exec(a);if(!t)return e;var r,c,n,s="";for(r=t.index,c=0;r<a.length;r++){switch(a.charCodeAt(r)){case 34:n="&quot;";break;case 38:n="&amp;";break;case 60:n="&lt;";break;case 62:n="&gt;";break;default:continue}c!==r&&(s+=a.substring(c,r)),c=r+1,s+=n}return c!==r?s+a.substring(c,r):s}
 var pug_has_own_property=Object.prototype.hasOwnProperty;
-var pug_match_html=/["&<>]/;function template(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (catClass, cats, collapseDamage, colspans, count, effect, element, full, headerClass, headers, hideHeaders, hideName, id, langs, objects, roundStart, scope, scopeClass, scopes, showIds, sourceClass, sources, subObj, subScope, t, wikiLink) {pug_mixins["weaponsHeader"] = pug_interp = function(){
+var pug_match_html=/["&<>]/;function template(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (catClass, cats, collapseDamage, colspans, count, effect, element, full, getHeader, getRow, headerClass, headers, hideHeaders, hideName, id, isWeaponScope, langs, objects, roundStart, scope, scopeClass, scopes, showIds, sourceClass, sources, subObj, subScope, t, wikiLink) {pug_mixins["weaponsHeader"] = pug_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 pug_html = pug_html + "\u003Cth" + (" class=\"weapon idx\""+pug_attr("title", t('table.th.wpn', 'idx', 'Internal order'), true, false)) + "\u003E#\u003C\u002Fth\u003E";
 if (!hideHeaders.weapon) {
 pug_html = pug_html + "\u003Cth" + (" class=\"weapons source\""+pug_attr("title", t('table.th.wpn', 'source'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'source')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon category\""+pug_attr("title", t('table.th.wpn', 'category'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'category')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon code\""+pug_attr("title", t('table.th.wpn', 'code'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'code')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
 }
-pug_html = pug_html + "\u003Cth" + (" class=\"weapon name\""+pug_attr("title", t('table.th.wpn', 'name'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'weapon')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon damage\""+pug_attr("title", t('table.th.dmg', 'dmgs3'), true, false)+pug_attr("colspan", collapseDamage ? 2 : 3, true, false)) + "\u003E\u003Cinput" + (" type=\"checkbox\""+pug_attr("checked", collapseDamage, true, false)+" onclick=\"toggleCollapseDamage(event)\"") + "\u002F\u003E\u003Cspan\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'damage')) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon shotdmg2\""+pug_attr("title", t('table.th.dmg', 'dmg2'), true, false)) + "\u003E\u003Csub\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label.sub', 'dmg2')) ? "" : pug_interp)) + "\u003C\u002Fsub\u003E\u003C\u002Fth\u003E";
+pug_html = pug_html + "\u003Cth" + (" class=\"weapon name\""+pug_attr("title", t('table.th.wpn', 'name'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'weapon')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
+if (collapseDamage) {
+pug_html = pug_html + "\u003Cth" + (" class=\"weapon damage\""+pug_attr("title", t('table.th.dmg', 'dmg'), true, false)+" colspan=\"2\"") + "\u003E\u003Cspan\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'damage')) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fth\u003E";
+}
+else {
+pug_html = pug_html + "\u003Cth" + (" class=\"weapon damage\""+pug_attr("title", t('table.th.dmg', 'dmgs3'), true, false)+" colspan=\"3\"") + "\u003E\u003Cspan\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'damage')) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fth\u003E";
+}
+pug_html = pug_html + "\u003Cth" + (" class=\"weapon shotdmg2\""+pug_attr("title", t('table.th.dmg', 'dmg2'), true, false)) + "\u003E\u003Csub\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label.sub', 'dmg2')) ? "" : pug_interp)) + "\u003C\u002Fsub\u003E\u003C\u002Fth\u003E";
 if (collapseDamage) {
 pug_html = pug_html + "\u003Cth" + (" class=\"weapon shotdmgx\""+pug_attr("title", t('table.th.dmg', 'dmgx'), true, false)) + "\u003E\u003Csub\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label.sub', 'dmgx')) ? "" : pug_interp)) + "\u003C\u002Fsub\u003E\u003C\u002Fth\u003E";
 }
@@ -405,7 +412,7 @@ pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["scope",scope
 }).call(this);
 
 pug_html = pug_html + "\u003C\u002Ful\u003E\u003C\u002Fdiv\u003E";
-if (scope === 'weapons') {
+if (isWeaponScope) {
 pug_html = pug_html + "\u003Cdiv class=\"filter-row\"\u003E\u003Cul class=\"sources\"\u003E";
 // iterate sources
 ;(function(){
@@ -466,11 +473,15 @@ pug_html = pug_html + "\u003Cli" + (pug_attr("class", pug_classes(["colfilter",h
 pug_html = pug_html + "\u003C\u002Ful\u003E\u003C\u002Fdiv\u003E";
 }
 pug_html = pug_html + "\u003C\u002Fdiv\u003E\u003C\u002Fheader\u003E\u003Ctable\u003E\u003Cthead\u003E\u003Ctr\u003E";
-pug_mixins[`${scope}Header`](full);
+const header = getHeader(scope)
+pug_mixins[header](full);
 if (subScope) {
-pug_mixins[`${subScope}Header`](hideName);
+const subHeader = getHeader(subScope, true)
+pug_mixins[subHeader](hideName);
 }
 pug_html = pug_html + "\u003C\u002Ftr\u003E\u003C\u002Fthead\u003E\u003Ctbody\u003E";
+const row = getRow(scope)
+const subRow = getRow(subScope, true)
 // iterate objects(scope)
 ;(function(){
   var $$obj = objects(scope);
@@ -478,11 +489,11 @@ pug_html = pug_html + "\u003C\u002Ftr\u003E\u003C\u002Fthead\u003E\u003Ctbody\u0
       for (var pug_index5 = 0, $$l = $$obj.length; pug_index5 < $$l; pug_index5++) {
         var obj = $$obj[pug_index5];
 pug_html = pug_html + "\u003Ctr\u003E";
-pug_mixins[`${scope}Row`](obj, full);
-if (subScope) {
+pug_mixins[row](obj, full);
+if (subRow) {
 let obj2 = subObj(obj)
 if (obj2) {
-pug_mixins[`${subScope}Row`](obj2, hideName);
+pug_mixins[subRow](obj2, hideName);
 }
 else {
 pug_html = pug_html + "\u003Ctd" + (" class=\"damage-filler\""+pug_attr("colspan", colspans.damagesHideName, true, false)) + "\u003E\u003C\u002Ftd\u003E";
@@ -496,11 +507,11 @@ pug_html = pug_html + "\u003C\u002Ftr\u003E";
       $$l++;
       var obj = $$obj[pug_index5];
 pug_html = pug_html + "\u003Ctr\u003E";
-pug_mixins[`${scope}Row`](obj, full);
-if (subScope) {
+pug_mixins[row](obj, full);
+if (subRow) {
 let obj2 = subObj(obj)
 if (obj2) {
-pug_mixins[`${subScope}Row`](obj2, hideName);
+pug_mixins[subRow](obj2, hideName);
 }
 else {
 pug_html = pug_html + "\u003Ctd" + (" class=\"damage-filler\""+pug_attr("colspan", colspans.damagesHideName, true, false)) + "\u003E\u003C\u002Ftd\u003E";
@@ -514,4 +525,4 @@ pug_html = pug_html + "\u003C\u002Ftr\u003E";
 pug_html = pug_html + "\u003C\u002Ftbody\u003E\u003C\u002Ftable\u003E";
 if (scope === 'weapons') {
 pug_html = pug_html + "\u003Cul\u003E\u003Cli\u003E" + (pug_escape(null == (pug_interp = t('explanations', 'reload')) ? "" : pug_interp)) + "\u003C\u002Fli\u003E\u003Cli\u003E" + (pug_escape(null == (pug_interp = t('explanations', 'startingMagsDisclaimer')) ? "" : pug_interp)) + "\u003C\u002Fli\u003E\u003Cli\u003E" + (pug_escape(null == (pug_interp = t('explanations', 'laserFire')) ? "" : pug_interp)) + "\u003C\u002Fli\u003E\u003C\u002Ful\u003E";
-}}.call(this,"catClass" in locals_for_with?locals_for_with.catClass:typeof catClass!=="undefined"?catClass:undefined,"cats" in locals_for_with?locals_for_with.cats:typeof cats!=="undefined"?cats:undefined,"collapseDamage" in locals_for_with?locals_for_with.collapseDamage:typeof collapseDamage!=="undefined"?collapseDamage:undefined,"colspans" in locals_for_with?locals_for_with.colspans:typeof colspans!=="undefined"?colspans:undefined,"count" in locals_for_with?locals_for_with.count:typeof count!=="undefined"?count:undefined,"effect" in locals_for_with?locals_for_with.effect:typeof effect!=="undefined"?effect:undefined,"element" in locals_for_with?locals_for_with.element:typeof element!=="undefined"?element:undefined,"full" in locals_for_with?locals_for_with.full:typeof full!=="undefined"?full:undefined,"headerClass" in locals_for_with?locals_for_with.headerClass:typeof headerClass!=="undefined"?headerClass:undefined,"headers" in locals_for_with?locals_for_with.headers:typeof headers!=="undefined"?headers:undefined,"hideHeaders" in locals_for_with?locals_for_with.hideHeaders:typeof hideHeaders!=="undefined"?hideHeaders:undefined,"hideName" in locals_for_with?locals_for_with.hideName:typeof hideName!=="undefined"?hideName:undefined,"id" in locals_for_with?locals_for_with.id:typeof id!=="undefined"?id:undefined,"langs" in locals_for_with?locals_for_with.langs:typeof langs!=="undefined"?langs:undefined,"objects" in locals_for_with?locals_for_with.objects:typeof objects!=="undefined"?objects:undefined,"roundStart" in locals_for_with?locals_for_with.roundStart:typeof roundStart!=="undefined"?roundStart:undefined,"scope" in locals_for_with?locals_for_with.scope:typeof scope!=="undefined"?scope:undefined,"scopeClass" in locals_for_with?locals_for_with.scopeClass:typeof scopeClass!=="undefined"?scopeClass:undefined,"scopes" in locals_for_with?locals_for_with.scopes:typeof scopes!=="undefined"?scopes:undefined,"showIds" in locals_for_with?locals_for_with.showIds:typeof showIds!=="undefined"?showIds:undefined,"sourceClass" in locals_for_with?locals_for_with.sourceClass:typeof sourceClass!=="undefined"?sourceClass:undefined,"sources" in locals_for_with?locals_for_with.sources:typeof sources!=="undefined"?sources:undefined,"subObj" in locals_for_with?locals_for_with.subObj:typeof subObj!=="undefined"?subObj:undefined,"subScope" in locals_for_with?locals_for_with.subScope:typeof subScope!=="undefined"?subScope:undefined,"t" in locals_for_with?locals_for_with.t:typeof t!=="undefined"?t:undefined,"wikiLink" in locals_for_with?locals_for_with.wikiLink:typeof wikiLink!=="undefined"?wikiLink:undefined));;return pug_html;}
+}}.call(this,"catClass" in locals_for_with?locals_for_with.catClass:typeof catClass!=="undefined"?catClass:undefined,"cats" in locals_for_with?locals_for_with.cats:typeof cats!=="undefined"?cats:undefined,"collapseDamage" in locals_for_with?locals_for_with.collapseDamage:typeof collapseDamage!=="undefined"?collapseDamage:undefined,"colspans" in locals_for_with?locals_for_with.colspans:typeof colspans!=="undefined"?colspans:undefined,"count" in locals_for_with?locals_for_with.count:typeof count!=="undefined"?count:undefined,"effect" in locals_for_with?locals_for_with.effect:typeof effect!=="undefined"?effect:undefined,"element" in locals_for_with?locals_for_with.element:typeof element!=="undefined"?element:undefined,"full" in locals_for_with?locals_for_with.full:typeof full!=="undefined"?full:undefined,"getHeader" in locals_for_with?locals_for_with.getHeader:typeof getHeader!=="undefined"?getHeader:undefined,"getRow" in locals_for_with?locals_for_with.getRow:typeof getRow!=="undefined"?getRow:undefined,"headerClass" in locals_for_with?locals_for_with.headerClass:typeof headerClass!=="undefined"?headerClass:undefined,"headers" in locals_for_with?locals_for_with.headers:typeof headers!=="undefined"?headers:undefined,"hideHeaders" in locals_for_with?locals_for_with.hideHeaders:typeof hideHeaders!=="undefined"?hideHeaders:undefined,"hideName" in locals_for_with?locals_for_with.hideName:typeof hideName!=="undefined"?hideName:undefined,"id" in locals_for_with?locals_for_with.id:typeof id!=="undefined"?id:undefined,"isWeaponScope" in locals_for_with?locals_for_with.isWeaponScope:typeof isWeaponScope!=="undefined"?isWeaponScope:undefined,"langs" in locals_for_with?locals_for_with.langs:typeof langs!=="undefined"?langs:undefined,"objects" in locals_for_with?locals_for_with.objects:typeof objects!=="undefined"?objects:undefined,"roundStart" in locals_for_with?locals_for_with.roundStart:typeof roundStart!=="undefined"?roundStart:undefined,"scope" in locals_for_with?locals_for_with.scope:typeof scope!=="undefined"?scope:undefined,"scopeClass" in locals_for_with?locals_for_with.scopeClass:typeof scopeClass!=="undefined"?scopeClass:undefined,"scopes" in locals_for_with?locals_for_with.scopes:typeof scopes!=="undefined"?scopes:undefined,"showIds" in locals_for_with?locals_for_with.showIds:typeof showIds!=="undefined"?showIds:undefined,"sourceClass" in locals_for_with?locals_for_with.sourceClass:typeof sourceClass!=="undefined"?sourceClass:undefined,"sources" in locals_for_with?locals_for_with.sources:typeof sources!=="undefined"?sources:undefined,"subObj" in locals_for_with?locals_for_with.subObj:typeof subObj!=="undefined"?subObj:undefined,"subScope" in locals_for_with?locals_for_with.subScope:typeof subScope!=="undefined"?subScope:undefined,"t" in locals_for_with?locals_for_with.t:typeof t!=="undefined"?t:undefined,"wikiLink" in locals_for_with?locals_for_with.wikiLink:typeof wikiLink!=="undefined"?wikiLink:undefined));;return pug_html;}
