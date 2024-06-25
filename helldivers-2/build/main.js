@@ -357,7 +357,12 @@ if (opts.full && !opts.hideName) {
 pug_html = pug_html + "\u003Ctd class=\"damage name\"\u003E" + (pug_escape(null == (pug_interp = dmg.name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 }
 if (opts.full) {
-pug_html = pug_html + "\u003Ctd" + (pug_attr("class", pug_classes(["damage","dmgtype",{muted: !dmg.type }], [false,false,true]), false, false)+pug_attr("title", t('dmg.types.full', dmg.type), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('dmg.types', dmg.type)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd" + (pug_attr("class", pug_classes(["damage","dmg",{ xdmg: opts.explosive }], [false,false,true]), false, false)) + "\u003E" + (pug_escape(null == (pug_interp = dmg.dmg) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd" + (pug_attr("class", pug_classes(["damage","dmg2",{ xdmg: opts.explosive }], [false,false,true]), false, false)) + "\u003E" + (pug_escape(null == (pug_interp = dmg.dmg2) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+pug_html = pug_html + "\u003Ctd" + (pug_attr("class", pug_classes(["damage","dmgtype",{muted: !dmg.type }], [false,false,true]), false, false)+pug_attr("title", t('dmg.types.full', dmg.type), true, false)) + "\u003E";
+if (dmg.type) {
+var el = element(dmg)
+pug_html = pug_html + "\u003Cspan" + (" class=\"dmgtype\""+pug_attr("title", t('dmg.types.full', el), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('dmg.types', el)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+}
+pug_html = pug_html + "\u003C\u002Ftd\u003E\u003Ctd" + (pug_attr("class", pug_classes(["damage","dmg",{ xdmg: opts.explosive }], [false,false,true]), false, false)) + "\u003E" + (pug_escape(null == (pug_interp = dmg.dmg) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd" + (pug_attr("class", pug_classes(["damage","dmg2",{ xdmg: opts.explosive }], [false,false,true]), false, false)) + "\u003E" + (pug_escape(null == (pug_interp = dmg.dmg2) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 i = 0
 while (i < (opts.apCount || 4)) {
 i++
