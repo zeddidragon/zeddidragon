@@ -23,7 +23,7 @@ pug_html = pug_html + "\u003Cth" + (" class=\"weapon shotdmgx\""+pug_attr("title
 }
 pug_html = pug_html + "\u003Cth" + (" class=\"damage ap\""+pug_attr("title", t('table.th.dmg', 'ap'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'ap')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon rpm\""+pug_attr("title", t('table.th.wpn', 'rpm'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'rpm')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
 if (!hideHeaders.weapon) {
-pug_html = pug_html + "\u003Cth" + (" class=\"weapon reload\""+pug_attr("title", t('table.th.wpn', 'reloads3'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'rel')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon cap\""+pug_attr("title", t('table.th.wpn', 'cap'), true, false)+" colspan=\"2\"") + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'cap')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon spare\""+pug_attr("title", t('table.th.wpn', 'spare4'), true, false)+" colspan=\"2\"") + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'spare4')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon spread\""+pug_attr("title", t('table.th.wpn', 'spread'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'spread')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon recoil\""+pug_attr("title", t('table.th.wpn', 'recoil'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'recoil')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon ergonomics\""+pug_attr("title", t('table.th.wpn', 'ergonomics'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'ergonomics')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
+pug_html = pug_html + "\u003Cth" + (" class=\"weapon reload\""+pug_attr("title", t('table.th.wpn', 'reloads3'), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'rel')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon cap\""+pug_attr("title", t('table.th.wpn', 'cap'), true, false)+" colspan=\"2\"") + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'cap')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E\u003Cth" + (" class=\"weapon spare\""+pug_attr("title", t('table.th.wpn', 'spare4'), true, false)+" colspan=\"2\"") + "\u003E" + (pug_escape(null == (pug_interp = t('table.th.wpn.label', 'spare4')) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
 }
 if (!hideHeaders.damage) {
 pug_mixins["damagesHeader"]({ apCount: 1, effectsCount: 1 });
@@ -108,13 +108,13 @@ if (wpn.reloadone) {
 pug_html = pug_html + "\u003Cspan" + (" class=\"reload-one\""+pug_attr("title", t('table.td.reload', '1', "Reload 1 round"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.reloadone.toFixed(1)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 if (wpn.reloadx) {
-pug_html = pug_html + "\u003Cspan" + (" class=\"reload-x pre-slash\""+pug_attr("title", t('table.td.reload', 'x', `Reload max rounds`), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.reloadx.toFixed(1)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+pug_html = pug_html + "\u003Cspan" + (" class=\"reload-x\""+pug_attr("title", t('table.td.reload', 'x', `Reload max rounds`), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.reloadx.toFixed(1)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 if (wpn.reload) {
 pug_html = pug_html + "\u003Cspan" + (" class=\"reload-main\""+pug_attr("title", t('table.td.reload', 'empty', "Reload from empty"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.reload.toFixed(1)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 if (wpn.reloadearly) {
-pug_html = pug_html + "\u003Cspan" + (" class=\"reload-early post-slash\""+pug_attr("title", t('table.td.reload', 'early', "Early Reload (not empty)"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.reloadearly.toFixed(1)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+pug_html = pug_html + "\u003Cspan" + (" class=\"reload-early\""+pug_attr("title", t('table.td.reload', 'early', "Early Reload (not empty)"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.reloadearly.toFixed(1)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 pug_html = pug_html + "\u003C\u002Ftd\u003E\u003Ctd class=\"weapon cap\"\u003E" + (pug_escape(null == (pug_interp = wpn.cap || wpn.limit) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\u003Ctd class=\"weapon capextra\"\u003E";
 if (wpn.limit) {
@@ -126,33 +126,25 @@ pug_html = pug_html + "\u003Csup class=\"cap-post cap-plus\"\u003E" + (pug_escap
 }
 pug_html = pug_html + "\u003C\u002Ftd\u003E\u003Ctd class=\"wepaon spare\"\u003E";
 if (wpn.clips) {
-pug_html = pug_html + "\u003Cspan" + (" class=\"clipsize\""+pug_attr("title", t('table.td.spare', 'clipsize', "Rounds in Clip"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.clipsize) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"clipstart\""+pug_attr("title", t('table.td.spare', 'clipstart', "Starting Clips"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.clipstart) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"clips post-slash\""+pug_attr("title", t('table.td.spare', 'clipsize', "Max Clips"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.clips) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+pug_html = pug_html + "\u003Cspan" + (" class=\"clipsize\""+pug_attr("title", t('table.td.spare', 'clipsize', "Rounds in Clip"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.clipsize) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"clipstart\""+pug_attr("title", t('table.td.spare', 'clipstart', "Starting Clips"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.clipstart) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"clips\""+pug_attr("title", t('table.td.spare', 'clipsize', "Max Clips"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.clips) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 if (wpn.rounds) {
-pug_html = pug_html + "\u003Cspan" + (" class=\"roundstart pre-slash\""+pug_attr("title", t('table.td.spare', 'roundstart', "Starting Rounds"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = roundStart(wpn)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"rounds\""+pug_attr("title", t('table.td.spare', 'rounds', "Max Spare Rounds"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.rounds) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+pug_html = pug_html + "\u003Cspan" + (" class=\"roundstart\""+pug_attr("title", t('table.td.spare', 'roundstart', "Starting Rounds"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = roundStart(wpn)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"rounds\""+pug_attr("title", t('table.td.spare', 'rounds', "Max Spare Rounds"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.rounds) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 if (wpn.mags) {
-pug_html = pug_html + "\u003Cspan" + (" class=\"magstart pre-slash\""+pug_attr("title", t('table.td.spare', 'magstart', "Starting Mags"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.magstart || wpn.mags) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"mags\""+pug_attr("title", t('table.td.spare', 'mags', "Max Mags"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.mags) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+pug_html = pug_html + "\u003Cspan" + (" class=\"magstart\""+pug_attr("title", t('table.td.spare', 'magstart', "Starting Mags"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.magstart || wpn.mags) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"mags\""+pug_attr("title", t('table.td.spare', 'mags', "Max Mags"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.mags) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 pug_html = pug_html + "\u003C\u002Ftd\u003E\u003Ctd class=\"weapon pickup\"\u003E";
 if (wpn.clipsupply) {
-pug_html = pug_html + "\u003Cspan" + (" class=\"clipsupply\""+pug_attr("title", t('table.td.pickup', 'clipsupply', "Clips From Supply"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.clipsupply) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"clipsbox post-slash\""+pug_attr("title", t('table.td.pickup', 'clipsbox', "Clips From Box"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.clipsbox) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+pug_html = pug_html + "\u003Cspan" + (" class=\"clipsupply\""+pug_attr("title", t('table.td.pickup', 'clipsupply', "Clips From Supply"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.clipsupply) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"clipsbox\""+pug_attr("title", t('table.td.pickup', 'clipsbox', "Clips From Box"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.clipsbox) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 if (wpn.roundsupply) {
-pug_html = pug_html + "\u003Cspan" + (" class=\"roundsupply\""+pug_attr("title", t('table.td.pickup', 'roundsupply', "Rounds From Supply"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.roundsupply) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"roundsbox post-slash\""+pug_attr("title", t('table.td.pickup', 'roundsbox', "Rounds From Box"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.roundsbox) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+pug_html = pug_html + "\u003Cspan" + (" class=\"roundsupply\""+pug_attr("title", t('table.td.pickup', 'roundsupply', "Rounds From Supply"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.roundsupply) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"roundsbox\""+pug_attr("title", t('table.td.pickup', 'roundsbox', "Rounds From Box"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.roundsbox) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 if (wpn.supply) {
-pug_html = pug_html + "\u003Cspan" + (" class=\"supply\""+pug_attr("title", t('table.td.pickup', 'supply', "Mags From Supply"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.supply) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"box post-slash\""+pug_attr("title", t('table.td.pickup', 'box', "Mags From Box"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.box) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+pug_html = pug_html + "\u003Cspan" + (" class=\"supply\""+pug_attr("title", t('table.td.pickup', 'supply', "Mags From Supply"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.supply) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan" + (" class=\"box\""+pug_attr("title", t('table.td.pickup', 'box', "Mags From Box"), true, false)) + "\u003E" + (pug_escape(null == (pug_interp = wpn.box) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
-pug_html = pug_html + "\u003C\u002Ftd\u003E\u003Ctd class=\"weapon spread\"\u003E";
-if (wpn.spreadxy) {
-pug_html = pug_html + "\u003Cspan class=\"spread-y pre-slash\"\u003E" + (pug_escape(null == (pug_interp = wpn.spreadxy.x) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cpan class=\"spread-y\"\u003E" + (pug_escape(null == (pug_interp = wpn.spreadxy.y) ? "" : pug_interp)) + "\u003C\u002Fpan\u003E";
-}
-pug_html = pug_html + "\u003C\u002Ftd\u003E\u003Ctd class=\"weapon recoil\"\u003E";
-if (wpn.recoilxy) {
-pug_html = pug_html + "\u003Cspan class=\"recoil-x pre-slash\"\u003E" + (pug_escape(null == (pug_interp = wpn.recoilxy.x) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003Cspan class=\"recoil-y\"\u003E" + (pug_escape(null == (pug_interp = wpn.recoilxy.y) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
-}
-pug_html = pug_html + "\u003C\u002Ftd\u003E\u003Ctd class=\"weapon ergonomics\"\u003E" + (pug_escape(null == (pug_interp = wpn.ergonomics) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+pug_html = pug_html + "\u003C\u002Ftd\u003E";
 }
 if (!hideHeaders.damage) {
 if (wpn.damage) {
