@@ -116,7 +116,7 @@ function pickLang(lang) {
 
 function pickGame(game) {
   if(!games.includes(game)) {
-    game = '5'
+    game = '6'
   }
   const gameChanged = active.game != game
   const button = document
@@ -627,9 +627,6 @@ function populateWeaponStats(ch, cat) {
         const cell = $('td')
         let contents = header.cb(weapon)
         cell.classList.add(header.label)
-        if(header.headerClass) {
-          cell.classList.add(header.headerClass)
-        }
         row.appendChild(cell)
 
         if(header.label === 'Dmg') {
@@ -812,14 +809,6 @@ function shotDamage(wpn) {
   )
 }
 
-function critAvg(wpn) {
-  let dmg = wpn.damage
-  if(wpn.critOver) {
-    dmg += (wpn.damage2 - dmg) / wpn.critOver
-  }
-  return dmg * (wpn.count || 1)
-}
-
 function burstDamage(wpn) {
   return shotDamage(wpn) * (wpn.burst || 1)
 }
@@ -834,7 +823,7 @@ function magDamage(wpn) {
     const dmgCurve = wpn.ammoDamageCurve || 0
     const countCurve = wpn.ammoCountCurve || 0
     let sum = 0
-    for(let i = 0; i < wpn.ammo; i++) {
+    for(let i = 0; i < wpn.ammo; i += (wpn.drain || 1)) {
       const x = (wpn.ammo - i) / wpn.ammo
       const count = Math.ceil(wpn.count * Math.pow(x, countCurve)) || 1
       const dmg = wpn.damage * Math.pow(x, dmgCurve)
@@ -842,19 +831,7 @@ function magDamage(wpn) {
     }
     return sum
   }
-  if(wpn.growth?.length) {
-    let i = 0
-    let dmg = critAvg(wpn)
-    let sum  = 0
-    for(const step of wpn.growth) {
-      sum += (step.n - i) * dmg
-      dmg = step.damage * (wpn.count || 1)
-      i = step.n
-    }
-    sum += dmg * (wpn.ammo - i)
-    return sum
-  }
-  return shotDamage(wpn) * wpn.ammo
+  return shotDamage(wpn) * Math.ceil(wpn.ammo / (wpn.drain || 1))
 }
 
 function falloff(wpn, dmg) {
@@ -868,7 +845,7 @@ function quickDps(wpn) {
   const bDmg = burstDamage(wpn)
   const bTime = burstTime(wpn)
   const dps = (bDmg * FPS / bTime)
-  return dps
+  return dps.toFixed(1)
 }
 
 function tacticalDps(wpn) {
@@ -1010,94 +987,12 @@ const headers = [{
         const upper = limits[limits.length - 1]
         return upper > 0 && upper >= level
       })
-    const display = Math.max(0, level)
     if(!difficulty) {
-      return display
+      return level
     }
     el.classList.add(difficulty.name)
-    el.textContent = display
+    el.textContent = Math.max(0, level)
     return el
-  },
-}, {
-  id: 'rank',
-  label: 'Rank',
-  tooltip: 'Rank',
-  cb: wpn => {
-    const { rank } = wpn
-    if(rank == null) {
-      return '-'
-    }
-    const el = $('div')
-    el.classList.add(`rank-${rank}`)
-    el.textContent = rank
-    return el
-  },
-}, {
-  id: 'remarks',
-  label: 'Remarks',
-  tooltip: 'Special Attributes',
-  cb: wpn => {
-    if(!wpn.tags?.length) {
-      return ''
-    }
-    const tags = [wpn.effect, ...wpn.tags]
-    const remarks = tags.reduce((acc, tag) => {
-      if(tag === 'reload_quick') {
-        // Ignore
-      } else if(tag === 'reload_none') {
-        // Ignore
-      } else if(tag === 'reload_auto') {
-        // Ignore
-      } else if(tag === 'reload_charge') {
-        // Ignore
-      } else if(tag === 'delay_burst') {
-        acc.push(`+${wpn.damage2} Dmg <30m`)
-      } else if(tag === 'delay_blast') {
-        acc.push(`Timer`)
-      } else if(tag === 'delay') {
-        acc.push('Windup')
-      } else if(tag === 'slow_aim') {
-        acc.push('Slows Aim')
-      } else if(tag === 'no_move_aim') {
-        acc.push('Immobile')
-      } else if(tag === 'energyconsume') {
-        acc.push('Uses Energy')
-      } else if(tag === 'bouncing') {
-        acc.push('Bouncing')
-      } else if(tag === 'growth_range') {
-        // acc.push('→Range')
-      } else if(tag === 'growth_damage') {
-        // acc.push('→Damage')
-      } else if(tag === 'pushback') {
-        acc.push('Pushback')
-      } else if(tag === 'scope') {
-        acc.push('Scope')
-      } else if(tag === 'roulette') {
-        acc.push(`1/${wpn.critOver} of ${wpn.damage2}`)
-      } else if(tag === 'puncher') {
-        acc.push(`Explodes`)
-      } else if(tag === 'recoil') {
-        acc.push('Recoil')
-      } else if(tag === 'recovertime') {
-        acc.push('Heals')
-      } else if(tag === 'tracer') {
-        acc.push('Flare (Frightens)')
-      } else if(tag === 'no_move') {
-        acc.push('Immobile')
-      } else if(tag === 'sticky') {
-        acc.push('Sticky')
-      } else if(tag === 'shock') {
-        // acc.push('Shock')
-      } else if(tag === 'frozen') {
-        // acc.push('Freeze')
-      } else if(tag === 'flame') {
-        // acc.push('Burn')
-      } else if(tag) {
-        acc.push(tag)
-      }
-      return acc
-    }, [])
-    return remarks.join(', ')
   },
 }, {
   id: 'name',
@@ -1205,15 +1100,40 @@ const headers = [{
     return '-'
   },
 }, {
+  id: 'drain',
+  label: 'Drain',
+  tooltip: 'Ammo Consumed Per Attack',
+  cb: wpn => {
+    if(wpn.drain) {
+      return wpn.drain
+    }
+    return '-'
+  },
+}, {
+  id: 'boost',
+  label: 'Boost',
+  tooltip: 'Boost',
+  starProp: 'damage',
+  cb: wpn => {
+    if(wpn.supportType) {
+      return `${(wpn.damage * 100).toFixed(2)}%`
+    }
+    return '-'
+  },
+}, {
   id: 'defense',
   label: 'Def',
   tooltip: 'Defense',
+  starProp: 'damage',
   cb: wpn => {
     if(wpn.shieldDamageReduction) {
       return `${Math.round((1 - wpn.shieldDamageReduction) * 100)}%`
     }
     if(wpn.defense) {
       return `${wpn.defense}%`
+    }
+    if(wpn.supportType === 'guard') {
+      return `${(wpn.damage * 100).toFixed(2)}%`
     }
     return '-'
   },
@@ -1255,9 +1175,6 @@ const headers = [{
     if(!wpn.damage) {
       return '-'
     }
-    if(wpn.damage2 && wpn.tags?.includes('puncher')) {
-      return `${wpn.damage} | ${wpn.damage2} x ${wpn.count} `
-    }
     if(['power', 'guard'].includes(wpn.supportType)) {
       return `${(+wpn.damage).toFixed(2)}`
     }
@@ -1267,12 +1184,6 @@ const headers = [{
     let dmg = +Math.abs(wpn.damage).toFixed(1)
     if(wpn.falloff) {
       dmg = falloff(wpn, dmg)
-    }
-    if(wpn.growth) {
-      const maxDmg = wpn.growth[wpn.growth.length - 1].damage
-      if(maxDmg > dmg) {
-        dmg = `${dmg}→${maxDmg}`
-      }
     }
     if(wpn.count > 1) {
       dmg = `${dmg} x ${wpn.count}`
@@ -1309,72 +1220,6 @@ const headers = [{
     return +Math.abs(dmg * wpn.duration).toFixed(1)
   },
 }, {
-  id: 'damageType',
-  label: 'T',
-  tooltip: 'Damage Type',
-  cb: wpn => {
-    const tag = document.createElement('span')
-    tag.classList.add('damage-type')
-    tag.classList.add(wpn.damageType)
-    switch(wpn.damageType) {
-      case 'physical': {
-        tag.textContent = 'P'
-        return tag
-      }
-      case 'optics': {
-        tag.textContent = 'O'
-        return tag
-      }
-      case 'flame': {
-        tag.textContent = 'F'
-        return tag
-      }
-      default: 
-        return '-'
-    }
-  },
-}, {
-  id: 'effect',
-  label: 'FX',
-  tooltip: 'Status Effect',
-  cb: wpn => {
-    if(!wpn.effect) {
-      return '-'
-    }
-    const tag = document.createElement('span')
-    tag.classList.add('status-effect')
-    tag.classList.add(wpn.effect)
-    switch(wpn.effect) {
-      case 'flame': {
-        tag.textContent = 'Fire'
-        break
-      }
-      case 'frozen': {
-        tag.textContent = 'Freeze'
-        break
-      }
-      case 'shock': {
-        tag.textContent = 'Shock'
-        break
-      }
-      case 'poison': {
-        tag.textContent = 'Poison'
-        break
-      }
-      case 'recover': {
-        tag.textContent = 'Heal'
-        break
-      }
-      case 'recovertime': {
-        tag.textContent = 'Regen'
-        break
-      }
-      default: 
-        tag.textContent = wpn.effect
-    }
-    return tag
-  },
-}, {
   id: 'shots',
   label: 'Shots',
   tooltip: 'Shots',
@@ -1383,6 +1228,13 @@ const headers = [{
       return `${wpn.units} x ${wpn.shots || 1} `
     }
     return wpn.shots || 1
+  },
+}, {
+  id: 'units',
+  label: 'Units',
+  tooltip: 'Number of Units',
+  cb: wpn => {
+    return wpn.units || 1
   },
 }, {
   id: 'radius',
@@ -1418,11 +1270,8 @@ const headers = [{
   tooltip: 'Rate of Fire',
   starProp: 'interval',
   cb: wpn => {
-    if(wpn.burst > 1 && wpn.rof) {
-      return `${wpn.rof.toFixed(1)} x ${wpn.burst}`
-    }
     if(wpn.rof) {
-      return wpn.rof.toFixed(1)
+      return wpn.rof
     }
     const rof = +(FPS / (wpn.interval || 1)).toFixed(2)
     if(wpn.category === 'grenade' && !wpn.reload) {
@@ -1443,8 +1292,7 @@ const headers = [{
     if(wpn.category === 'short' && wpn.burst > 1) {
       return `- x ${wpn.burst}`
     }
-    const isLockTime = wpn.lockTime || wpn.lockTimeSeconds
-    if(wpn.category === 'missile' && isLockTime && wpn.burstRate) {
+    if(wpn.category === 'missile' && wpn.lockTime && wpn.burstRate) {
       return (FPS / wpn.burstRate).toFixed(1)
     }
     if(wpn.burst > 1 && wpn.interval > 1) {
@@ -1471,13 +1319,6 @@ const headers = [{
     return (FPS / wpn.shotInterval).toFixed(1)
   },
 }, {
-  id: 'intervalOD',
-  label: 'OD',
-  tooltip: 'Rate of Fire Multiplier (OverDrive)',
-  cb: wpn => {
-    return `${wpn.intervalOverdrive}x`
-  },
-}, {
   id: 'windup',
   label: 'Delay',
   tooltip: 'Windup Time',
@@ -1494,9 +1335,6 @@ const headers = [{
   tooltip: 'Lock Time',
   starProp: 'lockTime',
   cb: wpn => {
-    if(wpn.lockTimeSeconds) {
-      return wpn.lockTimeSeconds
-    }
     if(!wpn.lockTime) {
       return '-'
     }
@@ -1532,31 +1370,6 @@ const headers = [{
     return +(wpn.reload / FPS).toFixed(2)
   },
 }, {
-  id: 'reloadQuick',
-  label: 'Q.Rl',
-  tooltip: 'Quick Reload',
-  cb: wpn => {
-    if(wpn.tags?.includes('reload_auto')) {
-      return 'Auto'
-    }
-    if(wpn.tags?.includes('reload_charge')) {
-      return 'Charge'
-    }
-    if(wpn.reloadQuick && wpn.reloadSeconds) {
-      const start = (wpn.reloadSeconds * wpn.reloadQuick * 0.01)
-      const end = start + wpn.reloadQuickWindow
-      return `${start.toFixed(1)} - ${end.toFixed(1)}`
-    }
-    return ''
-  },
-}, {
-  id: 'reloadOD',
-  label: 'OD',
-  tooltip: 'Reload Time Multiplier (OverDrive)',
-  cb: wpn => {
-    return `${wpn.reloadOverdrive}x`
-  },
-}, {
   id: 'swing',
   label: 'Swing',
   tooltip: 'Swing Speed',
@@ -1573,20 +1386,7 @@ const headers = [{
   starProp: 'accuracy',
   cb: wpn => {
     if(wpn.accuracyRank) {
-      switch(wpn.accuracyRank) {
-        case 'horizontal':
-          return '↔'
-        case 'vertical':
-          return '↕'
-        case 'circle':
-          return '○'
-        case 'spherical':
-          return 'Sphere'
-        case 'downward':
-          return 'Down'
-        default:
-          return wpn.accuracyRank
-      }
+      return wpn.accuracyRank
     }
     if(!wpn.speed) return '-'
     if(wpn.accuracy == null) return '-'
@@ -1615,12 +1415,8 @@ const headers = [{
   },
 }, {
   id: 'zoom',
-  label: 'Zm',
-  tooltip: 'Zoom',
+  label: 'Zoom',
   cb: wpn => {
-    if(wpn.zoom === true) {
-      return '✓'
-    }
     if(!wpn.zoom) {
       return '-'
     }
@@ -1712,12 +1508,6 @@ const headers = [{
   tooltip: 'Range',
   starProp: 'speed',
   cb: wpn => {
-    if(wpn.range && wpn.growth) {
-      const maxRange = wpn.growth[wpn.growth.length - 1].range
-      if(maxRange !== wpn.range) {
-        return `${wpn.range}→${maxRange}`
-      }
-    }
     if(wpn.range) {
       return wpn.range
     }
@@ -1821,15 +1611,6 @@ const headers = [{
     if(spd > 10000) return '-'
     if(!spd) return '-'
     return spd.toFixed(1)
-  },
-}, {
-  id: 'speed2',
-  label: 'Spd',
-  tooltip: 'Shot Speed',
-  cb: wpn => {
-    const spd = wpn.speed
-    if(!spd) return '-'
-    return spd.toFixed()
   },
 }, {
   id: 'flightBoost',
@@ -2022,6 +1803,19 @@ const headers = [{
     return '-'
   },
 }, {
+  id: 'convertible',
+  label: 'Conv',
+  tooltip: 'Conversion',
+  cb: wpn => {
+    if(wpn.dashToBoost) {
+      return `⇒ → ⇑`
+    }
+    if(wpn.boostToDash) {
+      return `⇑ → ⇒`
+    }
+    return '-'
+  },
+}, {
   id: 'shieldUse',
   label: 'Cns',
   tooltip: 'Shield Consumption',
@@ -2085,12 +1879,8 @@ const headers = [{
   label: 'DPS',
   tooltip: 'Damage Per Second',
   cb: wpn => {
-    if(wpn.critOver) { // Iron Rain Ghost line
-      let damage = critAvg(wpn)
-      return (damage * wpn.rof).toFixed()
-    }
     if(wpn.recoveryAmount) {
-      return (wpn.recoveryAmount * FPS).toFixed()
+      return (wpn.recoveryAmount * FPS).toFixed(1)
     }
     if(!wpn.damage) {
       return '-'
@@ -2109,22 +1899,22 @@ const headers = [{
       return (wpn.damage * (wpn.count || 1) * wpn.rof).toFixed()
     }
     if(wpn.burst > 100) {
-      return (wpn.damage * FPS / (wpn.burstRate || 1)).toFixed()
+      return (wpn.damage * FPS / (wpn.burstRate || 1)).toFixed(1)
     }
     if(wpn.category === 'support') {
       if(!['life', 'plasma'].includes(wpn.supportType)) {
         return '-'
       }
-      return +(wpn.damage * FPS).toFixed()
+      return +(wpn.damage * FPS).toFixed(1)
     }
     if(wpn.duration && !wpn.continous) {
       const bDmg = burstDamage(wpn)
-      return +(bDmg * FPS / wpn.duration).toFixed()
+      return +(bDmg * FPS / wpn.duration).toFixed(1)
     }
     if(!wpn.interval) {
       return '-'
     }
-    return quickDps(wpn).toFixed()
+    return quickDps(wpn)
   },
 }, {
   id: 'dps2',
@@ -2142,7 +1932,7 @@ const headers = [{
       return '-'
     }
     if(wpn.recoveryAmount) {
-      return (wpn.ammo * wpn.recoveryAmount * FPS).toFixed()
+      return (wpn.ammo * wpn.recoveryAmount * FPS).toFixed(1)
     }
     if(wpn.category === 'support') {
       if(!['life', 'plasma'].includes(wpn.supportType)) {
@@ -2151,14 +1941,14 @@ const headers = [{
       if(wpn.ammo < 2) {
         return '-'
       }
-      return +(wpn.damage * FPS * wpn.ammo).toFixed()
+      return +(wpn.damage * FPS * wpn.ammo).toFixed(1)
     }
     if(wpn.continous) {
       return +Math.abs((wpn.damage
         * wpn.duration
         * FPS
         / (wpn.interval || 1)
-      )).toFixed()
+      )).toFixed(1)
     }
     return '-'
   },
@@ -2173,15 +1963,11 @@ const headers = [{
     if(!wpn.damage) {
       return '-'
     }
-    if(wpn.reloadSeconds <= 0) {
-      return '-'
-    }
     if(wpn.rof || wpn.reloadSeconds) {
       const ammo = wpn.ammo || 1
-      const magTime = (ammo > 1 && ammo / wpn.rof) || 0
-      const magDump = magDamage(wpn)
-      const duration = magTime + (wpn.reloadSeconds || 0)
-      return (magDump / duration).toFixed()
+      const damage = wpn.damage * (wpn.count || 1)
+      const duration = ((ammo / wpn.rof) || 0) + (wpn.reloadSeconds || 0)
+      return ((damage * ammo) / duration).toFixed(1)
     }
     if(!wpn.ammo) {
       return '-'
@@ -2198,25 +1984,10 @@ const headers = [{
         shots: wpn.ammo,
         interval: wpn.shotInterval,
         ammo: wpn.shots,
-      }).toFixed()
+      }).toFixed(1)
     }
     const tdps = tacticalDps(wpn)
-    return tdps.toFixed()
-  },
-}, {
-  id: 'qrdps',
-  label: 'Q.DPS',
-  tooltip: 'Total Damage Per Second (including quick reload)',
-  cb: wpn => {
-    if(wpn.reloadQuick && (wpn.rof || wpn.reloadSeconds)) {
-      const ammo = wpn.ammo || 1
-      const magTime = (ammo > 1 && ammo / wpn.rof) || 0
-      const magDump = magDamage(wpn)
-      const reload = wpn.reloadSeconds * wpn.reloadQuick / 100
-      const duration = magTime + (reload || 0)
-      return (magDump / duration).toFixed()
-    }
-    return '-'
+    return tdps.toFixed(1)
   },
 }, {
   id: 'tdps2',
@@ -2251,7 +2022,7 @@ const headers = [{
         .fill(0)
         .map((w, i) => attacks[i % attacks.length])
         .reduce((dmg, sum) => dmg + sum, 0)
-      return +(dump * (wpn.count || 1)).toFixed()
+      return +(dump * (wpn.count || 1)).toFixed(1)
     }
     if(!wpn.damage) {
       return '-'
@@ -2260,16 +2031,17 @@ const headers = [{
       if(!['life', 'plasma'].includes(wpn.supportType)) {
         return '-'
       }
-      return +(wpn.damage * wpn.life).toFixed()
+      return +(wpn.damage * wpn.life).toFixed(1)
     }
-    if(wpn.ammoDamageCurve || wpn.ammoCountCurve || wpn.growth?.length) {
-      return magDamage(wpn).toFixed()
+    if(wpn.ammoDamageCurve || wpn.ammoCountCurve) {
+      return magDamage(wpn).toFixed(1)
     }
-    const dump = Math.abs(critAvg(wpn)
-      * (wpn.ammo || 1)
+    const dump = Math.abs(wpn.damage
+      * (wpn.count || 1)
+      * Math.ceil((wpn.ammo || 1) / (wpn.drain || 1))
       * (wpn.shots || 1)
       * (wpn.units || 1))
-    return +dump.toFixed()
+    return +dump.toFixed(1)
   },
 }, {
   id: 'total2',
@@ -2303,7 +2075,7 @@ const headers = [{
   label: 'EPS',
   tooltip: 'Energy Per Second',
   cb: wpn => {
-    if((wpn.energy || 0) < 0.05) {
+    if(wpn.energy < 0.05) {
       return '-'
     }
     if(wpn.rof && !(wpn.ammo > 1 )) {
@@ -2323,7 +2095,7 @@ const headers = [{
   label: 'DPE',
   tooltip: 'Damage Per Energy',
   cb: wpn => {
-    if((wpn.energy || 0) < 0.05) {
+    if(wpn.energy < 0.05) {
       return '-'
     }
     if(!wpn.damage) {
@@ -2345,8 +2117,8 @@ const games = [
   '4',
   '41',
   '5',
+  '6',
   'ia',
-  'ir',
 ]
 
 const gameLabels = [
@@ -2356,13 +2128,12 @@ const gameLabels = [
   'EDF4',
   'EDF4.1',
   'EDF5',
+  'EDF6',
   'EDF:IA',
-  'EDF:IR',
 ]
 
 const gamePrefixes = {
   'ia': 4,
-  'ir': 4,
 }
 
 const gameMenu = document.getElementById('game-dropdown')
