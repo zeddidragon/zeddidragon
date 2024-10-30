@@ -61,6 +61,10 @@ tfoot th {
   background-color: #000;
 }
 
+th.damage {
+  text-align: right;
+}
+
 .button {
   color: #4e5d6f;
   cursor: pointer;
@@ -162,34 +166,34 @@ td.name {
 .ap-0 {
   color: var(--muted-text-color);
 }
-.category.Orbital, .category.AR, .ap-5, .source.demo-det {
+.category.OrbitalFireSupport, .category.AR, .ap-5, .source.demo-det {
   color: #e88;
 }
 .category.SMG, .ap-8 {
   color: #ccc;
 }
-.category.SG, .ap-3 {
+.category.SG, .ap-3, .source.chemical-agents {
   color: #8e8;
 }
 .category.Emplacement {
   color: #3f712c;
 }
-.category.Backpack, .category.DMR, .ap-2, .source.cut-edge, .damage-type.arc {
+.category.HellpodDeployment, .category.DMR, .ap-2, .source.cut-edge, .damage-type.arc {
   color: #88e;
 }
 .category.EX, .ap-4, .source.steel-vets {
   color: var(--explosion-text-color);
 }
-.category.Mission, .category.NRG, .ap-9, .source.hd-mobilize, .rpm-laser {
+.category.SPC, .category.NRG, .ap-9, .source.hd-mobilize, .rpm-laser {
   color: #ee8;
 }
 .category.HG, .ap-6 {
   color: #a8e;
 }
-.category.Eagle, .category.Status, .ap-7 {
+.category.Status, .ap-7, .category.OrbitalBombardment, .source.freedoms-flame {
   color: #e8a;
 }
-.category.Eagle {
+.category.CloseAirSupport {
   color: #c8442e;
 }
 .category.SUP, .source.support, .ap-1 {
@@ -201,7 +205,7 @@ td.name {
 .category.GrSt, .source.viper-commandos {
   color: #aa8;
 }
-.category.Mounted, .category.Vehicle {
+.category.Mounted, .category.TactialAirInsertion {
   color: #888;
 }
 
@@ -219,9 +223,13 @@ td.name {
   color: var(--detail-text-color);
   font-size: 0.7em;
 }
-.rpm-charge:after, .time:after {
+.time:after {
   color: var(--detail-text-color);
   content: "s";
+}
+.reload-heat:before {
+  color: var(--detail-text-color);
+  content: "|";
 }
 .shieldregen:after {
   color: var(--detail-text-color);
@@ -237,11 +245,6 @@ td.name {
 .stun-x, .push-x, .demo-x, .xstun, .xpush, .xdemo {
   color: var(--explosion-text-color);
   padding-left: 0.1em;
-}
-td.id:before, td.damageid:before, td.projectileid:before, td.ximpactid:before, td.xdelayid:before {
-  color: var(--detail-text-color);
-  content: "0x";
-  font-size: 0.7em;
 }
 .cap-plus:before {
   color: var(--detail-text-color);
@@ -346,7 +349,7 @@ td.idx {
   color: var(--detail-text-color);
   content: "×";
 }
-.reload-early:before, .reload-x:after, .clipstart:after, .roundstart:after, .magstart:after, .roundsbox:before, .clipsbox:before, .box:before {
+.pre-slash:after, .post-slash:before {
   color: var(--detail-text-color);
   content: "/";
 }

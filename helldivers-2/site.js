@@ -35,6 +35,13 @@ function iff(condition, value) {
   return value
 }
 
+function diagonal(obj) {
+  if(!obj) {
+    return 0
+  }
+  return Math.sqrt(obj.x * obj.x + obj.y * obj.y)
+}
+
 function sorting(col, mainScope) {
   let dir = -1
   if(col === 'category') {
@@ -43,7 +50,16 @@ function sorting(col, mainScope) {
   if(col === 'stratcode') {
     col = 'stratorder'
   }
-  if(['idx', 'id', 'damageid', 'code', 'name', 'source', 'stratorder'].includes(col)) {
+  if(col === 'type') {
+    col = 'element'
+  }
+  if(col === 'ximpactid') {
+    col = 'ximpactref'
+  }
+  if(col === 'xdelayid') {
+    col = 'xdelayref'
+  }
+  if(['idx', 'id', 'code', 'name', 'source', 'stratorder'].includes(col)) {
     dir = 1
   }
 
@@ -93,7 +109,11 @@ function sorting(col, mainScope) {
     }
   }
 
-  if(col === 'name' || col === 'code' || col == 'stratorder') {
+  if([
+    'name', 'code',
+    'stratorder', 'element',
+    'ximpactref', 'xdelayref',
+  ].includes(col)) {
     return function sortByName(a, b) {
       const diff = (a[col] || '').localeCompare(b[col] || '') * dir
       if(diff) return diff
@@ -156,6 +176,22 @@ function sorting(col, mainScope) {
       return idxSort(a, b)
     }
   }
+
+  if(col === 'recoil') {
+    return function recoilSort(a, b) {
+      const aRecoil = diagonal(a.recoilxy) || a.recoil || 0
+      const bRecoil = diagonal(b.recoilxy) || b.recoil || 0
+      return (aRecoil - bRecoil) * dir || idxSort(a, b)
+    }
+  }
+
+  if(col === 'spread') {
+    return function spreadSort(a, b) {
+      return (diagonal(a.spreadxy) - diagonal(b.spreadxy)) * dir
+        || idxSort(a, b)
+    }
+  }
+
   return function defaultSort(a, b) {
     return compare(a, b, col) || idxSort(a, b)
   }
@@ -280,13 +316,10 @@ window.locals = {
 
     return v.toString(16).toUpperCase()
   },
-  allExplosion: () => {
-    return data.explosions
-  },
   hasTag,
   wikiLink: (wpn) => {
     const url = 'https://helldivers.wiki.gg/wiki'
-    const path = wpn.fullname.split(/\s+/).join('_')
+    const path = (wpn.fullname || wpn.name || wpn.ref).split(/\s+/).join('_')
     return `${url}/${path}`
   },
   objects: (scope) => {
@@ -352,13 +385,10 @@ window.locals = {
     if(wpn.roundstart == null) return wpn.rounds
     return wpn.roundstart
   },
-  element: (wpn, idx) => {
-    return data.elements[wpn.type]
-  },
   effect: (wpn, idx) => {
     const id = wpn[`func${idx}`]
-    const name = data.statuses[id]
-    const param = wpn[`param${idx}`]
+    const name = wpn[`status${idx}`]
+    const param = +wpn[`param${idx}`]?.toFixed(1) || 0
     return { id, name, param }
   },
   getHeader(scope, isSubScope) {
@@ -414,6 +444,26 @@ function t(namespace, key, fallback, l = locals.lang) {
 }
 window.t = t
 
+function asEntries(map, namespace, refspace = namespace) {
+  return Object.entries(map).map(([ref, obj], i) => {
+    const ret = {
+      ...obj,
+      ref,
+      idx: i + 1,
+      name: t(namespace, ref),
+    }
+    if(obj.damageref) {
+      ret.damage = locals.byRef.damage[obj.damageref]
+    }
+    locals.byRef[refspace][ref] = ret
+    return ret
+  })
+}
+
+function rel(obj, type, key = `${type}ref`) { // Gets child related to this object based on property name
+  return data[type][obj[key]]
+}
+
 async function loadData() {
   const [
     manual,
@@ -427,79 +477,21 @@ async function loadData() {
       .catch(() => ({})),
   ])
   const data = {
-    ...manual,
     ...mined,
+    ...manual,
   }
   window.data = data
   window.translations[locals.lang] = translations
+  locals.byRef = data
+  locals.damages = asEntries(data.damage, 'dmg', 'damage')
+  locals.projectiles = asEntries(data.projectile, 'prj', 'projectile')
+  locals.explosions = asEntries(data.explosion, 'aoe', 'explosion')
+  locals.beams = asEntries(data.beam, 'beam')
+  locals.arcs = asEntries(data.arc, 'arc')
   if(locals.lang !== 'en') {
     window.translations.en = await fetch(`data/lang-en.json`)
       .then(res => res.json())
       .catch(() => ({}))
-  }
-  locals.damages = data.damages.map((obj, idx) => {
-    return {
-      idx,
-      ...obj,
-      name: t('dmg', obj.enum),
-    }
-  })
-  const damages = register(locals.damages)
-  locals.projectiles = data.projectiles.map((obj, idx) => {
-    return {
-      idx,
-      ...obj,
-      name: t('prj', obj.enum),
-      damage: damages[obj.damageid],
-      gravity: round(obj.gravity),
-      drag: round(obj.drag),
-      penslow: round(obj.penslow),
-    }
-  })
-  const projectiles = register(locals.projectiles)
-  locals.explosions = data.explosions.map((obj, idx) => {
-    return {
-      idx,
-      ...obj,
-      name: t('aoe', obj.enum),
-      damage: damages[obj.damageid],
-      r1: round(obj.r1),
-      r2: round(obj.r2),
-      r3: round(obj.r3),
-    }
-  })
-  const explosions = register(locals.explosions)
-  locals.beams = data.beams.map((obj, idx) => {
-    return {
-      idx,
-      ...obj,
-      name: t('beam', obj.enum),
-      damage: damages[obj.damageid],
-    }
-  })
-  const beams = register(locals.beams)
-  locals.arcs = data.arcs.map((obj, idx) => {
-    return {
-      idx,
-      ...obj,
-      name: t('arc', obj.enum),
-      damage: damages[obj.damageid],
-    }
-  })
-  const arcs = register(locals.arcs)
-  const registers = {
-    projectile: projectiles,
-    explosion: explosions,
-    damage: damages,
-    beam: beams,
-    arc: arcs,
-  }
-  const byRef = {
-    damage: register(locals.damages, 'enum'),
-    projectile: register(locals.projectiles, 'enum'),
-    explosion: register(locals.explosions, 'enum'),
-    beam: register(locals.beams, 'enum'),
-    arc: register(locals.arcs, 'enum'),
   }
   locals.weapons = data.weapons.map((wpn, idx) => {
     const [, code, name] = /^(\w+-\d+\w*) (.*)$/.exec(wpn.fullname) || []
@@ -507,29 +499,30 @@ async function loadData() {
     let shotdmg2 = 0
     let shotdmgx = 0
     let prev = wpn
-    let subobjects = wpn.attack?.map(({ type, name: ref, count }) => {
-      const obj = byRef[type][ref]
-      const parent = prev
-      prev = obj
-      const damage = obj.damage
-      const n = (count || 1) * (obj.pellets || 1)
-      if(type === 'explosion') {
-        shotdmgx += n * (damage?.dmg || 0)
-      } else {
-        shotdmg += n * (damage?.dmg || 0)
-        shotdmg2 += n * (damage?.dmg2 || 0)
-      }
-      return {
-        parent,
-        type,
-        damage,
-        [type]: obj,
-        count: count,
-        name: obj.name,
-        fullname: wpn.fullname,
-        weapon: wpn,
-      }
-    })
+    let subobjects = wpn.attack
+      ?.map(({ type, name: ref, count }) => {
+        const obj = locals.byRef[type][ref] || {}
+        const parent = prev
+        prev = obj
+        const damage = rel(obj, 'damage')
+        const n = (count || 1) * (obj.pellets || 1)
+        if(type === 'explosion') {
+          shotdmgx += n * (damage?.dmg || 0)
+        } else {
+          shotdmg += n * (damage?.dmg || 0)
+          shotdmg2 += n * (damage?.dmg2 || 0)
+        }
+        return {
+          parent,
+          type,
+          damage,
+          [type]: obj,
+          count: count,
+          name: obj.name,
+          fullname: wpn.fullname,
+          weapon: wpn,
+        }
+      })
 
     const {
       damage,
@@ -549,7 +542,7 @@ async function loadData() {
       wpn.clipsbox = Math.max(Math.floor(wpn.clipsupply * 0.5), 1)
     }
 
-    if(wpn.chargefactor && wpn.chargeearly) {
+    if(false && wpn.chargefactor && wpn.chargeearly) {
       subobjects ||= []
       subobjects.push({
         ...wpn,
@@ -634,10 +627,10 @@ async function loadData() {
       tdps2 = Math.floor(magdump2 / (magtime + wpn.reload))
       tdpsx = Math.floor(magdumpx / (magtime + wpn.reload))
     }
-    if(!shotdmg && damage) {
+    if(!explosion && !shotdmg && damage) {
       shotdmg = damage.dmg
       shotdmg2 = damage.dmg2
-      shotdmgx = damage.dmgx
+      shotdmgx += damage.dmgx || 0
     }
     if(wpn.category === 'Status' && damage) {
       dps = shotdmg
@@ -677,58 +670,80 @@ async function loadData() {
       subobjects,
     }
   })
-  byRef.weapon = register(locals.weapons, 'fullname')
-  window.byRef = byRef
+  // byRef.weapon = register(locals.weapons, 'fullname')
+  // window.byRef = byRef
 
   const arrowMap = {
     d: '🡇',
+    Down: '🡇',
     u: '🡅',
+    Up: '🡅',
     l: '🡄',
+    Left: '🡄',
     r: '🡆',
+    Right: '🡆',
   }
   const arrowOrder = {
     u: 1,
+    Up: 1,
     r: 2,
+    Right: 2,
     d: 3,
+    Down: 3,
     l: 4,
+    Left: 4,
   }
   const strats = [
     ...data.weapons.filter(wpn => wpn.stratcode),
     ...data.stratagems,
   ]
+  console.log(strats)
   locals.stratagems = strats.map((strat, i) => {
+    const { ref } = strat
     let shotdmg = 0
     let shotdmg2 = 0
     let maxRadius = [0, 0, 0]
     let prev = void 0
-    let subobjects = strat.attack?.map(({ type, name: ref, count }) => {
-      const obj = byRef[type][ref]
-      const parent = prev
-      prev = obj
-      const damage = obj.damage
-      const n = (count || obj.pellets || 1)
-      shotdmg += n * (damage?.dmg || 0)
-      shotdmg2 += n * (damage?.dmg2 || 0)
-      name = obj.name
-      if(type === 'explosion') {
-        for(let i = 0; i < 3; i++) {
-          maxRadius[i] = Math.max(maxRadius[i], obj[`r${i + 1}`])
+    let subobjects = strat.attack
+      ?.map(({ type, name: ref, count, weapon }) => {
+        const obj = type === 'weapon'
+          ? weapon
+          : (locals.byRef[type][ref] || {})
+        const parent = prev
+        prev = obj
+        const damage = rel(obj, 'damage')
+        const n = (count || obj.pellets || 1)
+        shotdmg += n * (damage?.dmg || 0)
+        shotdmg2 += n * (damage?.dmg2 || 0)
+        name = obj.name
+        if(type === 'explosion') {
+          for(let i = 0; i < 3; i++) {
+            maxRadius[i] = Math.max(maxRadius[i], obj[`r${i + 1}`])
+          }
         }
-      }
-      return {
-        ...(type === 'weapon' ? obj : {}),
-        parent,
-        type,
-        damage,
-        [type]: obj,
-        count,
-        name,
-        fullname: strat.fullname,
-        stratagem: strat,
-      }
-    })
-    const arrows = strat.stratcode.split('').map(i => arrowMap[i]).join('')
-    const stratorder = strat.stratcode.split('').map(i => arrowOrder[i]).join('')
+        const ret = {
+          ...(type === 'weapon' ? obj : {}),
+          parent,
+          type,
+          damage,
+          [type]: obj,
+          count,
+          name,
+          fullname: strat.name,
+          stratagem: strat,
+          ref,
+        }
+        if(type === 'weapon' && obj.projectile_type) {
+          Object.assign(ret,
+            locals.byRef.projectile[obj.projectile_type],
+            { name: obj.name },
+          )
+        }
+        return ret
+      })
+    const code = strat.stratcode || []
+    const arrows = code.map(i => arrowMap[i]).join('')
+    const stratorder = code.map(i => arrowOrder[i]).join('')
 
     if(strat.category === 'orbital' || strat.category === 'eagle') {
       const factor = (strat.cap || 1) * (strat.limit || 1)
@@ -743,8 +758,9 @@ async function loadData() {
     return {
       ...(mainAttack || {}),
       ...strat,
+      ref,
       idx: i + 1,
-      name: t('stratname', strat.fullname),
+      name: t('stratname', strat.name),
       calltime: strat.calltime || 0,
       shotdmg,
       shotdmg2,
