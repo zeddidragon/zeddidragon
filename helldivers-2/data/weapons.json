@@ -227,6 +227,24 @@
       "tags": ["1h"]
     },
     {
+      "attack": [{"type": "projectile", "name": "SMG_Rhino"}],
+      "burst": 3,
+      "cap": 25,
+      "capplus": 1,
+      "category": "SMG",
+      "ergonomics": 47,
+      "fullname": "SMG-32 Reprimand",
+      "mags": 9,
+      "magstart": 5,
+      "modes": ["Automatic", "Single", "Burst"],
+      "recoilxy": {"x": 25, "y": 40},
+      "rpm": 490,
+      "source": "truth-enforcers",
+      "sourcepage": 2,
+      "spreadxy": {"x": 50, "y": 50},
+      "supply": 9
+    },
+    {
       "attachments": ["flashlight"],
       "attack": [{"type": "projectile", "name": "Pistol_12x25mm_fmj"}],
       "burst": 3,
@@ -311,6 +329,28 @@
       "source": "hd-mobilize",
       "sourcepage": 8,
       "spreadxy": {"x": 20, "y": 20}
+    },
+    {
+      "attack": [
+        {"type": "projectile", "name": "Shotgun_10g_fle"},
+        {"type": "projectile", "name": "Shotgun_10g_stun"}
+      ],
+      "cap": 16,
+      "capplus": 1,
+      "category": "SG",
+      "ergonomics": 60,
+      "fullname": "SG-20 Halt",
+      "modes": ["Single"],
+      "recoilxy": {"x": 40, "y": 40},
+      "reload": 6.9,
+      "reloadone": 0.8,
+      "rounds": 60,
+      "roundstart": 32,
+      "roundsupply": 60,
+      "rpm": 80,
+      "source": "truth-enforcers",
+      "sourcepage": 1,
+      "spreadxy": {"x": 150, "y": 100}
     },
     {
       "attack": [{"type": "projectile", "name": "Shotgun_Dragon_10g_flm"}],
@@ -473,7 +513,7 @@
         {"type": "projectile", "name": "Plasma_Punisher_Projectile"},
         {"type": "explosion", "name": "Plasma_Punisher"}
       ],
-      "cap": 8,
+      "cap": 10,
       "category": "NRG",
       "ergonomics": 62,
       "fullname": "SG-8P Punisher Plasma",
@@ -481,9 +521,9 @@
       "magstart": 6,
       "modes": ["Single"],
       "recoil": 110,
-      "recoilxy": {"x": 30, "y": 30},
+      "recoilxy": {"x": 40, "y": 40},
       "reload": 2.5,
-      "rpm": 100,
+      "rpm": 80,
       "source": "cut-edge",
       "sourcepage": 2,
       "spreadxy": {"x": 8, "y": 8},
@@ -507,7 +547,7 @@
       "attack": [{"type": "beam", "name": "Medium"}],
       "box": 3,
       "category": "NRG",
-      "ergonomics": 60,
+      "ergonomics": 54,
       "fullname": "LAS-5 Scythe",
       "heatdown": 11.8,
       "limit": 8,
@@ -574,7 +614,32 @@
       ],
       "cap": 15,
       "category": "NRG",
-      "charge": 1.3,
+      "charges": [
+        {
+          "time": 0.01,
+          "speed": 1,
+          "damage": 0.5,
+          "penetration": 1,
+          "arcs": 0.7,
+          "chains": 0.8,
+          "attack": [
+            {"type": "projectile", "name": "Plasma_Bolt_Charge_Medium"},
+            {"type": "explosion", "name": "Plasma_Rifle_Charge_Medium"}
+          ]
+        },
+        {
+          "time": 1,
+          "speed": 1,
+          "damage": 1,
+          "penetration": 1,
+          "arcs": 2.3,
+          "chains": 1.5,
+          "attack": [
+            {"type": "projectile", "name": "Plasma_Rifle_Charge"},
+            {"type": "explosion", "name": "Plasma_Rifle_Charge"}
+          ]
+        }
+      ],
       "ergonomics": 55,
       "fullname": "PLAS-101 Purifier",
       "mags": 6,
@@ -755,6 +820,63 @@
       "tags": ["round", "1h"]
     },
     {
+      "attack": [
+        {"type": "projectile", "name": "Plasma_Bolt_Small"},
+        {"type": "explosion", "name": "Plasma_Bolt_Small"}
+      ],
+      "cap": 7,
+      "category": "HG",
+      "charges": [
+        {
+          "time": 0.01,
+          "speed": 1,
+          "damage": 0.5,
+          "penetration": 0.55,
+          "arcs": 0.7,
+          "chains": 0.8,
+          "attack": [
+            {"type": "projectile", "name": "Plasma_Pistol_Charge_Medium"},
+            {"type": "explosion", "name": "Plasma_Pistol_Charge_Medium"}
+          ]
+        },
+        {
+          "time": 1,
+          "speed": 1,
+          "damage": 0.75,
+          "penetration": 0.78,
+          "arcs": 1.5,
+          "chains": 1.15,
+          "attack": [
+            {"type": "projectile", "name": "Plasma_Pistol_Charge"},
+            {"type": "explosion", "name": "Plasma_Pistol_Charge"}
+          ]
+        },
+        {
+          "time": 3,
+          "speed": 1,
+          "damage": 1,
+          "penetration": 1,
+          "arcs": 2.3,
+          "chains": 1.5,
+          "attack": [
+            {"type": "projectile", "name": "Plasma_Pistol_Charge"},
+            {"type": "explosion", "name": "Plasma_Pistol_Charge"}
+          ]
+        }
+      ],
+      "ergonomics": 95,
+      "fullname": "PLAS-15 Loyalist",
+      "mags": 4,
+      "magstart": 2,
+      "modes": ["ChargeWithSafetyOn"],
+      "recoilxy": {"x": 2.5, "y": 10},
+      "rpm": 1000,
+      "source": "truth-enforcers",
+      "sourcepage": 3,
+      "spreadxy": {"x": 25, "y": 25},
+      "supply": 4
+    },
+    {
       "box": 3,
       "cap": 30,
       "category": "HG",
@@ -863,6 +985,32 @@
       "calltime": 3,
       "category": "SUP",
       "charge": 1,
+      "charges": [
+        {
+          "time": 1,
+          "speed": 0.7,
+          "damage": 1,
+          "penetration": 1,
+          "arcs": 0,
+          "chains": 0
+        },
+        {
+          "time": 1.1,
+          "speed": 1.05,
+          "damage": 1,
+          "penetration": 1,
+          "arcs": 0,
+          "chains": 0
+        },
+        {
+          "time": 1.2,
+          "speed": 1.4,
+          "damage": 1,
+          "penetration": 1,
+          "arcs": 0,
+          "chains": 0
+        }
+      ],
       "cooldown": 480,
       "ergonomics": 50,
       "fullname": "ARC-3 Arc Thrower",
@@ -999,9 +1147,32 @@
       "calltime": 3,
       "cap": 1,
       "category": "SUP",
-      "charge": 3,
-      "chargeearly": 0.5,
-      "chargefactor": 1.5,
+      "charges": [
+        {
+          "time": 0.45,
+          "speed": 0.7,
+          "damage": 1,
+          "penetration": 1,
+          "arcs": 0.7,
+          "chains": 0.8
+        },
+        {
+          "time": 0.5,
+          "speed": 0.85,
+          "damage": 1.75,
+          "penetration": 1,
+          "arcs": 1.5,
+          "chains": 1.15
+        },
+        {
+          "time": 3,
+          "speed": 1,
+          "damage": 2.5,
+          "penetration": 1,
+          "arcs": 2.3,
+          "chains": 1.5
+        }
+      ],
       "cooldown": 480,
       "ergonomics": 35,
       "fullname": "RS-422 Railgun",
@@ -1531,7 +1702,8 @@
           "vertical_recoil": 10,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 16, "vertical": 16},
       "noise_template": "NoiseTemplate_Weapon_Small",
@@ -1596,7 +1768,8 @@
           "vertical_recoil": 0.5,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 10, "vertical": 10},
       "noise_template": "NoiseTemplate_Weapon_Medium",
@@ -1678,7 +1851,8 @@
           "vertical_recoil": 10,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 16, "vertical": 16},
       "noise_template": "NoiseTemplate_Weapon_Small",
@@ -1722,7 +1896,8 @@
           "vertical_recoil": 10,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 10, "vertical": 10},
       "noise_template": "NoiseTemplate_None",
@@ -1885,7 +2060,8 @@
           "vertical_recoil": 0,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 10, "vertical": 10},
       "noise_template": "NoiseTemplate_Weapon_Medium",
@@ -1949,7 +2125,8 @@
           "vertical_recoil": 3,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 10, "vertical": 10},
       "noise_template": "NoiseTemplate_Weapon_Medium",
@@ -2009,7 +2186,8 @@
           "vertical_recoil": 10,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 2, "vertical": 2},
       "noise_template": "NoiseTemplate_Weapon_Large",
@@ -2067,7 +2245,8 @@
           "vertical_recoil": 10,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 50, "vertical": 100},
       "noise_template": "NoiseTemplate_Weapon_Medium",
@@ -2133,7 +2312,8 @@
           "vertical_recoil": 10,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 50, "vertical": 50},
       "noise_template": "NoiseTemplate_Weapon_Medium",
@@ -2202,7 +2382,8 @@
           "vertical_recoil": 10,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 5, "vertical": 15},
       "noise_template": "NoiseTemplate_Weapon_Medium",
@@ -2267,7 +2448,8 @@
           "vertical_recoil": 10,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 2, "vertical": 2},
       "noise_template": "NoiseTemplate_Weapon_Medium",
@@ -2332,7 +2514,8 @@
           "vertical_recoil": 10,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 50, "vertical": 25},
       "noise_template": "NoiseTemplate_Weapon_Medium",
@@ -2442,10 +2625,10 @@
       "area_size": 7,
       "salvos": 4,
       "cap": 60,
-      "projectile_type": "Cannon_Eagle_23mm",
+      "projectile_type": "Cannon_Eagle_23mm_gatling_barrage",
       "attack": [
-        {"type": "projectile", "name": "Cannon_Eagle_23mm"},
-        {"type": "explosion", "name": "Cannon_23mm_silent"}
+        {"type": "projectile", "name": "Cannon_Eagle_23mm_gatling_barrage"},
+        {"type": "explosion", "name": "Cannon_23mm_gatling_barrage_silent"}
       ]
     },
     {
@@ -2559,7 +2742,8 @@
           "vertical_recoil": 0,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 10, "vertical": 10},
       "noise_template": "NoiseTemplate_None",
@@ -2618,7 +2802,8 @@
           "vertical_recoil": 0,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 10, "vertical": 10},
       "noise_template": "NoiseTemplate_None",
@@ -2677,7 +2862,8 @@
           "vertical_recoil": 0,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 10, "vertical": 10},
       "noise_template": "NoiseTemplate_None",
@@ -2737,7 +2923,8 @@
           "vertical_recoil": 0,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 10, "vertical": 10},
       "noise_template": "NoiseTemplate_None",
@@ -2763,7 +2950,7 @@
       "bomb_prediction_interval": 0.0500000007,
       "attack": [
         {"type": "projectile", "name": "Cannon_Eagle_23mm"},
-        {"type": "explosion", "name": "Cannon_23mm_silent"}
+        {"type": "explosion", "name": "Cannon_23mm_strafe"}
       ],
       "cap": 100
     },
@@ -2796,7 +2983,8 @@
           "vertical_recoil": 0,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 10, "vertical": 10},
       "noise_template": "NoiseTemplate_None",
@@ -2857,7 +3045,8 @@
           "vertical_recoil": 0,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 10, "vertical": 10},
       "noise_template": "NoiseTemplate_None",
@@ -2916,7 +3105,8 @@
           "vertical_recoil": 0,
           "horizontal_bias": 0,
           "random_amount": {"x": 0.100000001, "y": 1}
-        }
+        },
+        "wielder_animiation_recoil_amount_increment_per_shot": 0.5
       },
       "spread_info": {"horizontal": 10, "vertical": 10},
       "noise_template": "NoiseTemplate_None",
