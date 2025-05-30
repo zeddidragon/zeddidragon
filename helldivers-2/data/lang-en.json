@@ -1,6 +1,7 @@
 {
   "explanations;reload": "Reload is measured from when reticle disappears to when it comes back. Not all weapons had a reticle. Timing may be off by up to 0.1s.",
   "explanations;startingMagsDisclaimer": "Starting mags for support weapons are currently unmeasured, but become max after the ship module upgrade.",
+  "explanations;outdated": "This page is out of date. Data hasn't been maintained since December 2024.",
   "nav.links;edf": "Earth Defense Force",
   "nav.links;self": "Helldivers 2",
   "nav.links;wiki": "Helldivers Wiki",
