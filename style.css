@@ -241,20 +241,20 @@ th.P, th.CR {
   padding-right: 0.5em;
 }
 
-.ranger b, .dlc2 b, .Inferno, .lowOdds, .edf3 b, .edf3p b, .ja b {
+.ranger b, .dlc2 b, .Inferno, .lowOdds, .edf3 b, .edf3p b, .ja b, .weapons b, .damage-type.flame, .status-effect.flame {
   color: #e88;
 }
-.winger b, .off b, .Normal, .edf5 b, .en b, #save-load-copy {
+.winger b, .off b, .Normal, .edf5 b, .en b, .rank-C, .edfir b {
   color: #88e;
 }
-.bomber b, .on b, .Hard, .highOdds, .edf4 b, .edf41 b, .edfia b, #save-load-import {
+.bomber b, .on b, .Hard, .highOdds, .edf4 b, .edf41 b, .edfia b, .items b, .rank-D, .status-effect.poison, #save-load-import {
   color: #8e8;
 }
 .fencer b, .dlc1 b, .edf2 b, .edf2pv2 b {
   color: #ea8;
 }
 
-.short b, .spear b, .heli b, .stats b, .limpet b, .booster b, .repair b, .star-10, .star-5, .edf1 b {
+.short b, .spear b, .heli b, .stats b, .limpet b, .booster b, .repair b, .sword b, .star-10, .star-5, .edf1 b, .damage-type.physical {
   color: #eee;
 }
 .assault b, .laser b, .light b, .gunship b {
@@ -266,28 +266,28 @@ th.P, th.CR {
 .sniper b, .heavy b, .satellite b, .muzzle b {
   color: #88e;
 }
-.rocket b, .particle b, .hammer b, .dlc, .planes b, .tank b, .Hardest {
+.rocket b, .particle b, .hammer b, .dlc, .planes b, .tank b, .rank-AA, .Hardest, .damage-type.optics, .status-effect.shock {
   color: #ee8;
 }
 .missile b, .guide b, .na {
   color: #a8e;
 }
-.grenade b, .plasma b, .raid b, .artillery b {
+.grenade b, .plasma b, .raid b, .artillery b, .rank-A {
   color: #ea8;
 }
-.special b, .super b, #save-load-toggle b {
+.special b, .super b, .rank-B, .status-effect.recover, .status-effect.recovertime, #save-load-toggle b {
   color: #e8a;
 }
-.edf6 b, .deploy b, .Easy, .starter, .star-0 {
+.edf6 b, .deploy b, .gatling b, .Easy, .starter, .star-0 {
   color: #8aa
 }
-.mech b, .core b, .equipment b, .exo b {
+.mech b, .core b, .equipment b, .exo b, .thrower b {
   color: #e8e;
 }
 .bomb b, .trap b, .droneguard b {
   color: #ae8;
 }
-.handgrenade b, .cannon b, .droneshooter b {
+.railgun b, .status-effect.frozen, .cannon b, .handgrenade b, .cannon b, .droneshooter b {
   color: #8ae;
 }
 .specialgrenade b, .submissile b, .dronechaser b {
