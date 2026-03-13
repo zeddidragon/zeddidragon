@@ -14638,7 +14638,7 @@
       "secondary": 2,
       "accuracy": 0,
       "shots": 200,
-      "shotInterval": 8,
+      "shotInterval": 10,
       "searchRange": 150,
       "subCategory": "turret"
     },
@@ -14661,7 +14661,7 @@
       "secondary": 2,
       "accuracy": 0,
       "shots": 400,
-      "shotInterval": 4,
+      "shotInterval": 6,
       "searchRange": 300,
       "subCategory": "turret"
     },
@@ -14684,7 +14684,7 @@
       "secondary": 2,
       "accuracy": 0,
       "shots": 20,
-      "shotInterval": 120,
+      "shotInterval": 122,
       "searchRange": 1200,
       "subCategory": "turret"
     },
@@ -14708,7 +14708,7 @@
       "secondary": 2,
       "accuracy": 0,
       "shots": 20,
-      "shotInterval": 120,
+      "shotInterval": 122,
       "searchRange": 498,
       "subCategory": "turret"
     },
@@ -14731,7 +14731,7 @@
       "secondary": 2,
       "accuracy": 0,
       "shots": 400,
-      "shotInterval": 4,
+      "shotInterval": 6,
       "searchRange": 300,
       "subCategory": "turret"
     },
@@ -14754,7 +14754,7 @@
       "secondary": 2,
       "accuracy": 0,
       "shots": 100,
-      "shotInterval": 16,
+      "shotInterval": 18,
       "searchRange": 150,
       "subCategory": "turret"
     },
@@ -14778,7 +14778,7 @@
       "secondary": 2,
       "accuracy": 0,
       "shots": 40,
-      "shotInterval": 60,
+      "shotInterval": 62,
       "searchRange": 600,
       "subCategory": "turret"
     },
@@ -14801,7 +14801,7 @@
       "secondary": 2,
       "accuracy": 0,
       "shots": 500,
-      "shotInterval": 4,
+      "shotInterval": 6,
       "searchRange": 300,
       "subCategory": "turret"
     },
@@ -16800,6 +16800,14 @@
       "credits": true,
       "hp": 50000,
       "weapons": [],
+      "attacks": [
+        {"name": "Jab (L/R)", "damage": 400},
+        {"name": "Straight (L/R)", "damage": 1200},
+        {"name": "Hook (L/R)", "damage": 800},
+        {"name": "Chop (L/R)", "damage": 2000},
+        {"name": "Upper (L/R)", "damage": 3200},
+        {"name": "Stomp (L/R)", "damage": 200}
+      ],
       "underground": "blocked"
     },
     {
@@ -17775,6 +17783,14 @@
           "count": 1,
           "interval": 240
         }
+      ],
+      "attacks": [
+        {"name": "Jab (L/R)", "damage": 1000},
+        {"name": "Straight (L/R)", "damage": 3000},
+        {"name": "Hook (L/R)", "damage": 2000},
+        {"name": "Chop (L/R)", "damage": 5000},
+        {"name": "Upper (L/R)", "damage": 8000},
+        {"name": "Stomp (L/R)", "damage": 500}
       ],
       "underground": "blocked"
     },
@@ -18768,6 +18784,14 @@
           "interval": 1,
           "accuracy": 0
         }
+      ],
+      "attacks": [
+        {"name": "Jab (L/R)", "damage": 1800},
+        {"name": "Straight (L/R)", "damage": 5400},
+        {"name": "Hook (L/R)", "damage": 3600},
+        {"name": "Chop (L/R)", "damage": 9000},
+        {"name": "Upper (L/R)", "damage": 14400},
+        {"name": "Stomp (L/R)", "damage": 900}
       ],
       "underground": "blocked"
     },
@@ -20457,6 +20481,14 @@
       "credits": true,
       "hp": 625000,
       "weapons": [],
+      "attacks": [
+        {"name": "Jab (L/R)", "damage": 5000},
+        {"name": "Straight (L/R)", "damage": 15000},
+        {"name": "Hook (L/R)", "damage": 10000},
+        {"name": "Chop (L/R)", "damage": 25000},
+        {"name": "Upper (L/R)", "damage": 40000},
+        {"name": "Stomp (L/R)", "damage": 2500}
+      ],
       "underground": "blocked"
     }
   ],

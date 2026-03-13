@@ -6,6 +6,7 @@ let modes
 let characters
 let charLabels
 let charHeaders
+let gameValues
 let langs
 
 function localize(prop, fallback) {
@@ -61,6 +62,7 @@ async function loadWeapons(game) {
   characters = data.classes
   charLabels = data.charLabels
   charHeaders = data.headers
+  gameValues = data.gameValues
   langs = data.langs
   window.data = data
   populateLangs()
@@ -484,7 +486,7 @@ function populateWeaponDrops(mode, ch, cat) {
     const { level, odds, dlc: weaponDlc } = weapon
     for(const header of dropHeaders) {
       const cell = $('td')
-      const contents = header.cb(weapon)
+      const contents = header.cb(weapon, ch)
       if(contents instanceof HTMLElement) {
         cell.appendChild(contents)
       } else {
@@ -541,7 +543,7 @@ const scaledProps = [
 function composeAttack(weapon, attack) {
   return {
     ...attack,
-    damage: weapon.damage * attack.damage,
+    damage: (weapon.damage || 1) * attack.damage,
     speed: weapon.speed * attack.speed,
     piercing: weapon.piercing,
     count: weapon.count,
@@ -569,6 +571,12 @@ function populateWeaponStats(ch, cat) {
       return obj
     })
     .flatMap(w => {
+      if(w.attacks?.length && ch === 'bomber') { // Balam/Barga
+        return [w,
+          ...(w.weapons || []),
+          ...w.attacks.map(atk => composeAttack(w, atk)),
+        ]
+      }
       if(w.attacks?.length) {
         return [
           { ...w, ...composeAttack(w, w.attacks[0]), name: w.name },
@@ -629,7 +637,7 @@ function populateWeaponStats(ch, cat) {
       const row = $('tr')
       for(const header of wHeaders) {
         const cell = $('td')
-        let contents = header.cb(weapon)
+        let contents = header.cb(weapon, ch)
         cell.classList.add(header.label)
         if(header.headerClass) {
           cell.classList.add(header.headerClass)
@@ -868,6 +876,49 @@ function falloff(wpn, dmg) {
   ].join('~')
 }
 
+function accuracy(wpn) {
+  if(wpn.accuracyRank) {
+    switch(wpn.accuracyRank) {
+      case 'horizontal':
+        return '↔'
+      case 'vertical':
+        return '↕'
+      case 'circle':
+        return '○'
+      case 'spherical':
+        return 'Sphere'
+      case 'downward':
+        return 'Down'
+      default:
+        return wpn.accuracyRank
+    }
+  }
+  if(!wpn.speed) return '-'
+  if(wpn.accuracy == null) return '-'
+  return [
+    [0.0005, 'S++'],
+    [0.0025, 'S+'],
+    [0.01, 'A+'],
+    [0.014999, 'A'],
+    [0.02, 'A-'],
+    [0.03, 'B+'],
+    [0.05, 'B'],
+    [0.10, 'B-'],
+    [0.15, 'C+'],
+    [0.20, 'C'],
+    [0.24998, 'C-'],
+    [0.3, 'D'],
+    [0.4, 'E'],
+    [0.5, 'F'],
+    [0.6, 'G'],
+    [0.8, 'I'],
+    [1.0, 'J'],
+    [1.2, 'K'],
+    [1.6, 'L'],
+    [Infinity, 'Z'],
+  ].find(([a]) => a >= wpn.accuracy)[1]
+}
+
 function quickDps(wpn) {
   const bDmg = burstDamage(wpn)
   const bTime = burstTime(wpn)
@@ -892,36 +943,36 @@ function cycleTime(wpn) {
   return (magTime || interval) / FPS
 }
 
-function chargeRate(wpn) {
+function chargeRate(wpn, ch) {
   const {
     baseEnergy: nrg = wpn.baseEnergy,
     chargeSpeed: spd = 1.0
   } = wpn
-  return (nrg * spd * FPS * 0.001)
+  return (nrg * spd * gameValues[ch].charge)
 }
 
-function chargeEmergencyRate(wpn) {
+function chargeEmergencyRate(wpn, ch) {
   const {
     energy: nrg,
     emergencyChargeSpeed: spd = 1.0
   } = wpn
-  return (nrg * spd * FPS * 0.002)
+  return (nrg * spd * gameValues[ch].chargeEmergency)
 }
 
-function energyUse(wpn) {
+function energyUse(wpn, ch) {
   const {
     baseEnergy: nrg = wpn.energy,
     flightConsumption: usg = 1.0
   } = wpn
-  return (nrg * usg * FPS * 0.0025)
+  return (nrg * usg * gameValues[ch].flightUse)
 }
 
-function boostUse(wpn) {
+function boostUse(wpn, ch) {
   const {
     baseEnergy: nrg = wpn.energy,
     boostConsumption: usg = 1.0
   } = wpn
-  return (nrg * usg * 0.03)
+  return (nrg * usg * gameValues[ch].boostUse)
 }
 
 const gameScopes = {
@@ -1614,46 +1665,13 @@ const headers = [{
   tooltip: 'Accuracy',
   starProp: 'accuracy',
   cb: wpn => {
-    if(wpn.accuracyRank) {
-      switch(wpn.accuracyRank) {
-        case 'horizontal':
-          return '↔'
-        case 'vertical':
-          return '↕'
-        case 'circle':
-          return '○'
-        case 'spherical':
-          return 'Sphere'
-        case 'downward':
-          return 'Down'
-        default:
-          return wpn.accuracyRank
-      }
-    }
-    if(!wpn.speed) return '-'
-    if(wpn.accuracy == null) return '-'
-    return [
-      [0.0005, 'S++'],
-      [0.0025, 'S+'],
-      [0.01, 'A+'],
-      [0.014999, 'A'],
-      [0.02, 'A-'],
-      [0.03, 'B+'],
-      [0.05, 'B'],
-      [0.10, 'B-'],
-      [0.15, 'C+'],
-      [0.20, 'C'],
-      [0.24998, 'C-'],
-      [0.3, 'D'],
-      [0.4, 'E'],
-      [0.5, 'F'],
-      [0.6, 'G'],
-      [0.8, 'I'],
-      [1.0, 'J'],
-      [1.2, 'K'],
-      [1.6, 'L'],
-      [Infinity, 'Z'],
-    ].find(([a]) => a >= wpn.accuracy)[1]
+    const el = $('div')
+    if(wpn.accuracy == null)
+      el.setAttribute('title', 'Accuracy only known by rank')
+    else
+      el.setAttribute('title', wpn.accuracy)
+    el.textContent = accuracy(wpn)
+    return el
   },
 }, {
   id: 'altFire',
@@ -1704,58 +1722,58 @@ const headers = [{
   id: 'chargeRate',
   label: 'Chg',
   tooltip: 'Charge Rate',
-  cb: wpn => {
-    return chargeRate(wpn).toFixed(1)
+  cb: (wpn, ch) => {
+    return chargeRate(wpn, ch).toFixed(1)
   },
 }, {
   id: 'chargeRatio',
   label: '%',
   tooltip: 'Charge Rate',
-  cb: wpn => {
-    return (100 * chargeRate(wpn) / wpn.energy).toFixed(1)
+  cb: (wpn, ch) => {
+    return (100 * chargeRate(wpn, ch) / wpn.energy).toFixed(2) + '%'
   },
 }, {
   id: 'chargeEmergencyRate',
   label: 'Em.C',
   tooltip: 'Emergency Charge Rate',
   starProp: 'energy',
-  cb: wpn => {
-    return chargeEmergencyRate(wpn).toFixed(1)
+  cb: (wpn, ch) => {
+    return chargeEmergencyRate(wpn, ch).toFixed(1)
   },
 }, {
   id: 'chargeEmergencyRatio',
   label: '%',
   tooltip: 'Emergency Charge Rate %',
-  cb: wpn => {
-    return (100 * chargeEmergencyRate(wpn) / wpn.energy).toFixed(1)
+  cb: (wpn, ch) => {
+    return (100 * chargeEmergencyRate(wpn, ch) / wpn.energy).toFixed(2) + '%'
   },
 }, {
   id: 'energyUse',
   label: 'Cns',
   tooltip: 'Flight Consumption',
-  cb: wpn => {
-    return energyUse(wpn).toFixed(1)
+  cb: (wpn, ch) => {
+    return energyUse(wpn, ch).toFixed(1)
   },
 }, {
   id: 'energyUseRatio',
   label: '%',
   tooltip: 'Flight Consumption %',
-  cb: wpn => {
-    return (100 * energyUse(wpn) / wpn.energy).toFixed(1)
+  cb: (wpn, ch) => {
+    return (100 * energyUse(wpn, ch) / wpn.energy).toFixed(2) + '%'
   },
 }, {
   id: 'boostUse',
   label: 'B.Cns',
   tooltip: 'Boost Consumption',
-  cb: wpn => {
-    return boostUse(wpn).toFixed(1)
+  cb: (wpn, ch) => {
+    return boostUse(wpn, ch).toFixed(1)
   },
 }, {
   id: 'boostUseRatio',
   label: '%',
   tooltip: 'Boost Consumption %',
-  cb: wpn => {
-    return (100 * boostUse(wpn) / wpn.energy).toFixed(1)
+  cb: (wpn, ch) => {
+    return (100 * boostUse(wpn, ch) / wpn.energy).toFixed(2) + '%'
   },
 }, {
   id: 'piercingRange',
@@ -2179,7 +2197,7 @@ const headers = [{
         ...wpn,
         shots: wpn.ammo,
         interval: wpn.shotInterval,
-      })
+      }).toFixed()
     }
     if(wpn.ammo < 2 && !wpn.duration) {
       return '-'
@@ -2215,7 +2233,7 @@ const headers = [{
         ...wpn,
         shots: 1,
         interval: wpn.shotInterval,
-      })
+      }).toFixed()
     }
     if(wpn.category === 'gunship') {
       return '-'
@@ -2324,7 +2342,7 @@ const headers = [{
     if(wpn.total) {
       return wpn.total
     }
-    if(wpn.attacks?.length) {
+    if(wpn.attacks?.length && wpn.damage) {
       const attacks = wpn.attacks.map(a => a.damage * wpn.damage)
       const count = wpn.count || 1
       const dump = Array(Math.floor(wpn.ammo / count))

@@ -2,6 +2,14 @@
   "langs": ["en", "ja"],
   "classes": ["ranger", "winger", "bomber", "fencer"],
   "charLabels": ["Ranger", "Wing Diver", "Air Raider", "Fencer"],
+  "gameValues": {
+    "winger": {
+      "charge": 0.06,
+      "chargeEmergency": 0.15,
+      "flightUse": 0.15,
+      "boostUse": 0.045
+    }
+  },
   "headers": {
     "ranger": [
       {
@@ -256,8 +264,7 @@
           "duration",
           "reload",
           "range",
-          "speed",
-          "tdps"
+          "speed"
         ]
       },
       {
@@ -23141,7 +23148,7 @@
         "type": "int"
       },
       "shots": 800,
-      "shotInterval": 2,
+      "shotInterval": 4,
       "searchRange": 60,
       "subCategory": "turret"
     },
@@ -23183,7 +23190,7 @@
         "type": "int"
       },
       "shots": 800,
-      "shotInterval": 2,
+      "shotInterval": 4,
       "searchRange": 60,
       "subCategory": "turret"
     },
@@ -23339,7 +23346,7 @@
         "type": "int"
       },
       "shots": 400,
-      "shotInterval": 4,
+      "shotInterval": 6,
       "searchRange": 300,
       "subCategory": "turret"
     },
@@ -23374,7 +23381,7 @@
         "type": "int"
       },
       "shots": 800,
-      "shotInterval": 2,
+      "shotInterval": 4,
       "searchRange": 60,
       "subCategory": "turret"
     },
@@ -23416,7 +23423,7 @@
         "type": "int"
       },
       "shots": 20,
-      "shotInterval": 120,
+      "shotInterval": 122,
       "searchRange": 1200,
       "subCategory": "turret"
     },
@@ -23466,7 +23473,7 @@
         "type": "int"
       },
       "shots": 20,
-      "shotInterval": 120,
+      "shotInterval": 122,
       "searchRange": 498,
       "subCategory": "turret"
     },
@@ -23508,7 +23515,7 @@
         "type": "int"
       },
       "shots": 800,
-      "shotInterval": 2,
+      "shotInterval": 4,
       "searchRange": 45,
       "subCategory": "turret"
     },
@@ -23550,7 +23557,7 @@
         "type": "int"
       },
       "shots": 400,
-      "shotInterval": 4,
+      "shotInterval": 6,
       "searchRange": 300,
       "subCategory": "turret"
     },
@@ -23592,7 +23599,7 @@
         "type": "int"
       },
       "shots": 800,
-      "shotInterval": 2,
+      "shotInterval": 4,
       "searchRange": 120,
       "subCategory": "turret"
     },
@@ -23634,7 +23641,7 @@
         "type": "int"
       },
       "shots": 100,
-      "shotInterval": 16,
+      "shotInterval": 18,
       "searchRange": 150,
       "subCategory": "turret"
     },
@@ -23669,7 +23676,7 @@
         "type": "int"
       },
       "shots": 800,
-      "shotInterval": 2,
+      "shotInterval": 4,
       "searchRange": 180,
       "subCategory": "turret"
     },
@@ -23719,7 +23726,7 @@
         "type": "int"
       },
       "shots": 40,
-      "shotInterval": 60,
+      "shotInterval": 62,
       "searchRange": 600,
       "subCategory": "turret"
     },
@@ -23761,7 +23768,7 @@
         "type": "int"
       },
       "shots": 500,
-      "shotInterval": 4,
+      "shotInterval": 6,
       "searchRange": 300,
       "subCategory": "turret"
     },
@@ -23803,7 +23810,7 @@
         "type": "int"
       },
       "shots": 800,
-      "shotInterval": 2,
+      "shotInterval": 4,
       "searchRange": 90,
       "subCategory": "turret"
     },
@@ -23854,7 +23861,7 @@
         "type": "int"
       },
       "shots": 120,
-      "shotInterval": 20,
+      "shotInterval": 22,
       "searchRange": 600,
       "subCategory": "turret"
     },
@@ -23897,7 +23904,7 @@
         "type": "int"
       },
       "shots": 60,
-      "shotInterval": 60,
+      "shotInterval": 62,
       "searchRange": 1200,
       "subCategory": "turret"
     },
@@ -23941,7 +23948,7 @@
         "type": "int"
       },
       "shots": 1300,
-      "shotInterval": 2,
+      "shotInterval": 4,
       "searchRange": 400,
       "subCategory": "turret"
     },
@@ -76928,37 +76935,16 @@
       "credits": true,
       "underground": "blocked",
       "hp": 125000,
-      "weapons": [
-        {
-          "names": {"ja": "ガン・タレット", "en": "Gun Turret"},
-          "type": "SolidBullet01",
-          "ammo": 400,
-          "weapon": "Weapon_VehicleShoot",
-          "damage": 20,
-          "speed": 6,
-          "accuracy": 0.03,
-          "life": 120,
-          "piercing": 1,
-          "burst": 50,
-          "burstRate": 3,
-          "count": 1,
-          "interval": 240
-        },
-        {
-          "names": {"ja": "ガン・タレット", "en": "Gun Turret"},
-          "type": "SolidBullet01",
-          "ammo": 400,
-          "weapon": "Weapon_VehicleShoot",
-          "damage": 20,
-          "speed": 6,
-          "accuracy": 0.03,
-          "life": 120,
-          "piercing": 1,
-          "burst": 50,
-          "burstRate": 3,
-          "count": 1,
-          "interval": 240
-        }
+      "attacks": [
+        {"name": "Jab (L/R)", "damage": 1000},
+        {"name": "Longhook (L/R)", "damage": 2000},
+        {"name": "Chop (L)", "damage": 3000},
+        {"name": "Straight (R)", "damage": 3000},
+        {"name": "Gravityzero", "damage": 8000},
+        {"name": "Heavy Chop (R)", "damage": 5000},
+        {"name": "Max Beat", "damage": 8000},
+        {"name": "Max Hook (L)", "damage": 7000},
+        {"name": "Stomp (L/R)", "damage": 500}
       ]
     },
     {
@@ -77132,35 +77118,16 @@
       "credits": true,
       "underground": "blocked",
       "hp": 225000,
-      "weapons": [
-        {
-          "names": {"ja": "レーザー・タレット", "en": "Laser Turret"},
-          "type": "LaserBullet01",
-          "ammo": 1200,
-          "weapon": "Weapon_VehicleShoot",
-          "damage": 18,
-          "speed": 60,
-          "life": 8,
-          "burst": 300,
-          "burstRate": 1,
-          "count": 1,
-          "interval": 1,
-          "accuracy": 0
-        },
-        {
-          "names": {"ja": "レーザー・タレット", "en": "Laser Turret"},
-          "type": "LaserBullet01",
-          "ammo": 1200,
-          "weapon": "Weapon_VehicleShoot",
-          "damage": 18,
-          "speed": 60,
-          "life": 8,
-          "burst": 300,
-          "burstRate": 1,
-          "count": 1,
-          "interval": 1,
-          "accuracy": 0
-        }
+      "attacks": [
+        {"name": "Jab (L/R)", "damage": 1800},
+        {"name": "Longhook (L/R)", "damage": 3600},
+        {"name": "Chop (L)", "damage": 5400},
+        {"name": "Straight (R)", "damage": 5400},
+        {"name": "Gravityzero", "damage": 14400},
+        {"name": "Heavy Chop (R)", "damage": 9000},
+        {"name": "Max Beat", "damage": 14400},
+        {"name": "Max Hook (L)", "damage": 12600},
+        {"name": "Stomp (L/R)", "damage": 900}
       ]
     },
     {
@@ -77479,7 +77446,18 @@
       "credits": true,
       "underground": "blocked",
       "hp": 625000,
-      "weapons": []
+      "weapons": [],
+      "attacks": [
+        {"name": "Jab (L/R)", "damage": 5000},
+        {"name": "Longhook (L/R)", "damage": 10000},
+        {"name": "Chop (L)", "damage": 15000},
+        {"name": "Straight (R)", "damage": 15000},
+        {"name": "Gravityzero", "damage": 40000},
+        {"name": "Heavy Chop (R)", "damage": 25000},
+        {"name": "Max Beat", "damage": 40000},
+        {"name": "Max Hook (L)", "damage": 35000},
+        {"name": "Stomp (L/R)", "damage": 2500}
+      ]
     },
     {
       "id": "MPACK_A_Weapon074",
@@ -77683,6 +77661,18 @@
           "interval": 180,
           "accuracy": 0
         }
+      ],
+      "attacks": [
+        {"name": "Jab (L/R)", "damage": 10000},
+        {"name": "Longhook (L/R)", "damage": 20000},
+        {"name": "Chop (L)", "damage": 30000},
+        {"name": "Straight (R)", "damage": 30000},
+        {"name": "Gravityzero", "damage": 80000},
+        {"name": "Heavy Chop (R)", "damage": 50000},
+        {"name": "Max Beat", "damage": 80000},
+        {"name": "Max Hook (L)", "damage": 70000},
+        {"name": "Stomp (L/R)", "damage": 5000},
+        {"name": "Attack (CANNON)", "damage": 10000}
       ]
     },
     {
