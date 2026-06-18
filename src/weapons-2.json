@@ -23,23 +23,6 @@
         ]
       },
       {
-        "category": "shotgun",
-        "names": {"en": "Ｓｈｏｔｇｕｎ", "ja": "ショットガン"},
-        "headers": [
-          "checkbox",
-          "name",
-          "ammo",
-          "damage",
-          "interval",
-          "reload",
-          "accuracy",
-          "range",
-          "dps",
-          "tdps",
-          "total"
-        ]
-      },
-      {
         "category": "sniper",
         "names": {"en": "Ｓｎｉｐｅｒ　Ｒｉｆｌｅ", "ja": "スナイパーライフル"},
         "headers": [
@@ -51,6 +34,23 @@
           "reload",
           "accuracy",
           "zoom",
+          "range",
+          "dps",
+          "tdps",
+          "total"
+        ]
+      },
+      {
+        "category": "shotgun",
+        "names": {"en": "Ｓｈｏｔｇｕｎ", "ja": "ショットガン"},
+        "headers": [
+          "checkbox",
+          "name",
+          "ammo",
+          "damage",
+          "interval",
+          "reload",
+          "accuracy",
           "range",
           "dps",
           "tdps",
@@ -426,6 +426,8 @@
       "id": "winger-short-1",
       "idx": 1,
       "character": "winger",
+      "level": 0,
+      "odds": "starter",
       "category": "short",
       "ammo": 500,
       "rof": 60,
@@ -435,12 +437,14 @@
       "accuracyRank": "G",
       "reloadSeconds": 0.5,
       "energy": 25,
-      "names": {"en": "Rapier", "ja": "レイピア"}
+      "names": {"en": "Ｒａｐｉｅｒ", "ja": "レイピア"}
     },
     {
       "id": "winger-laser-1",
       "idx": 1,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "laser",
       "ammo": 1000,
       "rof": 60,
@@ -449,12 +453,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 2,
       "energy": 20,
-      "names": {"en": "LAZR-197", "ja": "LAZR-197"}
+      "names": {"en": "ＬＡＺＲ−１９７", "ja": "LAZR-197"}
     },
     {
       "id": "winger-electro-1",
       "idx": 1,
       "character": "winger",
+      "level": 1,
+      "odds": 100,
       "category": "electro",
       "ammo": 160,
       "rof": 10,
@@ -463,24 +469,28 @@
       "accuracyRank": "B",
       "reloadSeconds": 2,
       "energy": 60,
-      "names": {"en": "Idunn-A", "ja": "イズナ-A"}
+      "names": {"en": "Ｉｚｕｎａ　Ａ", "ja": "イズナ-A"}
     },
     {
       "id": "winger-particle-1",
       "idx": 1,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 15,
       "range": 200,
       "accuracyRank": "B",
       "energy": 0.7,
-      "names": {"en": "Ixion", "ja": "イクシオン"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ", "ja": "イクシオン"}
     },
     {
       "id": "winger-sniper-1",
       "idx": 1,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "sniper",
       "rof": 0.6,
       "damage": 50,
@@ -489,12 +499,14 @@
       "accuracyRank": "A-",
       "reloadSeconds": 15,
       "energy": 6,
-      "names": {"en": "Proto Thunder Sniper", "ja": "サンダースナイパー試作型"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｓｎｉｐｅｒ　Ｐｒｏｔｏｔｙｐｅ", "ja": "サンダースナイパー試作型"}
     },
     {
       "id": "winger-plasma-1",
       "idx": 1,
       "character": "winger",
+      "level": 0,
+      "odds": "starter",
       "category": "plasma",
       "rof": 1,
       "damage": 90,
@@ -502,12 +514,14 @@
       "radius": 10,
       "accuracyRank": "B",
       "energy": 16,
-      "names": {"en": "E1 Plasma Launcher", "ja": "E1プラズマ・ランチャー"}
+      "names": {"en": "Ｅ１　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "E1プラズマ・ランチャー"}
     },
     {
       "id": "winger-missile-1",
       "idx": 1,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "missile",
       "rof": 6,
       "damage": 30,
@@ -515,12 +529,14 @@
       "homingRank": "A",
       "energy": 3,
       "radius": 5,
-      "names": {"en": "Mirage Zero", "ja": "ミラージュ・ゼロ"}
+      "names": {"en": "Ｍｉｒａｇｅ　Ｚｅｒｏ", "ja": "ミラージュ・ゼロ"}
     },
     {
       "id": "winger-special-1",
       "idx": 1,
       "character": "winger",
+      "level": 2.5,
+      "odds": 100,
       "category": "special",
       "shots": 1800,
       "damage": 5,
@@ -528,7 +544,7 @@
       "attackDirection": "全方位",
       "reloadSeconds": 60,
       "energy": 45,
-      "names": {"en": "Pandora", "ja": "パンドラ"}
+      "names": {"en": "Ｐａｎｄｏｒａ", "ja": "パンドラ"}
     },
     {
       "id": "ranger-assault-2",
@@ -643,6 +659,8 @@
       "id": "winger-short-2",
       "idx": 2,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "short",
       "ammo": 10,
       "rof": 1,
@@ -651,12 +669,14 @@
       "accuracyRank": "A",
       "reloadSeconds": 2,
       "energy": 20,
-      "names": {"en": "Laser Lance", "ja": "レーザーランス"}
+      "names": {"en": "Ｌａｓｅｒ　Ｌａｎｃｅ", "ja": "レーザーランス"}
     },
     {
       "id": "winger-laser-2",
       "idx": 2,
       "character": "winger",
+      "level": 3.75,
+      "odds": 100,
       "category": "laser",
       "ammo": 960,
       "rof": 60,
@@ -666,12 +686,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 2,
       "energy": 25,
-      "names": {"en": "LARG-V", "ja": "LARG-V"}
+      "names": {"en": "ＬＡＲＧ−Ｖ", "ja": "LARG-V"}
     },
     {
       "id": "winger-electro-2",
       "idx": 2,
       "character": "winger",
+      "level": 2.25,
+      "odds": 100,
       "category": "electro",
       "ammo": 1,
       "rof": 1,
@@ -681,12 +703,14 @@
       "accuracyRank": "D",
       "reloadSeconds": 1,
       "energy": 3,
-      "names": {"en": "Eclair 10", "ja": "エクレール10"}
+      "names": {"en": "Ｅｃｌａｉｒ　１０", "ja": "エクレール10"}
     },
     {
       "id": "winger-particle-2",
       "idx": 2,
       "character": "winger",
+      "level": 1.5,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 18,
@@ -694,12 +718,14 @@
       "range": 200,
       "accuracyRank": "B",
       "energy": 0.85,
-      "names": {"en": "Ixion 2-Way", "ja": "イクシオン2WAY"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　２−Ｗａｙ", "ja": "イクシオン2WAY"}
     },
     {
       "id": "winger-sniper-2",
       "idx": 2,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "sniper",
       "rof": 60,
       "damage": 0.3,
@@ -707,22 +733,26 @@
       "accuracyRank": "S",
       "reloadSeconds": 0.15,
       "energy": 5,
-      "names": {"en": "LRSL-33", "ja": "LRSL-33"}
+      "names": {"en": "ＬＲＳＬ−３３", "ja": "LRSL-33"}
     },
     {
       "id": "winger-plasma-2",
       "idx": 2,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "plasma",
       "damage": 200,
       "radius": 7,
       "reloadSeconds": 4,
-      "names": {"en": "Plasma Grenade A", "ja": "プラズマ・グレネードA"}
+      "names": {"en": "Ｐｌａｓｍａ　Ｇｒｅｎａｄｅ　Ａ", "ja": "プラズマ・グレネードA"}
     },
     {
       "id": "winger-missile-2",
       "idx": 2,
       "character": "winger",
+      "level": 2.75,
+      "odds": 100,
       "category": "missile",
       "rof": 1,
       "damage": 70,
@@ -730,12 +760,14 @@
       "homingRank": "A",
       "energy": 6,
       "radius": 10,
-      "names": {"en": "Geist", "ja": "ガイスト"}
+      "names": {"en": "Ｇａｉｓｔ", "ja": "ガイスト"}
     },
     {
       "id": "winger-special-2",
       "idx": 2,
       "character": "winger",
+      "level": 0,
+      "odds": 0,
       "category": "special",
       "shots": 600,
       "damage": 30,
@@ -743,7 +775,7 @@
       "attackDirection": "下方",
       "reloadSeconds": 60,
       "energy": 45,
-      "names": {"en": "Heaven's Gate", "ja": "ヘブンズ・ゲート"}
+      "names": {"en": "Ｈｅａｖｅｎ’ｓ　Ｇａｔｅ", "ja": "ヘブンズ・ゲート"}
     },
     {
       "id": "ranger-assault-3",
@@ -858,6 +890,8 @@
       "id": "winger-short-3",
       "idx": 3,
       "character": "winger",
+      "level": 5,
+      "odds": 100,
       "category": "short",
       "ammo": 500,
       "rof": 60,
@@ -867,12 +901,14 @@
       "accuracyRank": "B-",
       "reloadSeconds": 0.5,
       "energy": 25,
-      "names": {"en": "Rapier Thrust", "ja": "レイピア・スラスト"}
+      "names": {"en": "Ｒａｐｉｅｒ　Ｔｈｒｕｓｔ", "ja": "レイピア・スラスト"}
     },
     {
       "id": "winger-laser-3",
       "idx": 3,
       "character": "winger",
+      "level": 6.25,
+      "odds": 100,
       "category": "laser",
       "ammo": 1100,
       "rof": 60,
@@ -881,12 +917,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 3,
       "energy": 24,
-      "names": {"en": "LAZR-198", "ja": "LAZR-198"}
+      "names": {"en": "ＬＡＺＲ−１９８", "ja": "LAZR-198"}
     },
     {
       "id": "winger-electro-3",
       "idx": 3,
       "character": "winger",
+      "level": 3,
+      "odds": 100,
       "category": "electro",
       "ammo": 14,
       "rof": 1,
@@ -896,23 +934,27 @@
       "accuracyRank": "C",
       "reloadSeconds": 2,
       "energy": 60,
-      "names": {"en": "Thunder Bow 10", "ja": "サンダーボウ10"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｂｏｗ　１０", "ja": "サンダーボウ10"}
     },
     {
       "id": "winger-particle-3",
       "idx": 3,
       "character": "winger",
+      "level": 3,
+      "odds": 100,
       "category": "particle",
       "rof": 5,
       "damage": 27,
       "range": 200,
       "accuracyRank": "B",
-      "names": {"en": "Ixion MX", "ja": "イクシオンMX"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　ＭＸ", "ja": "イクシオンMX"}
     },
     {
       "id": "winger-sniper-3",
       "idx": 3,
       "character": "winger",
+      "level": 2.5,
+      "odds": 100,
       "category": "sniper",
       "rof": 60,
       "damage": 0.5,
@@ -920,12 +962,14 @@
       "accuracyRank": "A+",
       "reloadSeconds": 0.15,
       "energy": 4,
-      "names": {"en": "LRSL-34", "ja": "LRSL-34"}
+      "names": {"en": "ＬＲＳＬ−３４", "ja": "LRSL-34"}
     },
     {
       "id": "winger-plasma-3",
       "idx": 3,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 5,
@@ -934,12 +978,14 @@
       "radius": 2,
       "accuracyRank": "B",
       "energy": 8,
-      "names": {"en": "Plasma Shot", "ja": "プラズマ・ショット"}
+      "names": {"en": "Ｐｌａｓｍａ　Ｓｈｏｔ", "ja": "プラズマ・ショット"}
     },
     {
       "id": "winger-missile-3",
       "idx": 3,
       "character": "winger",
+      "level": 5.5,
+      "odds": 100,
       "category": "missile",
       "rof": 10,
       "damage": 7,
@@ -947,12 +993,14 @@
       "homingRank": "C",
       "energy": 1,
       "radius": 1,
-      "names": {"en": "Rapid Mirage", "ja": "ラピッド・ミラージュ"}
+      "names": {"en": "Ｒａｐｉｄ　Ｍｉｒａｇｅ", "ja": "ラピッド・ミラージュ"}
     },
     {
       "id": "winger-special-3",
       "idx": 3,
       "character": "winger",
+      "level": 7.75,
+      "odds": 100,
       "category": "special",
       "shots": 500,
       "damage": 15,
@@ -960,7 +1008,7 @@
       "attackDirection": "下方",
       "reloadSeconds": 60,
       "energy": 45,
-      "names": {"en": "Thunder Cluster", "ja": "サンダー・クラスター"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｃｌｕｓｔｅｒ", "ja": "サンダー・クラスター"}
     },
     {
       "id": "ranger-assault-4",
@@ -1075,6 +1123,8 @@
       "id": "winger-short-4",
       "idx": 4,
       "character": "winger",
+      "level": 7.25,
+      "odds": 100,
       "category": "short",
       "ammo": 10,
       "rof": 1,
@@ -1083,12 +1133,14 @@
       "accuracyRank": "SSS",
       "reloadSeconds": 2.5,
       "energy": 21,
-      "names": {"en": "Laser Lance B", "ja": "レーザーランスB"}
+      "names": {"en": "Ｌａｓｅｒ　Ｌａｎｃｅ　Ｂ", "ja": "レーザーランスB"}
     },
     {
       "id": "winger-laser-4",
       "idx": 4,
       "character": "winger",
+      "level": 15,
+      "odds": 100,
       "category": "laser",
       "ammo": 1400,
       "rof": 60,
@@ -1097,12 +1149,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 4,
       "energy": 29,
-      "names": {"en": "LAZR-199", "ja": "LAZR-199"}
+      "names": {"en": "ＬＡＺＲ−１９９", "ja": "LAZR-199"}
     },
     {
       "id": "winger-electro-4",
       "idx": 4,
       "character": "winger",
+      "level": 4.375,
+      "odds": 100,
       "category": "electro",
       "ammo": 170,
       "rof": 10,
@@ -1111,24 +1165,28 @@
       "accuracyRank": "B",
       "reloadSeconds": 2,
       "energy": 60,
-      "names": {"en": "Idunn-B", "ja": "イズナ-B"}
+      "names": {"en": "Ｉｚｕｎａ　Ｂ", "ja": "イズナ-B"}
     },
     {
       "id": "winger-particle-4",
       "idx": 4,
       "character": "winger",
+      "level": 5.625,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 27,
       "range": 200,
       "accuracyRank": "B",
       "energy": 0.75,
-      "names": {"en": "Ixion Mk.2", "ja": "イクシオン・マーク2"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　Ｍａｒｋ　２", "ja": "イクシオン・マーク2"}
     },
     {
       "id": "winger-sniper-4",
       "idx": 4,
       "character": "winger",
+      "level": 3,
+      "odds": 100,
       "category": "sniper",
       "rof": 0.7,
       "damage": 50,
@@ -1137,12 +1195,14 @@
       "accuracyRank": "A-",
       "reloadSeconds": 15,
       "energy": 4,
-      "names": {"en": "Thunder Sniper A", "ja": "サンダースナイパーA"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｓｎｉｐｅｒ　Ａ", "ja": "サンダースナイパーA"}
     },
     {
       "id": "winger-plasma-4",
       "idx": 4,
       "character": "winger",
+      "level": 0.75,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 110,
@@ -1150,12 +1210,14 @@
       "radius": 10,
       "accuracyRank": "B",
       "energy": 16,
-      "names": {"en": "E2 Plasma Launcher", "ja": "E2プラズマ・ランチャー"}
+      "names": {"en": "Ｅ２　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "E2プラズマ・ランチャー"}
     },
     {
       "id": "winger-missile-4",
       "idx": 4,
       "character": "winger",
+      "level": 8.75,
+      "odds": 100,
       "category": "missile",
       "rof": 1,
       "damage": 30,
@@ -1164,12 +1226,14 @@
       "homingRank": "B",
       "energy": 10,
       "radius": 5,
-      "names": {"en": "Mirage 5-Way", "ja": "ミラージュ5WAY"}
+      "names": {"en": "Ｍｉｒａｇｅ　５　Ｗａｙ", "ja": "ミラージュ5WAY"}
     },
     {
       "id": "winger-special-4",
       "idx": 4,
       "character": "winger",
+      "level": 13,
+      "odds": 100,
       "category": "special",
       "shots": 1800,
       "damage": 8,
@@ -1177,7 +1241,7 @@
       "attackDirection": "上方",
       "reloadSeconds": 60,
       "energy": 45,
-      "names": {"en": "Pandora M", "ja": "パンドラ改"}
+      "names": {"en": "Ｐａｎｄｏｒａ　Ｕｐｇｒａｄｅ", "ja": "パンドラ改"}
     },
     {
       "id": "ranger-assault-5",
@@ -1293,6 +1357,8 @@
       "id": "winger-short-5",
       "idx": 5,
       "character": "winger",
+      "level": 10.25,
+      "odds": 100,
       "category": "short",
       "ammo": 500,
       "rof": 60,
@@ -1302,12 +1368,14 @@
       "accuracyRank": "G",
       "reloadSeconds": 0.5,
       "energy": 28,
-      "names": {"en": "M2 Rapier", "ja": "M2レイピア"}
+      "names": {"en": "Ｍ２　Ｒａｐｉｅｒ", "ja": "M2レイピア"}
     },
     {
       "id": "winger-laser-5",
       "idx": 5,
       "character": "winger",
+      "level": 20,
+      "odds": 100,
       "category": "laser",
       "ammo": 1000,
       "rof": 60,
@@ -1316,12 +1384,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 3,
       "energy": 26,
-      "names": {"en": "LAZR-200", "ja": "LAZR-200"}
+      "names": {"en": "ＬＡＺＲ−２００", "ja": "LAZR-200"}
     },
     {
       "id": "winger-electro-5",
       "idx": 5,
       "character": "winger",
+      "level": 7.5,
+      "odds": 100,
       "category": "electro",
       "ammo": 150,
       "rof": 10,
@@ -1330,12 +1400,14 @@
       "accuracyRank": "A",
       "reloadSeconds": 2.5,
       "energy": 50,
-      "names": {"en": "Idunn-C Custom", "ja": "イズナ-Cカスタム"}
+      "names": {"en": "Ｉｚｕｎａ　Ｃ　Ｃｕｓｔｏｍ", "ja": "イズナ-Cカスタム"}
     },
     {
       "id": "winger-particle-5",
       "idx": 5,
       "character": "winger",
+      "level": 8.25,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 15,
@@ -1343,12 +1415,14 @@
       "range": 200,
       "accuracyRank": "A+",
       "energy": 1,
-      "names": {"en": "Ixion 3-Way", "ja": "イクシオン3WAY"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　３　Ｗａｙ", "ja": "イクシオン3WAY"}
     },
     {
       "id": "winger-sniper-5",
       "idx": 5,
       "character": "winger",
+      "level": 5,
+      "odds": 100,
       "category": "sniper",
       "rof": 60,
       "damage": 0.7,
@@ -1356,22 +1430,26 @@
       "accuracyRank": "B-",
       "reloadSeconds": 0.5,
       "energy": 4,
-      "names": {"en": "LRSL-35", "ja": "LRSL-35"}
+      "names": {"en": "ＬＲＳＬ−３５", "ja": "LRSL-35"}
     },
     {
       "id": "winger-plasma-5",
       "idx": 5,
       "character": "winger",
+      "level": 1.5,
+      "odds": 100,
       "category": "plasma",
       "damage": 200,
       "radius": 10,
       "reloadSeconds": 5,
-      "names": {"en": "Plasma Grenade B", "ja": "プラズマ・グレネードB"}
+      "names": {"en": "Ｐｌａｓｍａ　Ｇｒｅｎａｄｅ　Ｂ", "ja": "プラズマ・グレネードB"}
     },
     {
       "id": "winger-missile-5",
       "idx": 5,
       "character": "winger",
+      "level": 13.75,
+      "odds": 100,
       "category": "missile",
       "rof": 1,
       "damage": 200,
@@ -1379,12 +1457,14 @@
       "homingRank": "A",
       "energy": 7,
       "radius": 12,
-      "names": {"en": "Geist 2", "ja": "ガイスト2"}
+      "names": {"en": "Ｇａｉｓｔ　２", "ja": "ガイスト2"}
     },
     {
       "id": "winger-special-5",
       "idx": 5,
       "character": "winger",
+      "level": 20.75,
+      "odds": 100,
       "category": "special",
       "shots": 1800,
       "damage": 30,
@@ -1392,7 +1472,7 @@
       "attackDirection": "全方位",
       "reloadSeconds": 60,
       "energy": 45,
-      "names": {"en": "Pandora β", "ja": "パンドラβ"}
+      "names": {"en": "Ｐａｎｄｏｒａ　β", "ja": "パンドラβ"}
     },
     {
       "id": "ranger-assault-6",
@@ -1509,6 +1589,8 @@
       "id": "winger-short-6",
       "idx": 6,
       "character": "winger",
+      "level": 12.5,
+      "odds": 100,
       "category": "short",
       "ammo": 10,
       "rof": 1,
@@ -1518,12 +1600,14 @@
       "accuracyRank": "A",
       "reloadSeconds": 2,
       "energy": 23,
-      "names": {"en": "2-Way Lance", "ja": "2WAYランス"}
+      "names": {"en": "２　Ｗａｙ　Ｌａｎｃｅ", "ja": "2WAYランス"}
     },
     {
       "id": "winger-laser-6",
       "idx": 6,
       "character": "winger",
+      "level": 0,
+      "odds": 0,
       "category": "laser",
       "ammo": 1060,
       "rof": 60,
@@ -1533,12 +1617,14 @@
       "accuracyRank": "G",
       "reloadSeconds": 2,
       "energy": 26,
-      "names": {"en": "Laser Chainsaw", "ja": "レーザー・チェーンソー"}
+      "names": {"en": "Ｌａｓｅｒ　Ｃｈａｉｎｓａｗ", "ja": "レーザー・チェーンソー"}
     },
     {
       "id": "winger-electro-6",
       "idx": 6,
       "character": "winger",
+      "level": 11,
+      "odds": 100,
       "category": "electro",
       "ammo": 1,
       "rof": 1,
@@ -1548,24 +1634,28 @@
       "accuracyRank": "D",
       "reloadSeconds": 1,
       "energy": 7,
-      "names": {"en": "Eclair 20", "ja": "エクレール20"}
+      "names": {"en": "Ｅｃｌａｉｒ　２０", "ja": "エクレール20"}
     },
     {
       "id": "winger-particle-6",
       "idx": 6,
       "character": "winger",
+      "level": 8.75,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 15,
       "range": 180,
       "accuracyRank": "B",
       "energy": 1,
-      "names": {"en": "Pulsar shot", "ja": "パルサーショット"}
+      "names": {"en": "Ｐｕｌｓａｒ　Ｓｈｏｔ", "ja": "パルサーショット"}
     },
     {
       "id": "winger-sniper-6",
       "idx": 6,
       "character": "winger",
+      "level": 7.5,
+      "odds": 100,
       "category": "sniper",
       "rof": 60,
       "damage": 3,
@@ -1573,12 +1663,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 0.22,
       "energy": 5.5,
-      "names": {"en": "LRSL-36", "ja": "LRSL-36"}
+      "names": {"en": "ＬＲＳＬ−３６", "ja": "LRSL-36"}
     },
     {
       "id": "winger-plasma-6",
       "idx": 6,
       "character": "winger",
+      "level": 2.5,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 130,
@@ -1586,12 +1678,14 @@
       "radius": 10,
       "accuracyRank": "B",
       "energy": 18,
-      "names": {"en": "E3 Plasma Launcher", "ja": "E3プラズマ・ランチャー"}
+      "names": {"en": "Ｅ３　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "E3プラズマ・ランチャー"}
     },
     {
       "id": "winger-missile-6",
       "idx": 6,
       "character": "winger",
+      "level": 18,
+      "odds": 100,
       "category": "missile",
       "rof": 1.5,
       "damage": 30,
@@ -1600,12 +1694,14 @@
       "homingRank": "B",
       "energy": 9,
       "radius": 5,
-      "names": {"en": "Mirage 5-Way B", "ja": "ミラージュ5WAY-B"}
+      "names": {"en": "Ｍｉｒａｇｅ　５　Ｗａｙ　Ｂ", "ja": "ミラージュ5WAY-B"}
     },
     {
       "id": "winger-special-6",
       "idx": 6,
       "character": "winger",
+      "level": 25,
+      "odds": 100,
       "category": "special",
       "shots": 1800,
       "damage": 30,
@@ -1613,7 +1709,7 @@
       "attackDirection": "下方",
       "reloadSeconds": 60,
       "energy": 45,
-      "names": {"en": "Psi Cluster", "ja": "サイ・クラスター"}
+      "names": {"en": "Ｓａｉ−Ｃｌｕｓｔｅｒ", "ja": "サイ・クラスター"}
     },
     {
       "id": "ranger-assault-7",
@@ -1729,6 +1825,8 @@
       "id": "winger-short-7",
       "idx": 7,
       "character": "winger",
+      "level": 15,
+      "odds": 100,
       "category": "short",
       "ammo": 1,
       "damage": 2000,
@@ -1736,12 +1834,14 @@
       "accuracyRank": "SSS",
       "reloadSeconds": 2.5,
       "energy": 20,
-      "names": {"en": "Battle ram", "ja": "バトル・ラム"}
+      "names": {"en": "Ｂａｔｔｌｅ　Ｒａｍ", "ja": "バトル・ラム"}
     },
     {
       "id": "winger-laser-7",
       "idx": 7,
       "character": "winger",
+      "level": 32.5,
+      "odds": 100,
       "category": "laser",
       "ammo": 1200,
       "rof": 60,
@@ -1750,12 +1850,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 2.5,
       "energy": 30,
-      "names": {"en": "LAZR-201", "ja": "LAZR-201"}
+      "names": {"en": "ＬＡＺＲ−２０１", "ja": "LAZR-201"}
     },
     {
       "id": "winger-electro-7",
       "idx": 7,
       "character": "winger",
+      "level": 13.75,
+      "odds": 100,
       "category": "electro",
       "ammo": 15,
       "rof": 1,
@@ -1765,12 +1867,14 @@
       "accuracyRank": "C",
       "reloadSeconds": 2,
       "energy": 60,
-      "names": {"en": "Thunder Bow 15", "ja": "サンダーボウ15"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｂｏｗ　１５", "ja": "サンダーボウ15"}
     },
     {
       "id": "winger-particle-7",
       "idx": 7,
       "character": "winger",
+      "level": 12.5,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 34,
@@ -1778,12 +1882,14 @@
       "range": 200,
       "accuracyRank": "A",
       "energy": 0.75,
-      "names": {"en": "Ixion Wide", "ja": "イクシオンWIDE"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　Ｗｉｄｅ", "ja": "イクシオンWIDE"}
     },
     {
       "id": "winger-sniper-7",
       "idx": 7,
       "character": "winger",
+      "level": 10,
+      "odds": 100,
       "category": "sniper",
       "rof": 60,
       "damage": 600,
@@ -1791,12 +1897,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 30,
       "energy": 8,
-      "names": {"en": "MONSTER", "ja": "MONSTER"}
+      "names": {"en": "Ｔｈｅ　Ｍｏｎｓｔｅｒ", "ja": "MONSTER"}
     },
     {
       "id": "winger-plasma-7",
       "idx": 7,
       "character": "winger",
+      "level": 5,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 80,
@@ -1805,12 +1913,14 @@
       "radius": 10,
       "accuracyRank": "B",
       "energy": 22,
-      "names": {"en": "Twin Plasma PLauncher", "ja": "2連プラズマ・ランチャー"}
+      "names": {"en": "２　Ｓｈｏｔ　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "2連プラズマ・ランチャー"}
     },
     {
       "id": "winger-missile-7",
       "idx": 7,
       "character": "winger",
+      "level": 25,
+      "odds": 100,
       "category": "missile",
       "rof": 6,
       "damage": 75,
@@ -1818,12 +1928,14 @@
       "homingRank": "A",
       "energy": 2,
       "radius": 5,
-      "names": {"en": "Mirage Rumble", "ja": "ミラージュ・ランブル"}
+      "names": {"en": "Ｍｉｒａｇｅ　Ｒｕｍｂｌｅ", "ja": "ミラージュ・ランブル"}
     },
     {
       "id": "winger-special-7",
       "idx": 7,
       "character": "winger",
+      "level": 34.75,
+      "odds": 100,
       "category": "special",
       "shots": 1800,
       "damage": 30,
@@ -1831,7 +1943,7 @@
       "attackDirection": "下方",
       "reloadSeconds": 60,
       "energy": 45,
-      "names": {"en": "Pandora α", "ja": "パンドラα"}
+      "names": {"en": "Ｐａｎｄｏｒａ　α", "ja": "パンドラα"}
     },
     {
       "id": "ranger-assault-8",
@@ -1930,6 +2042,8 @@
       "id": "winger-short-8",
       "idx": 8,
       "character": "winger",
+      "level": 17.5,
+      "odds": 100,
       "category": "short",
       "ammo": 15,
       "rof": 2,
@@ -1938,12 +2052,14 @@
       "accuracyRank": "B-",
       "reloadSeconds": 3,
       "energy": 20,
-      "names": {"en": "Laser Lance R Custom", "ja": "レーザーランスRカスタム"}
+      "names": {"en": "Ｌａｓｅｒ　Ｌａｎｃｅ　Ｒ　Ｃｕｓｔｏｍ", "ja": "レーザーランスRカスタム"}
     },
     {
       "id": "winger-laser-8",
       "idx": 8,
       "character": "winger",
+      "level": 40,
+      "odds": 100,
       "category": "laser",
       "ammo": 1200,
       "rof": 60,
@@ -1952,12 +2068,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 2.5,
       "energy": 30,
-      "names": {"en": "LAZR-202", "ja": "LAZR-202"}
+      "names": {"en": "ＬＡＺＲ−２０２", "ja": "LAZR-202"}
     },
     {
       "id": "winger-electro-8",
       "idx": 8,
       "character": "winger",
+      "level": 18.75,
+      "odds": 100,
       "category": "electro",
       "ammo": 10,
       "rof": 1,
@@ -1967,12 +2085,14 @@
       "accuracyRank": "C+",
       "reloadSeconds": 1.5,
       "energy": 45,
-      "names": {"en": "Thunder Bow 15S", "ja": "サンダーボウ15S"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｂｏｗ　１５Ｓ", "ja": "サンダーボウ15S"}
     },
     {
       "id": "winger-particle-8",
       "idx": 8,
       "character": "winger",
+      "level": 16.25,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 15,
@@ -1980,12 +2100,14 @@
       "range": 180,
       "accuracyRank": "A",
       "energy": 1.2,
-      "names": {"en": "Ixion 5-Way", "ja": "イクシオン5WAY"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　５　Ｗａｙ", "ja": "イクシオン5WAY"}
     },
     {
       "id": "winger-sniper-8",
       "idx": 8,
       "character": "winger",
+      "level": 11.25,
+      "odds": 100,
       "category": "sniper",
       "rof": 0.6,
       "damage": 70,
@@ -2000,16 +2122,20 @@
       "id": "winger-plasma-8",
       "idx": 8,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "plasma",
       "damage": 250,
       "radius": 5,
       "reloadSeconds": 3,
-      "names": {"en": "Rapid Grenade", "ja": "ラピッド・グレネード"}
+      "names": {"en": "Ｒａｐｉｄ　Ｇｒｅｎａｄｅ", "ja": "ラピッド・グレネード"}
     },
     {
       "id": "winger-missile-8",
       "idx": 8,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "missile",
       "rof": 6,
       "damage": 6,
@@ -2018,12 +2144,14 @@
       "homingRank": "A",
       "energy": 3,
       "radius": 2,
-      "names": {"en": "Mirage 15", "ja": "ミラージュ15"}
+      "names": {"en": "Ｍｉｒａｇｅ　１５", "ja": "ミラージュ15"}
     },
     {
       "id": "winger-special-8",
       "idx": 8,
       "character": "winger",
+      "level": 42,
+      "odds": 100,
       "category": "special",
       "shots": 1800,
       "damage": 30,
@@ -2031,7 +2159,7 @@
       "attackDirection": "前方",
       "reloadSeconds": 60,
       "energy": 45,
-      "names": {"en": "Psi Cluster α", "ja": "サイ・クラスターα"}
+      "names": {"en": "Ｓａｉ−Ｃｌｕｓｔｅｒ　α", "ja": "サイ・クラスターα"}
     },
     {
       "id": "ranger-assault-9",
@@ -2143,6 +2271,8 @@
       "id": "winger-short-9",
       "idx": 9,
       "character": "winger",
+      "level": 20,
+      "odds": 100,
       "category": "short",
       "ammo": 600,
       "rof": 60,
@@ -2152,12 +2282,14 @@
       "accuracyRank": "B-",
       "reloadSeconds": 0.5,
       "energy": 22,
-      "names": {"en": "M3 Rapier Thrust", "ja": "M3レイピア・スラスト"}
+      "names": {"en": "Ｍ３　Ｒａｐｉｅｒ　Ｔｈｒｕｓｔ", "ja": "M3レイピア・スラスト"}
     },
     {
       "id": "winger-laser-9",
       "idx": 9,
       "character": "winger",
+      "level": 45,
+      "odds": 100,
       "category": "laser",
       "ammo": 1160,
       "rof": 60,
@@ -2167,12 +2299,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 2,
       "energy": 30,
-      "names": {"en": "LARG-W3", "ja": "LARG-W3"}
+      "names": {"en": "ＬＡＲＧ−Ｗ３", "ja": "LARG-W3"}
     },
     {
       "id": "winger-electro-9",
       "idx": 9,
       "character": "winger",
+      "level": 25,
+      "odds": 100,
       "category": "electro",
       "ammo": 165,
       "rof": 15,
@@ -2181,12 +2315,14 @@
       "accuracyRank": "A",
       "reloadSeconds": 3,
       "energy": 48,
-      "names": {"en": "Idunn-D Custom", "ja": "イズナ-Dカスタム"}
+      "names": {"en": "Ｉｚｕｎａ　Ｄ　Ｃｕｓｔｏｍ", "ja": "イズナ-Dカスタム"}
     },
     {
       "id": "winger-particle-9",
       "idx": 9,
       "character": "winger",
+      "level": 17.5,
+      "odds": 100,
       "category": "particle",
       "rof": 4,
       "damage": 24,
@@ -2194,12 +2330,14 @@
       "range": 200,
       "accuracyRank": "B-",
       "energy": 2.7,
-      "names": {"en": "Dynastrike", "ja": "ダイナスト"}
+      "names": {"en": "Ｄｙｎａｓｔ", "ja": "ダイナスト"}
     },
     {
       "id": "winger-sniper-9",
       "idx": 9,
       "character": "winger",
+      "level": 12.5,
+      "odds": 100,
       "category": "sniper",
       "rof": 0.6,
       "damage": 20,
@@ -2208,12 +2346,14 @@
       "accuracyRank": "B+",
       "reloadSeconds": 20,
       "energy": 6,
-      "names": {"en": "Thunder Sniper 15", "ja": "サンダースナイパー15"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｓｎｉｐｅｒ　１５", "ja": "サンダースナイパー15"}
     },
     {
       "id": "winger-plasma-9",
       "idx": 9,
       "character": "winger",
+      "level": 10,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 300,
@@ -2221,12 +2361,14 @@
       "radius": 15,
       "accuracyRank": "B",
       "energy": 18,
-      "names": {"en": "Plasma Launcher D", "ja": "D型プラズマ・ランチャー"}
+      "names": {"en": "Ｄ　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "D型プラズマ・ランチャー"}
     },
     {
       "id": "winger-missile-9",
       "idx": 9,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "missile",
       "rof": 0.5,
       "damage": 600,
@@ -2234,12 +2376,14 @@
       "homingRank": "S",
       "energy": 40,
       "radius": 12,
-      "names": {"en": "Psiblade", "ja": "サイ・ブレード"}
+      "names": {"en": "Ｓａｉ−Ｂｌａｄｅ", "ja": "サイ・ブレード"}
     },
     {
       "id": "winger-special-9",
       "idx": 9,
       "character": "winger",
+      "level": 0,
+      "odds": 0,
       "category": "special",
       "shots": 600,
       "count": 10,
@@ -2248,7 +2392,7 @@
       "attackDirection": "下方",
       "reloadSeconds": 60,
       "energy": 45,
-      "names": {"en": "Heaven's Gate β", "ja": "ヘブンズ・ゲートβ"}
+      "names": {"en": "Ｈｅａｖｅｎ’ｓ　Ｇａｔｅ　β", "ja": "ヘブンズ・ゲートβ"}
     },
     {
       "id": "ranger-assault-10",
@@ -2361,6 +2505,8 @@
       "id": "winger-short-10",
       "idx": 10,
       "character": "winger",
+      "level": 25,
+      "odds": 100,
       "category": "short",
       "ammo": 10,
       "rof": 1,
@@ -2368,12 +2514,14 @@
       "range": 49,
       "accuracyRank": "SSS",
       "reloadSeconds": 30,
-      "names": {"en": "MX Laser Lance", "ja": "MXレーザーランス"}
+      "names": {"en": "ＭＸ　Ｌａｓｅｒ　Ｌａｎｃｅ", "ja": "MXレーザーランス"}
     },
     {
       "id": "winger-laser-10",
       "idx": 10,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "laser",
       "ammo": 1040,
       "rof": 60,
@@ -2382,12 +2530,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 3,
       "energy": 18,
-      "names": {"en": "LAZR-299", "ja": "LAZR-299"}
+      "names": {"en": "ＬＡＺＲ−２９９", "ja": "LAZR-299"}
     },
     {
       "id": "winger-electro-10",
       "idx": 10,
       "character": "winger",
+      "level": 30,
+      "odds": 100,
       "category": "electro",
       "ammo": 20,
       "rof": 1,
@@ -2397,12 +2547,14 @@
       "accuracyRank": "C",
       "reloadSeconds": 3,
       "energy": 63,
-      "names": {"en": "Thunder Bow 20", "ja": "サンダーボウ20"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｂｏｗ　２０", "ja": "サンダーボウ20"}
     },
     {
       "id": "winger-particle-10",
       "idx": 10,
       "character": "winger",
+      "level": 22.5,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 24,
@@ -2410,12 +2562,14 @@
       "range": 180,
       "accuracyRank": "A",
       "energy": 1.1,
-      "names": {"en": "Ixion 4-Way", "ja": "イクシオン4WAY"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　４　Ｗａｙ", "ja": "イクシオン4WAY"}
     },
     {
       "id": "winger-sniper-10",
       "idx": 10,
       "character": "winger",
+      "level": 15,
+      "odds": 100,
       "category": "sniper",
       "rof": 0.65,
       "damage": 100,
@@ -2424,12 +2578,14 @@
       "accuracyRank": "B",
       "reloadSeconds": 17,
       "energy": 4,
-      "names": {"en": "Thunder Sniper C", "ja": "サンダースナイパーC"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｓｎｉｐｅｒ　Ｃ", "ja": "サンダースナイパーC"}
     },
     {
       "id": "winger-plasma-10",
       "idx": 10,
       "character": "winger",
+      "level": 10,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 200,
@@ -2437,12 +2593,14 @@
       "radius": 12,
       "accuracyRank": "A-",
       "energy": 16,
-      "names": {"en": "E4 Plasma Launcher", "ja": "E4プラズマ・ランチャー"}
+      "names": {"en": "Ｅ４　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "E4プラズマ・ランチャー"}
     },
     {
       "id": "winger-missile-10",
       "idx": 10,
       "character": "winger",
+      "level": 37,
+      "odds": 100,
       "category": "missile",
       "rof": 3,
       "damage": 200,
@@ -2451,12 +2609,14 @@
       "homingRank": "A",
       "energy": 4,
       "radius": 20,
-      "names": {"en": "Geist 3", "ja": "ガイスト3"}
+      "names": {"en": "Ｇａｉｓｔ　３", "ja": "ガイスト3"}
     },
     {
       "id": "winger-special-10",
       "idx": 10,
       "character": "winger",
+      "level": 55,
+      "odds": 100,
       "category": "special",
       "shots": 500,
       "damage": 45,
@@ -2464,7 +2624,7 @@
       "attackDirection": "下方",
       "reloadSeconds": 60,
       "energy": 45,
-      "names": {"en": "Thunder Cluster α", "ja": "サンダー・クラスターα"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｃｌｕｓｔｅｒ　α", "ja": "サンダー・クラスターα"}
     },
     {
       "id": "ranger-assault-11",
@@ -2579,6 +2739,8 @@
       "id": "winger-short-11",
       "idx": 11,
       "character": "winger",
+      "level": 30,
+      "odds": 100,
       "category": "short",
       "ammo": 2500,
       "rof": 60,
@@ -2588,12 +2750,14 @@
       "accuracyRank": "K",
       "reloadSeconds": 2,
       "energy": 120,
-      "names": {"en": "Plasma Whip", "ja": "プラズマ・ウィップ"}
+      "names": {"en": "Ｐｌａｓｍａ　Ｗｈｉｐ", "ja": "プラズマ・ウィップ"}
     },
     {
       "id": "winger-laser-11",
       "idx": 11,
       "character": "winger",
+      "level": 65,
+      "odds": 100,
       "category": "laser",
       "ammo": 1140,
       "rof": 60,
@@ -2602,12 +2766,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 4,
       "energy": 26,
-      "names": {"en": "LAZR-300", "ja": "LAZR-300"}
+      "names": {"en": "ＬＡＺＲ−３００", "ja": "LAZR-300"}
     },
     {
       "id": "winger-electro-11",
       "idx": 11,
       "character": "winger",
+      "level": 33.25,
+      "odds": 100,
       "category": "electro",
       "ammo": 30,
       "rof": 3,
@@ -2616,24 +2782,28 @@
       "accuracyRank": "Z",
       "reloadSeconds": 10,
       "energy": 59,
-      "names": {"en": "Grom X", "ja": "グロームX"}
+      "names": {"en": "Ｇｒｏｍｅ　Ｘ", "ja": "グロームX"}
     },
     {
       "id": "winger-particle-11",
       "idx": 11,
       "character": "winger",
+      "level": 28.75,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 87,
       "range": 200,
       "accuracyRank": "B-",
       "energy": 0.7,
-      "names": {"en": "Ixion Mark III", "ja": "イクシオン・マーク3"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　Ｍａｒｋ　３", "ja": "イクシオン・マーク3"}
     },
     {
       "id": "winger-sniper-11",
       "idx": 11,
       "character": "winger",
+      "level": 17.5,
+      "odds": 100,
       "category": "sniper",
       "rof": 10,
       "damage": 30,
@@ -2641,12 +2811,14 @@
       "accuracyRank": "B+",
       "reloadSeconds": 1.6,
       "energy": 3,
-      "names": {"en": "Thunder Sniper R", "ja": "サンダースナイパーR"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｓｎｉｐｅｒ　Ｒ", "ja": "サンダースナイパーR"}
     },
     {
       "id": "winger-plasma-11",
       "idx": 11,
       "character": "winger",
+      "level": 15,
+      "odds": 100,
       "category": "plasma",
       "rof": 2,
       "damage": 800,
@@ -2654,12 +2826,14 @@
       "radius": 20,
       "accuracyRank": "B",
       "energy": 120,
-      "names": {"en": "Blast P Launcher", "ja": "ブラスト・Pランチャー"}
+      "names": {"en": "Ｂｌａｓｔ　Ｐ−Ｌａｕｎｃｈｅｒ", "ja": "ブラスト・Pランチャー"}
     },
     {
       "id": "winger-missile-11",
       "idx": 11,
       "character": "winger",
+      "level": 43,
+      "odds": 100,
       "category": "missile",
       "rof": 6,
       "damage": 10,
@@ -2667,12 +2841,14 @@
       "range": 600,
       "homingRank": "A",
       "energy": 3,
-      "names": {"en": "Mirage 15S", "ja": "ミラージュ15S"}
+      "names": {"en": "Ｍｉｒａｇｅ　１５Ｓ", "ja": "ミラージュ15S"}
     },
     {
       "id": "winger-special-11",
       "idx": 11,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "special",
       "shots": 600,
       "count": 10,
@@ -2681,7 +2857,7 @@
       "attackDirection": "下方",
       "reloadSeconds": 60,
       "energy": 45,
-      "names": {"en": "Heaven's Gate α", "ja": "ヘブンズ・ゲートα"}
+      "names": {"en": "Ｈｅａｖｅｎ’ｓ　Ｇａｔｅ　α", "ja": "ヘブンズ・ゲートα"}
     },
     {
       "id": "ranger-assault-12",
@@ -2783,6 +2959,8 @@
       "id": "winger-short-12",
       "idx": 12,
       "character": "winger",
+      "level": 30,
+      "odds": 100,
       "category": "short",
       "ammo": 10,
       "rof": 1,
@@ -2791,12 +2969,14 @@
       "accuracyRank": "SSS",
       "reloadSeconds": 2,
       "energy": 25,
-      "names": {"en": "Laser Lance C", "ja": "レーザーランスC"}
+      "names": {"en": "Ｌａｓｅｒ　Ｌａｎｃｅ　Ｃ", "ja": "レーザーランスC"}
     },
     {
       "id": "winger-laser-12",
       "idx": 12,
       "character": "winger",
+      "level": 75,
+      "odds": 100,
       "category": "laser",
       "ammo": 1300,
       "rof": 60,
@@ -2805,12 +2985,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 4.5,
       "energy": 21,
-      "names": {"en": "ARC-LAZR", "ja": "ARC-LAZR"}
+      "names": {"en": "ＡＲＣ−ＬＡＺＲ", "ja": "ARC-LAZR"}
     },
     {
       "id": "winger-electro-12",
       "idx": 12,
       "character": "winger",
+      "level": 38.75,
+      "odds": 100,
       "category": "electro",
       "ammo": 30,
       "rof": 3,
@@ -2819,24 +3001,28 @@
       "accuracyRank": "B",
       "reloadSeconds": 8,
       "energy": 62,
-      "names": {"en": "Grom SS", "ja": "グロームSS"}
+      "names": {"en": "Ｇｒｏｍｅ　ＳＳ", "ja": "グロームSS"}
     },
     {
       "id": "winger-particle-12",
       "idx": 12,
       "character": "winger",
+      "level": 35,
+      "odds": 100,
       "category": "particle",
       "rof": 50,
       "damage": 140,
       "range": 240,
       "accuracyRank": "B",
       "energy": 2,
-      "names": {"en": "Pulsar Shot α", "ja": "パルサーショットα"}
+      "names": {"en": "Ｐｕｌｓａｒ　Ｓｈｏｔ　α", "ja": "パルサーショットα"}
     },
     {
       "id": "winger-sniper-12",
       "idx": 12,
       "character": "winger",
+      "level": 20,
+      "odds": 100,
       "category": "sniper",
       "rof": 60,
       "damage": 6,
@@ -2844,41 +3030,47 @@
       "accuracyRank": "A++",
       "reloadSeconds": 0.24,
       "energy": 6,
-      "names": {"en": "LRSL-37", "ja": "LRSL-37"}
+      "names": {"en": "ＬＲＳＬ−３７", "ja": "LRSL-37"}
     },
     {
       "id": "winger-plasma-12",
       "idx": 12,
       "character": "winger",
+      "level": 16,
+      "odds": 100,
       "category": "plasma",
       "damage": 800,
       "radius": 15,
       "reloadSeconds": 20,
-      "names": {"en": "Blast grenade", "ja": "ブラスト・グレネード"}
+      "names": {"en": "Ｂｌａｓｔ　Ｇｒｅｎａｄｅ", "ja": "ブラスト・グレネード"}
     },
     {
       "id": "winger-missile-12",
       "idx": 12,
       "character": "winger",
+      "level": 52.5,
+      "odds": 100,
       "category": "missile",
       "rof": 10,
       "damage": 120,
       "range": 800,
       "homingRank": "C",
       "energy": 1.5,
-      "names": {"en": "Fenrir", "ja": "フェンリル"}
+      "names": {"en": "Ｆｅｎｒｉｒ", "ja": "フェンリル"}
     },
     {
       "id": "winger-special-12",
       "idx": 12,
       "character": "winger",
+      "level": 0,
+      "odds": 0,
       "category": "special",
       "shots": 5,
       "damage": 1000000,
       "attackDirection": "下方",
       "reloadSeconds": 40,
       "energy": 300,
-      "names": {"en": "Armageddon Cluster", "ja": "アルマゲドン・クラスター"}
+      "names": {"en": "Ａｒｍａｇｅｄｄｏｎ　Ｃｌｕｓｔｅｒ", "ja": "アルマゲドン・クラスター"}
     },
     {
       "id": "ranger-assault-13",
@@ -2998,6 +3190,8 @@
       "id": "winger-short-13",
       "idx": 13,
       "character": "winger",
+      "level": 32.5,
+      "odds": 100,
       "category": "short",
       "ammo": 10,
       "rof": 1,
@@ -3007,12 +3201,14 @@
       "accuracyRank": "B-",
       "reloadSeconds": 4,
       "energy": 30,
-      "names": {"en": "3-Way Lance", "ja": "3WAYランス"}
+      "names": {"en": "３　Ｗａｙ　Ｌａｎｃｅ", "ja": "3WAYランス"}
     },
     {
       "id": "winger-laser-13",
       "idx": 13,
       "character": "winger",
+      "level": 0,
+      "odds": 0,
       "category": "laser",
       "ammo": 1040,
       "rof": 60,
@@ -3022,12 +3218,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 3,
       "energy": 180,
-      "names": {"en": "Cyclone laser", "ja": "サイクロン・レーザー"}
+      "names": {"en": "Ｃｙｃｌｏｎｅ　Ｌａｓｅｒ", "ja": "サイクロン・レーザー"}
     },
     {
       "id": "winger-electro-13",
       "idx": 13,
       "character": "winger",
+      "level": 43.75,
+      "odds": 100,
       "category": "electro",
       "ammo": 24,
       "rof": 2,
@@ -3037,12 +3235,14 @@
       "accuracyRank": "D+",
       "reloadSeconds": 3,
       "energy": 71,
-      "names": {"en": "Thunder Bow 20R", "ja": "サンダーボウ20R"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｂｏｗ　２０Ｒ", "ja": "サンダーボウ20R"}
     },
     {
       "id": "winger-particle-13",
       "idx": 13,
       "character": "winger",
+      "level": 36.25,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 30,
@@ -3050,12 +3250,14 @@
       "range": 170,
       "accuracyRank": "A",
       "energy": 1.1,
-      "names": {"en": "Ixion 6-Way", "ja": "イクシオン6WAY"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　６　Ｗａｙ", "ja": "イクシオン6WAY"}
     },
     {
       "id": "winger-sniper-13",
       "idx": 13,
       "character": "winger",
+      "level": 30,
+      "odds": 100,
       "category": "sniper",
       "rof": 0.3,
       "damage": 2000,
@@ -3063,12 +3265,14 @@
       "accuracyRank": "A++",
       "reloadSeconds": 70,
       "energy": 12,
-      "names": {"en": "Raijin", "ja": "ライジン"}
+      "names": {"en": "Ｒａｉｊｉｎ", "ja": "ライジン"}
     },
     {
       "id": "winger-plasma-13",
       "idx": 13,
       "character": "winger",
+      "level": 17.5,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 80,
@@ -3077,12 +3281,14 @@
       "radius": 10,
       "accuracyRank": "B",
       "energy": 25,
-      "names": {"en": "Triple Plasma Launcher", "ja": "3連プラズマ・ランチャー"}
+      "names": {"en": "３　Ｓｈｏｔ　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "3連プラズマ・ランチャー"}
     },
     {
       "id": "winger-missile-13",
       "idx": 13,
       "character": "winger",
+      "level": 57.5,
+      "odds": 100,
       "category": "missile",
       "rof": 0.7,
       "damage": 220,
@@ -3091,7 +3297,7 @@
       "homingRank": "A",
       "energy": 9,
       "radius": 5,
-      "names": {"en": "Mirage 5-Way S", "ja": "ミラージュ5WAY-S"}
+      "names": {"en": "Ｍｉｒａｇｅ　５　Ｗａｙ−Ｓ", "ja": "ミラージュ5WAY-S"}
     },
     {
       "id": "ranger-assault-14",
@@ -3209,6 +3415,8 @@
       "id": "winger-short-14",
       "idx": 14,
       "character": "winger",
+      "level": 35.5,
+      "odds": 100,
       "category": "short",
       "ammo": 600,
       "rof": 60,
@@ -3217,12 +3425,14 @@
       "range": 30,
       "accuracyRank": "D+",
       "reloadSeconds": 20,
-      "names": {"en": "MX Rapier", "ja": "MXレイピア"}
+      "names": {"en": "ＭＸ　Ｒａｐｉｅｒ", "ja": "MXレイピア"}
     },
     {
       "id": "winger-electro-14",
       "idx": 14,
       "character": "winger",
+      "level": 47.5,
+      "odds": 100,
       "category": "electro",
       "ammo": 180,
       "rof": 20,
@@ -3231,12 +3441,14 @@
       "accuracyRank": "A",
       "reloadSeconds": 2.5,
       "energy": 55,
-      "names": {"en": "Idunn-E Custom", "ja": "イズナ-Eカスタム"}
+      "names": {"en": "Ｉｚｕｎａ　Ｅ　Ｃｕｓｔｏｍ", "ja": "イズナ-Eカスタム"}
     },
     {
       "id": "winger-particle-14",
       "idx": 14,
       "character": "winger",
+      "level": 42.5,
+      "odds": 100,
       "category": "particle",
       "rof": 6,
       "damage": 30,
@@ -3244,12 +3456,14 @@
       "range": 260,
       "accuracyRank": "B-",
       "energy": 10,
-      "names": {"en": "Dynastrike X", "ja": "ダイナストX"}
+      "names": {"en": "Ｄｙｎａｓｔ　Ｘ", "ja": "ダイナストX"}
     },
     {
       "id": "winger-sniper-14",
       "idx": 14,
       "character": "winger",
+      "level": 37.5,
+      "odds": 100,
       "category": "sniper",
       "rof": 60,
       "damage": 8,
@@ -3257,12 +3471,14 @@
       "accuracyRank": "S",
       "reloadSeconds": 0.2,
       "energy": 7,
-      "names": {"en": "LRSL-38", "ja": "LRSL-38"}
+      "names": {"en": "ＬＲＳＬ−３８", "ja": "LRSL-38"}
     },
     {
       "id": "winger-plasma-14",
       "idx": 14,
       "character": "winger",
+      "level": 20,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 200,
@@ -3270,12 +3486,14 @@
       "radius": 15,
       "accuracyRank": "B",
       "energy": 20,
-      "names": {"en": "D2 Plasma Launcher", "ja": "D2プラズマ・ランチャー"}
+      "names": {"en": "Ｄ２　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "D2プラズマ・ランチャー"}
     },
     {
       "id": "winger-missile-14",
       "idx": 14,
       "character": "winger",
+      "level": 62.5,
+      "odds": 100,
       "category": "missile",
       "rof": 0.5,
       "damage": 2000,
@@ -3283,7 +3501,7 @@
       "homingRank": "S",
       "energy": 40,
       "radius": 20,
-      "names": {"en": "Psiblade α", "ja": "サイ・ブレードα"}
+      "names": {"en": "Ｓａｉ−Ｂｌａｄｅ　α", "ja": "サイ・ブレードα"}
     },
     {
       "id": "ranger-assault-15",
@@ -3384,6 +3602,8 @@
       "id": "winger-short-15",
       "idx": 15,
       "character": "winger",
+      "level": 40,
+      "odds": 100,
       "category": "short",
       "ammo": 20,
       "rof": 1,
@@ -3392,12 +3612,14 @@
       "accuracyRank": "SSS",
       "reloadSeconds": 3.5,
       "energy": 70,
-      "names": {"en": "Burst Lance", "ja": "バースト・ランス"}
+      "names": {"en": "Ｂｕｒｓｔ　Ｌａｎｃｅ", "ja": "バースト・ランス"}
     },
     {
       "id": "winger-electro-15",
       "idx": 15,
       "character": "winger",
+      "level": 60,
+      "odds": 100,
       "category": "electro",
       "ammo": 1,
       "rof": 0.8,
@@ -3407,12 +3629,14 @@
       "accuracyRank": "D",
       "reloadSeconds": 1.2,
       "energy": 11,
-      "names": {"en": "Eclair 30", "ja": "エクレール30"}
+      "names": {"en": "Ｅｃｌａｉｒ　３０", "ja": "エクレール30"}
     },
     {
       "id": "winger-particle-15",
       "idx": 15,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 55,
@@ -3420,12 +3644,14 @@
       "range": 170,
       "accuracyRank": "A",
       "energy": 1.1,
-      "names": {"en": "Ixion 6-Way-S", "ja": "イクシオン6WAY-S"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　６　Ｗａｙ−Ｓ", "ja": "イクシオン6WAY-S"}
     },
     {
       "id": "winger-sniper-15",
       "idx": 15,
       "character": "winger",
+      "level": 41.25,
+      "odds": 100,
       "category": "sniper",
       "rof": 0.9,
       "damage": 200,
@@ -3434,12 +3660,14 @@
       "accuracyRank": "A",
       "reloadSeconds": 14,
       "energy": 6,
-      "names": {"en": "Thunder Sniper D", "ja": "サンダースナイパーD"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｓｎｉｐｅｒ　Ｄ", "ja": "サンダースナイパーD"}
     },
     {
       "id": "winger-plasma-15",
       "idx": 15,
       "character": "winger",
+      "level": 25,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 300,
@@ -3447,12 +3675,14 @@
       "radius": 15,
       "accuracyRank": "B",
       "energy": 13,
-      "names": {"en": "Plasmafall", "ja": "プラズマ・フォール"}
+      "names": {"en": "Ｐｌａｓｍａ　Ｆａｌｌ", "ja": "プラズマ・フォール"}
     },
     {
       "id": "winger-missile-15",
       "idx": 15,
       "character": "winger",
+      "level": 0,
+      "odds": 100,
       "category": "missile",
       "rof": 3,
       "damage": 400,
@@ -3461,7 +3691,7 @@
       "homingRank": "A",
       "energy": 4,
       "radius": 20,
-      "names": {"en": "Geist D", "ja": "ガイストD"}
+      "names": {"en": "Ｇａｉｓｔ　Ｄ", "ja": "ガイストD"}
     },
     {
       "id": "ranger-assault-16",
@@ -3564,6 +3794,8 @@
       "id": "winger-short-16",
       "idx": 16,
       "character": "winger",
+      "level": 45,
+      "odds": 100,
       "category": "short",
       "ammo": 400,
       "rof": 60,
@@ -3573,12 +3805,14 @@
       "accuracyRank": "C+",
       "reloadSeconds": 1,
       "energy": 12,
-      "names": {"en": "Rapier G thrust", "ja": "レイピアGスラスト"}
+      "names": {"en": "Ｒａｐｉｅｒ　Ｇ　Ｔｈｒｕｓｔ", "ja": "レイピアGスラスト"}
     },
     {
       "id": "winger-electro-16",
       "idx": 16,
       "character": "winger",
+      "level": 67.5,
+      "odds": 100,
       "category": "electro",
       "ammo": 11,
       "rof": 1.2,
@@ -3588,12 +3822,14 @@
       "accuracyRank": "C",
       "reloadSeconds": 2.3,
       "energy": 50,
-      "names": {"en": "Thunder Bow 30", "ja": "サンダーボウ30"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｂｏｗ　３０", "ja": "サンダーボウ30"}
     },
     {
       "id": "winger-particle-16",
       "idx": 16,
       "character": "winger",
+      "level": 47.5,
+      "odds": 100,
       "category": "particle",
       "rof": 30,
       "damage": 36,
@@ -3601,12 +3837,14 @@
       "range": 260,
       "accuracyRank": "C",
       "energy": 9,
-      "names": {"en": "Dynastrike Z", "ja": "ダイナストZ"}
+      "names": {"en": "Ｄｙｎａｓｔ　Ｚ", "ja": "ダイナストZ"}
     },
     {
       "id": "winger-sniper-16",
       "idx": 16,
       "character": "winger",
+      "level": 42.5,
+      "odds": 100,
       "category": "sniper",
       "rof": 60,
       "damage": 10,
@@ -3614,12 +3852,14 @@
       "accuracyRank": "A",
       "reloadSeconds": 0.25,
       "energy": 6,
-      "names": {"en": "LRSL-S", "ja": "LRSL-S"}
+      "names": {"en": "ＬＲＳＬ−Ｓ", "ja": "LRSL-S"}
     },
     {
       "id": "winger-plasma-16",
       "idx": 16,
       "character": "winger",
+      "level": 25,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 50,
@@ -3628,12 +3868,14 @@
       "radius": 2,
       "accuracyRank": "A+",
       "energy": 24,
-      "names": {"en": "M15 Plasma Launcher", "ja": "M15プラズマ・ランチャー"}
+      "names": {"en": "Ｍ１５　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "M15プラズマ・ランチャー"}
     },
     {
       "id": "winger-missile-16",
       "idx": 16,
       "character": "winger",
+      "level": 67.5,
+      "odds": 100,
       "category": "missile",
       "rof": 0.3,
       "damage": 80,
@@ -3641,7 +3883,7 @@
       "range": 600,
       "homingRank": "A",
       "energy": 32,
-      "names": {"en": "Ghost Chaser", "ja": "ゴースト・チェイサー"}
+      "names": {"en": "Ｇｈｏｓｔ　Ｃｈａｓｅｒ", "ja": "ゴースト・チェイサー"}
     },
     {
       "id": "ranger-assault-17",
@@ -3744,6 +3986,8 @@
       "id": "winger-short-17",
       "idx": 17,
       "character": "winger",
+      "level": 50,
+      "odds": 100,
       "category": "short",
       "ammo": 10,
       "rof": 1,
@@ -3752,12 +3996,14 @@
       "accuracyRank": "SSS",
       "reloadSeconds": 3,
       "energy": 20,
-      "names": {"en": "Laser Lance X", "ja": "レーザーランスX"}
+      "names": {"en": "Ｌａｓｅｒ　Ｌａｎｃｅ　Ｘ", "ja": "レーザーランスX"}
     },
     {
       "id": "winger-electro-17",
       "idx": 17,
       "character": "winger",
+      "level": 75,
+      "odds": 100,
       "category": "electro",
       "ammo": 1,
       "rof": 0.8,
@@ -3767,12 +4013,14 @@
       "accuracyRank": "D",
       "reloadSeconds": 1.2,
       "energy": 12,
-      "names": {"en": "Eclair LIM", "ja": "エクレールLIM"}
+      "names": {"en": "Ｅｃｌａｉｒ　ＬＩＭ", "ja": "エクレールLIM"}
     },
     {
       "id": "winger-particle-17",
       "idx": 17,
       "character": "winger",
+      "level": 52.5,
+      "odds": 100,
       "category": "particle",
       "rof": 8.5,
       "damage": 55,
@@ -3780,12 +4028,14 @@
       "range": 260,
       "accuracyRank": "B-",
       "energy": 1.3,
-      "names": {"en": "Dynastrike α", "ja": "ダイナストα"}
+      "names": {"en": "Ｄｙｎａｓｔ　α", "ja": "ダイナストα"}
     },
     {
       "id": "winger-sniper-17",
       "idx": 17,
       "character": "winger",
+      "level": 45,
+      "odds": 100,
       "category": "sniper",
       "rof": 0.9,
       "damage": 200,
@@ -3794,23 +4044,27 @@
       "accuracyRank": "A",
       "reloadSeconds": 24,
       "energy": 8,
-      "names": {"en": "Thunder Sniper 6", "ja": "サンダースナイパー6"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｓｎｉｐｅｒ　６", "ja": "サンダースナイパー6"}
     },
     {
       "id": "winger-plasma-17",
       "idx": 17,
       "character": "winger",
+      "level": 26,
+      "odds": 100,
       "category": "plasma",
       "damage": 50,
       "count": 20,
       "radius": 2,
       "reloadSeconds": 10,
-      "names": {"en": "Wide Grenade 20", "ja": "ワイド・グレネード20"}
+      "names": {"en": "Ｗｉｄｅ　Ｇｒｅｎａｄｅ　２０", "ja": "ワイド・グレネード20"}
     },
     {
       "id": "winger-missile-17",
       "idx": 17,
       "character": "winger",
+      "level": 72.5,
+      "odds": 100,
       "category": "missile",
       "rof": 10,
       "damage": 80,
@@ -3818,7 +4072,7 @@
       "range": 800,
       "homingRank": "C",
       "energy": 2,
-      "names": {"en": "Fenrir 3-Way", "ja": "フェンリル3WAY"}
+      "names": {"en": "Ｆｅｎｒｉｒ　３　Ｗａｙ", "ja": "フェンリル3WAY"}
     },
     {
       "id": "ranger-assault-18",
@@ -3855,6 +4109,8 @@
       "id": "winger-short-18",
       "idx": 18,
       "character": "winger",
+      "level": 52.5,
+      "odds": 100,
       "category": "short",
       "ammo": 600,
       "rof": 60,
@@ -3864,12 +4120,14 @@
       "accuracyRank": "C+",
       "reloadSeconds": 5,
       "energy": 28,
-      "names": {"en": "Rapier G Thrust 2", "ja": "レイピアGスラスト2"}
+      "names": {"en": "Ｒａｐｉｅｒ　Ｇ　Ｔｈｒｕｓｔ　２", "ja": "レイピアGスラスト2"}
     },
     {
       "id": "winger-electro-18",
       "idx": 18,
       "character": "winger",
+      "level": 90,
+      "odds": 40,
       "category": "electro",
       "ammo": 350,
       "rof": 30,
@@ -3878,12 +4136,14 @@
       "accuracyRank": "A",
       "reloadSeconds": 3.5,
       "energy": 55,
-      "names": {"en": "Idunn-FF", "ja": "イズナ-FF"}
+      "names": {"en": "Ｉｚｕｎａ　ＦＦ", "ja": "イズナ-FF"}
     },
     {
       "id": "winger-particle-18",
       "idx": 18,
       "character": "winger",
+      "level": 57.5,
+      "odds": 100,
       "category": "particle",
       "rof": 10,
       "damage": 45,
@@ -3891,12 +4151,14 @@
       "range": 250,
       "accuracyRank": "A",
       "energy": 0.9,
-      "names": {"en": "Ixion 9-Way", "ja": "イクシオン9WAY"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　９　Ｗａｙ", "ja": "イクシオン9WAY"}
     },
     {
       "id": "winger-sniper-18",
       "idx": 18,
       "character": "winger",
+      "level": 55,
+      "odds": 30,
       "category": "sniper",
       "rof": 60,
       "damage": 6000,
@@ -3904,12 +4166,14 @@
       "accuracyRank": "A+",
       "reloadSeconds": 39,
       "energy": 8,
-      "names": {"en": "MONSTER-S", "ja": "MONSTER-S"}
+      "names": {"en": "Ｎｉｇｈｔｍａｒｅ　Ｍｏｎｓｔｅｒ", "ja": "MONSTER-S"}
     },
     {
       "id": "winger-plasma-18",
       "idx": 18,
       "character": "winger",
+      "level": 29.25,
+      "odds": 100,
       "category": "plasma",
       "rof": 2,
       "damage": 120,
@@ -3918,12 +4182,14 @@
       "radius": 7,
       "accuracyRank": "B",
       "energy": 9,
-      "names": {"en": "Twin Plasma Launcher R", "ja": "2連プラズマ・ランチャーR"}
+      "names": {"en": "Ｄｏｕｂｌｅ　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ　Ｒ", "ja": "2連プラズマ・ランチャーR"}
     },
     {
       "id": "winger-missile-18",
       "idx": 18,
       "character": "winger",
+      "level": 77.5,
+      "odds": 40,
       "category": "missile",
       "rof": 6,
       "damage": 20,
@@ -3931,7 +4197,7 @@
       "range": 600,
       "homingRank": "A",
       "energy": 2.5,
-      "names": {"en": "Mirage 15WR", "ja": "ミラージュ15WR"}
+      "names": {"en": "Ｍｉｒａｇｅ　１５ＷＲ", "ja": "ミラージュ15WR"}
     },
     {
       "id": "ranger-assault-19",
@@ -3983,6 +4249,8 @@
       "id": "winger-short-19",
       "idx": 19,
       "character": "winger",
+      "level": 57.5,
+      "odds": 100,
       "category": "short",
       "ammo": 2000,
       "rof": 60,
@@ -3992,24 +4260,28 @@
       "accuracyRank": "K",
       "reloadSeconds": 2,
       "energy": 120,
-      "names": {"en": "Plasma Whip S", "ja": "プラズマ・ウィップS"}
+      "names": {"en": "Ｐｌａｓｍａ　Ｗｈｉｐ　Ｓ", "ja": "プラズマ・ウィップS"}
     },
     {
       "id": "winger-particle-19",
       "idx": 19,
       "character": "winger",
+      "level": 65,
+      "odds": 100,
       "category": "particle",
       "rof": 15,
       "damage": 370,
       "range": 300,
       "accuracyRank": "A+",
       "energy": 0.5,
-      "names": {"en": "Ixion Mk.4", "ja": "イクシオン・マーク4"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　Ｍａｒｋ　４", "ja": "イクシオン・マーク4"}
     },
     {
       "id": "winger-sniper-19",
       "idx": 19,
       "character": "winger",
+      "level": 62.5,
+      "odds": 100,
       "category": "sniper",
       "rof": 0.5,
       "damage": 200,
@@ -4018,17 +4290,19 @@
       "accuracyRank": "C-",
       "reloadSeconds": 35,
       "energy": 8,
-      "names": {"en": "Thunder Sniper 40", "ja": "サンダースナイパー40"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｓｎｉｐｅｒ　４０", "ja": "サンダースナイパー40"}
     },
     {
       "id": "winger-plasma-19",
       "idx": 19,
       "character": "winger",
+      "level": 32.5,
+      "odds": 100,
       "category": "plasma",
       "damage": 150,
       "radius": 20,
       "reloadSeconds": 3,
-      "names": {"en": "Plasma Grenade SP", "ja": "プラズマ・グレネードSP"}
+      "names": {"en": "Ｐｌａｓｍａ　Ｇｒｅｎａｄｅ　ＳＰ", "ja": "プラズマ・グレネードSP"}
     },
     {
       "id": "ranger-assault-20",
@@ -4066,6 +4340,8 @@
       "id": "ranger-special-20",
       "idx": 20,
       "character": "ranger",
+      "level": 20,
+      "odds": 100,
       "category": "special",
       "ammo": 10,
       "damageRank": {"ja": "C+"},
@@ -4077,6 +4353,8 @@
       "id": "winger-short-20",
       "idx": 20,
       "character": "winger",
+      "level": 60,
+      "odds": 100,
       "category": "short",
       "ammo": 1,
       "damage": 15000,
@@ -4084,12 +4362,14 @@
       "accuracyRank": "SSS",
       "reloadSeconds": 3,
       "energy": 30,
-      "names": {"en": "Demonic Lance", "ja": "デモニック・ランス"}
+      "names": {"en": "Ｄｅｍｏｎｉｃ　Ｌａｎｃｅ", "ja": "デモニック・ランス"}
     },
     {
       "id": "winger-particle-20",
       "idx": 20,
       "character": "winger",
+      "level": 77.5,
+      "odds": 40,
       "category": "particle",
       "rof": 10,
       "damage": 75,
@@ -4097,12 +4377,14 @@
       "range": 300,
       "accuracyRank": "A+",
       "energy": 0.9,
-      "names": {"en": "Ixion Mk.X", "ja": "イクシオン・マークX"}
+      "names": {"en": "Ｉｃｔｈｉｏｎ　Ｍａｒｋ　Ｘ", "ja": "イクシオン・マークX"}
     },
     {
       "id": "winger-sniper-20",
       "idx": 20,
       "character": "winger",
+      "level": 70,
+      "odds": 100,
       "category": "sniper",
       "rof": 0.025,
       "damage": 200,
@@ -4110,12 +4392,14 @@
       "range": 600,
       "accuracyRank": "C-",
       "energy": 8,
-      "names": {"en": "Thunder Sniper MX", "ja": "サンダースナイパーMX"}
+      "names": {"en": "Ｔｈｕｎｄｅｒ　Ｓｎｉｐｅｒ　ＭＸ", "ja": "サンダースナイパーMX"}
     },
     {
       "id": "winger-plasma-20",
       "idx": 20,
       "character": "winger",
+      "level": 36.5,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 400,
@@ -4123,7 +4407,7 @@
       "radius": 15,
       "accuracyRank": "B",
       "energy": 21,
-      "names": {"en": "E5 Plasma Launcher", "ja": "E5プラズマ・ランチャー"}
+      "names": {"en": "Ｅ５　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "E5プラズマ・ランチャー"}
     },
     {
       "id": "ranger-assault-21",
@@ -4176,6 +4460,8 @@
       "id": "winger-short-21",
       "idx": 21,
       "character": "winger",
+      "level": 62.5,
+      "odds": 100,
       "category": "short",
       "ammo": 11,
       "rof": 1,
@@ -4185,12 +4471,14 @@
       "accuracyRank": "B",
       "reloadSeconds": 4,
       "energy": 26,
-      "names": {"en": "4-Way Lance", "ja": "4WAYランス"}
+      "names": {"en": "４　Ｗａｙ　Ｌａｎｃｅ", "ja": "4WAYランス"}
     },
     {
       "id": "winger-sniper-21",
       "idx": 21,
       "character": "winger",
+      "level": 70,
+      "odds": 80,
       "category": "sniper",
       "rof": 60,
       "damage": 15,
@@ -4198,17 +4486,19 @@
       "accuracyRank": "S",
       "reloadSeconds": 0.18,
       "energy": 10,
-      "names": {"en": "LRSL-AC", "ja": "LRSL-AC"}
+      "names": {"en": "ＬＲＳＬ−ＡＣ", "ja": "LRSL-AC"}
     },
     {
       "id": "winger-plasma-21",
       "idx": 21,
       "character": "winger",
+      "level": 40,
+      "odds": 100,
       "category": "plasma",
       "damage": 500,
       "radius": 15,
       "reloadSeconds": 5,
-      "names": {"en": "Plasma Grenade C", "ja": "プラズマ・グレネードC"}
+      "names": {"en": "Ｐｌａｓｍａ　Ｇｒｅｎａｄｅ　Ｃ", "ja": "プラズマ・グレネードC"}
     },
     {
       "id": "ranger-grenade-22",
@@ -4243,6 +4533,8 @@
       "id": "winger-short-22",
       "idx": 22,
       "character": "winger",
+      "level": 65,
+      "odds": 100,
       "category": "short",
       "ammo": 600,
       "rof": 60,
@@ -4252,12 +4544,14 @@
       "accuracyRank": "B-",
       "reloadSeconds": 3,
       "energy": 34,
-      "names": {"en": "Plasma Sweeper", "ja": "プラズマ・ブルーム"}
+      "names": {"en": "Ｐｌａｓｍａ　Ｂｌｏｏｍ", "ja": "プラズマ・ブルーム"}
     },
     {
       "id": "winger-plasma-22",
       "idx": 22,
       "character": "winger",
+      "level": 41.25,
+      "odds": 100,
       "category": "plasma",
       "rof": 2,
       "damage": 240,
@@ -4266,7 +4560,7 @@
       "radius": 7,
       "accuracyRank": "B",
       "energy": 9,
-      "names": {"en": "Twin Plasma Launcher S", "ja": "2連プラズマ・ランチャーS"}
+      "names": {"en": "Ｄｏｕｂｌｅ　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ　Ｓ", "ja": "2連プラズマ・ランチャーS"}
     },
     {
       "id": "ranger-grenade-23",
@@ -4301,6 +4595,8 @@
       "id": "winger-short-23",
       "idx": 23,
       "character": "winger",
+      "level": 72.5,
+      "odds": 100,
       "category": "short",
       "ammo": 800,
       "rof": 60,
@@ -4310,12 +4606,14 @@
       "accuracyRank": "F",
       "reloadSeconds": 0.5,
       "energy": 26,
-      "names": {"en": "Master Rapier", "ja": "マスター・レイピア"}
+      "names": {"en": "Ｍａｓｔｅｒ　Ｒａｐｉｅｒ", "ja": "マスター・レイピア"}
     },
     {
       "id": "winger-plasma-23",
       "idx": 23,
       "character": "winger",
+      "level": 45,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 500,
@@ -4323,7 +4621,7 @@
       "radius": 25,
       "accuracyRank": "A",
       "energy": 31,
-      "names": {"en": "EX Plasma Launcher", "ja": "EXプラズマ・ランチャー"}
+      "names": {"en": "ＥＸ　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "EXプラズマ・ランチャー"}
     },
     {
       "id": "ranger-grenade-24",
@@ -4360,6 +4658,8 @@
       "id": "winger-short-24",
       "idx": 24,
       "character": "winger",
+      "level": 75,
+      "odds": 50,
       "category": "short",
       "ammo": 10,
       "rof": 1.5,
@@ -4368,12 +4668,14 @@
       "accuracyRank": "SSS",
       "reloadSeconds": 1.5,
       "energy": 16,
-      "names": {"en": "Laser Lance Σ", "ja": "レーザーランスΣ"}
+      "names": {"en": "Ｌａｓｅｒ　Ｌａｎｃｅ　Σ", "ja": "レーザーランスΣ"}
     },
     {
       "id": "winger-plasma-24",
       "idx": 24,
       "character": "winger",
+      "level": 50,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 500,
@@ -4382,7 +4684,7 @@
       "radius": 10,
       "accuracyRank": "B-",
       "energy": 49,
-      "names": {"en": "EX3x Plasma launcher", "ja": "EX3連プラズマ・ランチャー"}
+      "names": {"en": "ＥＸ３　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "EX3連プラズマ・ランチャー"}
     },
     {
       "id": "ranger-grenade-25",
@@ -4420,6 +4722,8 @@
       "id": "winger-short-25",
       "idx": 25,
       "character": "winger",
+      "level": 82.5,
+      "odds": 40,
       "category": "short",
       "ammo": 800,
       "rof": 60,
@@ -4429,12 +4733,14 @@
       "accuracyRank": "B-",
       "reloadSeconds": 0.5,
       "energy": 26,
-      "names": {"en": "Master Rapier T", "ja": "マスター・レイピアT"}
+      "names": {"en": "Ｍａｓｔｅｒ　Ｒａｐｉｅｒ　Ｔ", "ja": "マスター・レイピアT"}
     },
     {
       "id": "winger-plasma-25",
       "idx": 25,
       "character": "winger",
+      "level": 55,
+      "odds": 100,
       "category": "plasma",
       "rof": 1,
       "damage": 200,
@@ -4443,7 +4749,7 @@
       "radius": 5,
       "accuracyRank": "A+",
       "energy": 26,
-      "names": {"en": "M30 Plasma Launcher", "ja": "M30プラズマ・ランチャー"}
+      "names": {"en": "Ｍ３０　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "M30プラズマ・ランチャー"}
     },
     {
       "id": "ranger-grenade-26",
@@ -4481,6 +4787,8 @@
       "id": "winger-short-26",
       "idx": 26,
       "character": "winger",
+      "level": 80,
+      "odds": 10,
       "category": "short",
       "ammo": 11,
       "rof": 1,
@@ -4490,18 +4798,20 @@
       "accuracyRank": "B",
       "reloadSeconds": 4,
       "energy": 26,
-      "names": {"en": "Holy Lance", "ja": "ホーリーランス"}
+      "names": {"en": "Ｈｏｌｙ　Ｌａｎｃｅ", "ja": "ホーリーランス"}
     },
     {
       "id": "winger-plasma-26",
       "idx": 26,
       "character": "winger",
+      "level": 60,
+      "odds": 100,
       "category": "plasma",
       "damage": 300,
       "count": 40,
       "radius": 5,
       "reloadSeconds": 10,
-      "names": {"en": "Wide Grenade 40", "ja": "ワイド・グレネード40"}
+      "names": {"en": "Ｗｉｄｅ　Ｇｒｅｎａｄｅ　４０", "ja": "ワイド・グレネード40"}
     },
     {
       "id": "ranger-grenade-27",
@@ -4524,6 +4834,8 @@
       "id": "winger-plasma-27",
       "idx": 27,
       "character": "winger",
+      "level": 62.5,
+      "odds": 100,
       "category": "plasma",
       "rof": 3,
       "damage": 800,
@@ -4531,7 +4843,7 @@
       "radius": 15,
       "accuracyRank": "B",
       "energy": 14,
-      "names": {"en": "RSR Plasma Launcher", "ja": "RSRプラズマ・ランチャー"}
+      "names": {"en": "ＲＳＲ　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "RSRプラズマ・ランチャー"}
     },
     {
       "id": "ranger-grenade-28",
@@ -4570,11 +4882,13 @@
       "id": "winger-plasma-28",
       "idx": 28,
       "character": "winger",
+      "level": 65,
+      "odds": 100,
       "category": "plasma",
       "damage": 1800,
       "radius": 15,
       "reloadSeconds": 5,
-      "names": {"en": "Plasma Grenade F", "ja": "プラズマ・グレネードF"}
+      "names": {"en": "Ｐｌａｓｍａ　Ｇｒｅｎａｄｅ　Ｆ", "ja": "プラズマ・グレネードF"}
     },
     {
       "id": "ranger-grenade-29",
@@ -4613,6 +4927,8 @@
       "id": "winger-plasma-29",
       "idx": 29,
       "character": "winger",
+      "level": 67.5,
+      "odds": 80,
       "category": "plasma",
       "rof": 1,
       "damage": 1200,
@@ -4621,7 +4937,7 @@
       "radius": 22,
       "accuracyRank": "A",
       "energy": 41,
-      "names": {"en": "XSX Plasma Launcher", "ja": "XSXプラズマ・ランチャー"}
+      "names": {"en": "ＸＳＸ　Ｐｌａｓｍａ　Ｌａｕｎｃｈｅｒ", "ja": "XSXプラズマ・ランチャー"}
     },
     {
       "id": "ranger-special-30",
