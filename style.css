@@ -1,6 +1,50 @@
-html {
-  color: #fafafa;
-  background-color: #141414;
+:root {
+  --faded-text: #4e5d6f;
+  --text-color-main: #fafafa;
+  --background-color-main: #141414;
+  --name-color: #80c3f5;
+  --star-color: #8d8d8d;
+  --zebra-stripe-color: #000;
+
+  --clr-ranger-red: #e88;
+  --clr-winger-blue: #88e;
+  --clr-bomber-green: #8e8;
+  --clr-fencer-orange: #ea8;
+  --clr-superstar-white: #eee;
+  --clr-rifle-red: #e88;
+  --clr-shotgun-green: #8e8;
+  --clr-sniper-blue: #88e;
+  --clr-rocket-blast: #ee8;
+  --clr-missile-magenta: #a8e;
+  --clr-grenade-splash: #ea8;
+  --clr-special-spruce: #e8a;
+  --clr-gritty-military: #8aa;
+  --clr-scifi-punk: #e8e;
+  --clr-trapper-tank: #ae8;
+  --clr-cool-ice: #8ae;
+  --clr-nanobots: #8ea;
+  --clr-lightsaber: #aaa;
+}
+
+.light-mode {
+  --text-color-main: #2d3142;
+  --background-color-main: #edf6f9;
+  --zebra-stripe-color: #bfc0c0;
+  --name-color: #3a7ca5;
+  --star-color: #000;
+
+  --clr-bomber-green: #40916c;
+  --clr-shotgun-green: #2d6a4f;
+  --clr-rocket-blast: #e09f3e;
+}
+
+.light-mode .level {
+  font-weight: bold;
+}
+
+body {
+  color: var(--text-color-main);
+  background-color: var(--background-color-main);
   font-family: "Helvetica Neue", Meiryo, sans-serif;
 }
 
@@ -13,8 +57,14 @@ table, th, td {
   border-collapse: collapse;
 }
 
+thead {
+  position: sticky;
+  top: 0px;
+  background-color: var(--background-color-main);
+}
+
 .button {
-  color: #4e5d6f;
+  color: var(--faded-text);
   cursor: pointer;
   width: 100%;
   white-space: nowrap;
@@ -22,12 +72,12 @@ table, th, td {
 }
 
 menu {
-  background-color: #141414;
+  background-color: var(--background-color);
   flex-direction: column;
   list-style-type: none;
   padding: 0;
   margin: 0;
-  color: #4e5d6f;
+  color: var(--faded-text);
   width: fit-content;
 }
 
@@ -73,66 +123,81 @@ menu a {
   border-bottom: thick solid #edf;
 }
 
+.dropdown a:hover {
+  border-bottom: thick solid #edf;
+}
+
 .dropdown, .dropdown menu {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
+.dropdown menu {
+  background-color: var(--background-color-main);
+  z-index: 100;
+}
+
 .dropdown {
   width: 100%;
 }
 
-@media (hover) {
-  #top-menus, #menus {
-    flex-direction: row;
-  }
+.dropdown.widechar {
+  min-width: 16em;
+}
 
-  menu {
-    position: absolute;
-  }
+#top-menus, #menus {
+  flex-direction: row;
+}
 
-  menu a {
-    display: none;
-  }
+menu {
+  position: absolute;
+}
 
-  .selected {
-    display: none;
-  }
+menu a {
+  display: none;
+}
 
-  .dropdown, .dropdown menu {
-    flex-direction: column;
-  }
+.selected {
+  display: none;
+}
 
-  .dropdown {
-    flex: 1;
-    max-width: 6em;
-    padding: 0.4em 0.2em;
-  }
+.dropdown, .dropdown menu {
+  flex-direction: column;
+}
 
-  #char-tabs {
-    max-width: 8em;
-  }
+.dropdown {
+  flex: 1;
+  max-width: 6em;
+  padding: 0.4em 0.2em;
+}
 
-  #category-tabs {
-    max-width: 12em;
-  }
+#char-tabs {
+  max-width: 8em;
+}
 
-  #star-tabs {
-    max-width: 3em;
-  }
+#category-tabs {
+  max-width: 12em;
+}
 
-  .dropdown:hover menu {
-    display: flex;
-  }
+#star-tabs {
+  max-width: 3em;
+}
 
-  menu:hover .selected, .dropdown:hover .selected {
-    display: block;
-  }
+#mission-input {
+  max-width: 3em;
+}
 
-  menu:hover a, .dropdown:hover a {
-    display: block;
-  }
+.dropdown.hover menu {
+  display: flex;
+}
+
+.dropdown.hover .selected {
+  display: block;
+}
+
+.dropdown.hover a {
+  display: block;
 }
 
 td {
@@ -142,20 +207,15 @@ td {
 }
 
 tbody tr:nth-child(odd) {
-  background-color: #000;
+  background-color: var(--zebra-stripe-color);
 }
 
 td.Weight {
-  color: #4e5d6f;
+  color: var(--faded-text);
 }
 
 td.hasStar {
   border-right: none;
-}
-
-td.isStar {
-  color: #8d8d8d;
-  border-left: none;
 }
 
 nav ul {
@@ -174,7 +234,7 @@ nav a {
 }
 
 .name, nav a {
-  color: #80c3f5;
+  color: var(--name-color);
   text-align: left;
   overflow: hidden;
 }
@@ -226,6 +286,20 @@ th.P, th.CR {
   content: '~ ';
 }
 
+.star {
+  color: var(--star-color);
+  padding-left: 0em;
+  padding-right: 0.2em;
+}
+
+.star::before {
+  content: '☆';
+}
+
+.star.max::before {
+  content: '★';
+}
+
 .spacer {
   flex: 1;
 }
@@ -242,59 +316,59 @@ th.P, th.CR {
 }
 
 .ranger b, .dlc2 b, .Inferno, .lowOdds, .edf3 b, .edf3p b, .ja b, .weapons b, .damage-type.flame, .status-effect.flame {
-  color: #e88;
+  color: var(--clr-ranger-red);
 }
-.winger b, .off b, .Normal, .edf5 b, .en b, .rank-C, .edfir b {
-  color: #88e;
+.winger b, .off b, .Normal, .edf5 b, .en b, .rank-C, .edfir b, #save-load-copy {
+  color: var(--clr-winger-blue);
 }
 .bomber b, .on b, .Hard, .highOdds, .edf4 b, .edf41 b, .edfia b, .items b, .rank-D, .status-effect.poison, #save-load-import {
-  color: #8e8;
+  color: var(--clr-bomber-green);
 }
 .fencer b, .dlc1 b, .edf2 b, .edf2pv2 b {
-  color: #ea8;
+  color: var(--clr-fencer-orange);
 }
 
 .short b, .spear b, .heli b, .stats b, .limpet b, .booster b, .repair b, .sword b, .star-10, .star-5, .edf1 b, .damage-type.physical {
-  color: #eee;
+  color: var(--clr-clr-superstar-white);
 }
 .assault b, .laser b, .light b, .gunship b {
-  color: #e88;
+  color: var(--clr-rifle-red);
 }
 .shotgun b, .electro b, .shield b, .support b, .bike b, .ground b, .protector b {
-  color: #8e8;
+  color: var(--clr-shotgun-green);
 }
 .sniper b, .heavy b, .satellite b, .muzzle b {
-  color: #88e;
+  color: var(--clr-sniper-blue);
 }
-.rocket b, .particle b, .hammer b, .dlc, .planes b, .tank b, .rank-AA, .Hardest, .damage-type.optics, .status-effect.shock {
-  color: #ee8;
+.rocket b, .particle b, .hammer b, .dlc, .planes b, .tank b, .rank-AA, .Hardest, .damage-type.optics, .status-effect.shock, .scaling b {
+  color: var(--clr-rocket-blast);
 }
 .missile b, .guide b, .na {
-  color: #a8e;
+  color: var(--clr-missile-magenta);
 }
 .grenade b, .plasma b, .raid b, .artillery b, .rank-A {
-  color: #ea8;
+  color: var(--clr-grenade-splash);
 }
 .special b, .super b, .rank-B, .status-effect.recover, .status-effect.recovertime, #save-load-toggle b, .edfwdts b {
-  color: #e8a;
+  color: var(--clr-special-spruce);
 }
 .edf6 b, .deploy b, .gatling b, .Easy, .starter, .star-0 {
-  color: #8aa
+  color: var(--clr-gritty-military);
 }
 .mech b, .core b, .equipment b, .exo b, .thrower b {
-  color: #e8e;
+  color: var(--clr-scifi-punk);
 }
 .bomb b, .trap b, .droneguard b {
-  color: #ae8;
+  color: var(--clr-trapper-tank);
 }
 .railgun b, .status-effect.frozen, .cannon b, .handgrenade b, .cannon b, .droneshooter b {
-  color: #8ae;
+  color: var(--clr-cool-ice);
 }
 .specialgrenade b, .submissile b, .dronechaser b, {
-  color: #8ea;
+  color: var(--clr-nanobots);
 }
 .saber b, .droneauto b {
-  color: #aaa;
+  color: var(--clr-lightsaber);
 }
 
 @media only screen and (max-width: 540px) {
@@ -303,4 +377,12 @@ th.P, th.CR {
     text-align: right;
     direction: rtl;
   }
+}
+
+.to {
+  border-right: thin dotted var(--faded-text);
+}
+
+.duplicate td {
+  background: red;
 }
