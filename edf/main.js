@@ -2058,7 +2058,7 @@ var SCALED_PROPS, bool, boostProp, boostUse, chargeEmergencyRate, chargeRate, ch
 
 var weaponKey = (wpn, type = 'owned') => {
   var scope;
-  scope = locals.game.id === '41' ? '' : `.${locals.game.id.slice(2)}`;
+  scope = locals.game.id === '41' ? '' : `.${locals.game.id.slice(3)}`;
   return `${type}${scope}.${wpn.id}`;
 };
 
