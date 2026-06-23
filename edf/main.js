@@ -2057,9 +2057,7 @@ var SCALED_PROPS, bool, boostProp, boostUse, chargeEmergencyRate, chargeRate, ch
 
 
 var weaponKey = (wpn, type = 'owned') => {
-  var scope;
-  scope = locals.game.id === 'edf41' ? '' : `.${locals.game.id.slice(3)}`;
-  return `${type}${scope}.${wpn.id}`;
+  return `${type}.${locals.game.id.slice(3)}.${wpn.id}`;
 };
 
 checkbox = (scope) => {
