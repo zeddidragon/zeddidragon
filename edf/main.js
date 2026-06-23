@@ -365,9 +365,9 @@ var headers = {
       return wpn.total;
     }
     if (((ref = wpn.attacks) != null ? ref.length : void 0) && wpn.damage) {
-      attacks = wpn.attacks.map(a(() => {
+      attacks = wpn.attacks.map((a) => {
         return a.damage * wpn.damage;
-      }));
+      });
       count = wpn.count || 1;
       dump = Array(Math.floor(wpn.ammo / count)).fill(0).map((w, i) => {
         return attacks[i % attacks.length] * count;
