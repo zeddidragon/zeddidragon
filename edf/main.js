@@ -2644,7 +2644,7 @@ var weaponStats = {
   accuracy: (wpn) => {
     var el;
     el = (0,_html__WEBPACK_IMPORTED_MODULE_0__.$)('div');
-    el.setAttribute('title', (typeof wpn.accuracy === "function" ? wpn.accuracy(wpn.accuracy) : void 0) ? void 0 : 'Accuracy only known by rank');
+    el.setAttribute('title', wpn.accuracy != null ? wpn.accuracy : 'Accuracy only known by rank');
     el.textContent = (0,_accuracy_coffee__WEBPACK_IMPORTED_MODULE_1__.accuracy)(wpn);
     return el;
   },
