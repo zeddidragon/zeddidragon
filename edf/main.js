@@ -920,7 +920,7 @@ var headers = {
   },
   altFire: {
     label: 'f()',
-    tooltip: 'Function'
+    tooltip: 'Alt-Fire Function'
   },
   zoom: {
     label: 'Zm',
@@ -2649,18 +2649,40 @@ var weaponStats = {
     return el;
   },
   altFire: (wpn) => {
-    if (wpn.zoom > 0) {
-      return `⌖ ${+wpn.zoom.toFixed(1)}x`;
-    } else {
-      switch (wpn.secondary) {
-        case 4:
-          return '⇑'; // Boost
-        case 5:
-          return '⇒'; // Dash
-        case 6:
-          return '🛡'; // Reflect
+    var el, text, title, zoom;
+    [text, title] = (function() {
+      if (wpn.zoom > 0) {
+        zoom = +wpn.zoom.toFixed(1);
+        return [`⌖ ${zoom}x`, `Zooms with ${zoom}x magnification`];
+      } else {
+        switch (wpn.secondary) {
+          case 4:
+            return [
+              '⇑',
+              'Boost module' // Boost
+            ];
+          case 5:
+            return [
+              '⇒',
+              'Dash module' // Dash
+            ];
+          case 6:
+            return [
+              '🛡',
+              'Reflects on alt-fire' // Reflect
+            ];
+          default:
+            return [];
+        }
       }
+    })();
+    if (!text) {
+      return null;
     }
+    el = (0,_html__WEBPACK_IMPORTED_MODULE_0__.$)('div');
+    el.textContent = text;
+    el.setAttribute('title', title);
+    return el;
   },
   zoom: (wpn) => {
     if (wpn.zoom === true) {
